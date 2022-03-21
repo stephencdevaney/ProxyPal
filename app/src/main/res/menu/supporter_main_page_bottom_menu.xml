@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    //created 3/20
+
+    <item
+        android:title="Search"
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        ></item>
+
+    <item
+        android:title="Explore"
+        android:id="@+id/explore"
+        android:icon="@drawable/ic_browse"
+        ></item>
+
+    <item
+        android:title="Promos"
+        android:id="@+id/discounts_and_promos"
+        android:icon="@drawable/ic_discount"
+        ></item>
+
+    <item
+        android:title="Shopping List"
+        android:id="@+id/shopping"
+        android:icon="@drawable/ic_shopping_list"
+        ></item>
+
+</menu>

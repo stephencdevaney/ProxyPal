@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C7C0CF"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/initial_page_logo"
+        android:layout_width="179dp"
+        android:layout_height="191dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="40dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:background="#342A47"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to ProxyPal!"
+            android:textColor="#E1DFE4"
+            android:textSize="17sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/initial_login_btn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:backgroundTint="#342A47"
+        android:text="Login"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/initial_page_logo" />
+
+    <Button
+        android:id="@+id/initial_create_btn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:backgroundTint="#342A47"
+        android:text="Create Account"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/initial_login_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/initial_login_btn"
+        app:layout_constraintTop_toBottomOf="@+id/initial_login_btn" />
+
+    <Button
+        android:id="@+id/initial_guest_btn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="38dp"
+        android:backgroundTint="#342A47"
+        android:text="Browse as Guest"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/initial_create_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/initial_create_btn"
+        app:layout_constraintTop_toBottomOf="@+id/initial_create_btn" />
+
+    <TextView
+        android:id="@+id/main_test_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:text="test"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/initial_guest_btn"
+        app:layout_constraintVertical_bias="0.035" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
