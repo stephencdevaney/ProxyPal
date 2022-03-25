@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         initial_guest_btn = findViewById(R.id.initial_guest_btn);
 
 
+        main_test_txt = findViewById(R.id.main_test_txt);
+        main_test_txt.setText("testing git commit");
 
         /* ----------------------------------------------------------------
         DATABASE ALTERATION HISTORY
