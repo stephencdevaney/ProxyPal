@@ -46,11 +46,9 @@ public class MainActivity extends AppCompatActivity {
         initial_create_btn = findViewById(R.id.initial_create_btn);
         initial_guest_btn = findViewById(R.id.initial_guest_btn);
 
-
+        //Initialize the testing text
         main_test_txt = findViewById(R.id.main_test_txt);
-        main_test_txt.setText("testing git commit");
-         main_test_txt.setText("testing git pull");
-        main_test_txt.setText("testing git commit 2");
+
 
         /* ----------------------------------------------------------------
         DATABASE ALTERATION HISTORY
@@ -133,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
         //START OF TESTING CODE
         //These statements and all of the commented code below are for database testing purposes, you
         //can ignore these or study them to get an idea of how operations on the database work
-        main_test_txt = findViewById(R.id.main_test_txt);
         main_test_txt.setVisibility(View.VISIBLE);
 
 
