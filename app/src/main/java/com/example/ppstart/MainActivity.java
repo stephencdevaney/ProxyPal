@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         main_test_txt = findViewById(R.id.main_test_txt);
         main_test_txt.setText("testing git commit");
          main_test_txt.setText("testing git pull");
+        main_test_txt.setText("testing git commit 2");
 
         /* ----------------------------------------------------------------
         DATABASE ALTERATION HISTORY
