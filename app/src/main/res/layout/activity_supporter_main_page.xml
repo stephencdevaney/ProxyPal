@@ -16,9 +16,17 @@
             android:layout_height="wrap_content"
             android:id="@+id/supporter_main_page_toolbar"
             android:elevation="4dp"
-            android:background="@color/design_default_color_primary"
+            android:background="@color/design_default_color_primary">
 
-            ></com.google.android.material.appbar.MaterialToolbar>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:layout_gravity="right"
+            android:layout_marginRight="30dp"
+            android:id="@+id/toolbar_username" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
 
         <FrameLayout
             android:id="@+id/supporter_main_page_fragment_container"

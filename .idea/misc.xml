@@ -3,7 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_browsing.xml" value="0.35462962962962963" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_business_profile.xml" value="0.35462962962962963" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_create_owner.xml" value="0.35462962962962963" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_create_supporter.xml" value="0.35462962962962963" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_initial_create.xml" value="0.35462962962962963" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_login.xml" value="0.35462962962962963" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_main.xml" value="0.35462962962962963" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_supporter_main_page.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_supporter_search.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/browse_profiles_rec_view_layout.xml" value="0.35462962962962963" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/supporter_main_page_drawer_header.xml" value="0.35462962962962963" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/supporter_main_page_fragment.xml" value="0.35462962962962963" />
+        <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/menu/supporter_main_page_drawer_menu.xml" value="0.35462962962962963" />
       </map>
     </option>
   </component>

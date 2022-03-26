@@ -13,8 +13,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -27,6 +29,7 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     private MaterialToolbar search_toolbar;
     private EditText search_box;
     private ImageView search_btn;
+    private Spinner search_spinner;
     private BottomNavigationView supporter_main_page_bottom_menu;
 
     //for database useage
@@ -37,7 +40,7 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     private RecyclerView search_rec_view;
 
     //Declare a recycler view adapter for business profile avatars
-    private BrowseProfilesAdapter searchProfilesAdapter;
+    private BrowseProfilesAdapter searchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +54,9 @@ public class Supporter_Search_Activity extends AppCompatActivity {
         setSupportActionBar(search_toolbar);
 
         //initialize the recycler view adapter
-        searchProfilesAdapter = new BrowseProfilesAdapter(this);
+        searchAdapter = new BrowseProfilesAdapter(this);
         search_rec_view = findViewById(R.id.search_recycler_view);
-        search_rec_view.setAdapter(searchProfilesAdapter);
+        search_rec_view.setAdapter(searchAdapter);
         search_rec_view.setLayoutManager(new GridLayoutManager(this, 2));
 
 
@@ -84,6 +87,25 @@ public class Supporter_Search_Activity extends AppCompatActivity {
 
             }
         });
+
+        //allows the user to select whether they want to search for items or businesses
+        search_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (search_spinner.getSelectedItem().toString().equals("Business")) {
+                    Toast.makeText(Supporter_Search_Activity.this, "Business selected", Toast.LENGTH_SHORT).show();
+                }
+                if (search_spinner.getSelectedItem().toString().equals("Item")) {
+                    Toast.makeText(Supporter_Search_Activity.this, "Item selected", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
 
     }
@@ -119,92 +141,113 @@ public class Supporter_Search_Activity extends AppCompatActivity {
         search_box = findViewById(R.id.search_box);
         search_btn = findViewById(R.id.search_btn);
         supporter_main_page_bottom_menu = findViewById(R.id.supporter_main_page_bottom_menu);
+        search_spinner = findViewById(R.id.search_spinner);
     }
 
     private void initSearch() {
+        //empty Profile ArrayList used for clearing the screen
+        ArrayList<Profile> empty_list = new ArrayList<>();
+
+        //for querying the database
+        databaseHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
         if (!search_box.getText().toString().equals("")) {
             String search_box_entry = search_box.getText().toString();
 
-            databaseHelper = new DatabaseHelper(this);
-            SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            //if the user selected the business option in the spinner
+            if (search_spinner.getSelectedItem().toString().equals("Business")) {
+                searchAdapter.setBrowsable_profiles(empty_list);
 
 
-            try {
-                //retrieve the business profiles in the database using this query
-                Cursor cursor = db.rawQuery("SELECT * FROM profile", null);
-                if (cursor != null) {
-                    if (cursor.moveToFirst()) {
-                        ArrayList<Profile> all_browsable_profiles = new ArrayList<>(); //business profiles taken from the database will be added to this ArrayList
+                try {
+                    //retrieve the business profiles in the database using this query
+                    Cursor cursor = db.rawQuery("SELECT * FROM profile", null);
+                    if (cursor != null) {
+                        if (cursor.moveToFirst()) {
+                            ArrayList<Profile> all_browsable_profiles = new ArrayList<>(); //business profiles taken from the database will be added to this ArrayList
 
-                        int profile_id_index = cursor.getColumnIndex("profile_id");
-                        int owner_id_index = cursor.getColumnIndex("owner_id");
-                        int business_name_index = cursor.getColumnIndex("business_name");
-                        int profile_avatar_image_index = cursor.getColumnIndex("profile_avatar_image");
+                            int profile_id_index = cursor.getColumnIndex("profile_id");
+                            int owner_id_index = cursor.getColumnIndex("owner_id");
+                            int business_name_index = cursor.getColumnIndex("business_name");
+                            int profile_avatar_image_index = cursor.getColumnIndex("profile_avatar_image");
 
-                        for (int i = 0; i < cursor.getCount(); i++) {
-                            Profile p = new Profile();
-                            p.setProfile_id(cursor.getInt(profile_id_index));
-                            p.setOwner_id(cursor.getInt(owner_id_index));
-                            p.setBusiness_name(cursor.getString(business_name_index));
-                            p.setProfile_avatar_image(cursor.getString(profile_avatar_image_index));
+                            for (int i = 0; i < cursor.getCount(); i++) {
+                                Profile p = new Profile();
+                                p.setProfile_id(cursor.getInt(profile_id_index));
+                                p.setOwner_id(cursor.getInt(owner_id_index));
+                                p.setBusiness_name(cursor.getString(business_name_index));
+                                p.setProfile_avatar_image(cursor.getString(profile_avatar_image_index));
 
-                            all_browsable_profiles.add(p);
-                            cursor.moveToNext();
-                        }
-                        cursor.close();
-                        db.close();
+                                all_browsable_profiles.add(p);
+                                cursor.moveToNext();
+                            }
+                            cursor.close();
+                            db.close();
 
-                        //create a new ArrayList to store profiles that are searched
-                        if(all_browsable_profiles != null){
-                            ArrayList<Profile> browsable_profiles_search = new ArrayList<>();
-                            for(Profile profile: all_browsable_profiles){
-                                if(profile.getBusiness_name().equalsIgnoreCase(search_box_entry)){
-                                    browsable_profiles_search.add(profile);
-                                }
-                                //split the search entry by spaces and use the result for matching partial searches
-                                String[] partial_search = profile.getBusiness_name().split(" ");
-                                for(int i = 0; i < partial_search.length; i++){
-                                    if(search_box_entry.equalsIgnoreCase(partial_search[i])){
-                                        boolean exists = false;
+                            //create a new ArrayList to store profiles that are searched
+                            if (all_browsable_profiles != null) {
+                                ArrayList<Profile> browsable_profiles_search = new ArrayList<>();
+                                for (Profile profile : all_browsable_profiles) {
+                                    if (profile.getBusiness_name().equalsIgnoreCase(search_box_entry)) {
+                                        browsable_profiles_search.add(profile);
+                                    }
+                                    //split the search entry by spaces and use the result for matching partial searches
+                                    String[] partial_search = profile.getBusiness_name().split(" ");
+                                    for (int i = 0; i < partial_search.length; i++) {
+                                        if (search_box_entry.equalsIgnoreCase(partial_search[i])) {
+                                            boolean exists = false;
 
-                                        for(Profile profile_search: browsable_profiles_search){
-                                            if(profile_search.getProfile_id() == profile.getProfile_id()){
-                                                exists = true;
+                                            for (Profile profile_search : browsable_profiles_search) {
+                                                if (profile_search.getProfile_id() == profile.getProfile_id()) {
+                                                    exists = true;
+                                                }
+                                            }
+
+                                            if (!exists) {
+                                                browsable_profiles_search.add(profile);
                                             }
                                         }
-
-                                        if(!exists){
-                                            browsable_profiles_search.add(profile);
-                                        }
                                     }
+
+
                                 }
 
-
-
+                                if (browsable_profiles_search != null) {
+                                    searchAdapter.setBrowsable_profiles(browsable_profiles_search);
+                                }
                             }
 
-                            if(browsable_profiles_search != null){
-                                searchProfilesAdapter.setBrowsable_profiles(browsable_profiles_search);
-                            }
+
+                        } else {
+                            cursor.close();
+                            db.close();
                         }
-
-
                     } else {
-                        cursor.close();
                         db.close();
                     }
-                } else {
-                    db.close();
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+
                 }
 
-            } catch (SQLiteException e) {
-                e.printStackTrace();
 
             }
+            //if the user selected the item option in the spinner
+            if (search_spinner.getSelectedItem().toString().equals("Item")) {
+                if (!search_box.getText().toString().equals("")) {
+                    searchAdapter.setBrowsable_profiles(empty_list);
+                    Toast.makeText(this, "No Items", Toast.LENGTH_SHORT).show();
+                    //once the inventory system has been progressed, this code will be used to do a general search for items
+                }
 
-
+            }
         }
+
+
     }
+
 
     @Override
     protected void onResume() {

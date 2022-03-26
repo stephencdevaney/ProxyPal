@@ -6,12 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
@@ -22,10 +21,14 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
     private TextView browse_test_txt;
 
     //UI elements
-    //added 3/20
     private DrawerLayout supporter_main_page_drawer;
     private NavigationView supporter_main_page_navigationView;
     private MaterialToolbar supporter_main_page_toolbar;
+
+    private String supporter_username;
+    private int supporter_id;
+
+    private TextView toolbar_username;
 
 
 
@@ -33,22 +36,34 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_browsing);
+        setContentView(R.layout.activity_supporter_main_page);
 
         supporter_main_page_drawer = findViewById(R.id.supporter_main_page_drawer);
         supporter_main_page_navigationView = findViewById(R.id.supporter_main_page_navigationView);
         supporter_main_page_toolbar = findViewById(R.id.supporter_main_page_toolbar);
 
+        toolbar_username = findViewById(R.id.toolbar_username);
 
-        //added 3/20
+
         setSupportActionBar(supporter_main_page_toolbar);
-        //added 3/20
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, supporter_main_page_drawer, supporter_main_page_toolbar, (R.string.supporter_drawer_open), (R.string.supporter_drawer_close));
-        //added 3/20
         supporter_main_page_drawer.addDrawerListener(toggle);
-        //added 3/20
         toggle.syncState();
-        //added 3/20
+
+
+        //receive the username from the bundle passed to this activity from the login or create account activities
+        Intent intent = getIntent();
+        if(intent != null) {
+            Bundle bundle = intent.getBundleExtra("supporter_bundle");
+            if(bundle != null){
+                supporter_username = bundle.getString("supporter_username");
+                supporter_id = bundle.getInt("supporter_id");
+            }
+        }
+
+        toolbar_username.setText(supporter_username);
+
+
 
         supporter_main_page_navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -62,8 +77,8 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
         });
 
 
-        //added 3/20
-        //Creating a fragment
+
+        //fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.supporter_main_page_fragment_container, new Supporter_Main_Page_Fragment());
         transaction.commit();

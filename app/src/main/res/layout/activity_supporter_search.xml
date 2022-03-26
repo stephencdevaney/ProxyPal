@@ -14,11 +14,13 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
+
     <RelativeLayout
+        android:id="@+id/search_rel_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/search_toolbar"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:layout_marginBottom="70dp">
 
         <EditText
@@ -31,16 +33,28 @@
 
         </EditText>
 
+
         <ImageView
             android:id="@+id/search_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="104dp"
             android:src="@drawable/ic_search">
 
         </ImageView>
 
+        <Spinner
+            android:id="@+id/search_spinner"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:entries="@array/supporter_spinner">
+
+        </Spinner>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_recycler_view"
@@ -51,8 +65,9 @@
             android:layout_marginTop="20dp"></androidx.recyclerview.widget.RecyclerView>
 
 
-    </RelativeLayout>
 
+
+    </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/supporter_main_page_bottom_menu"
@@ -60,6 +75,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/supporter_main_page_bottom_menu"></com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
 
 
 </RelativeLayout>

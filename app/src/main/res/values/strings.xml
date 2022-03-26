@@ -3,4 +3,8 @@
     //added 3/20
     <string name="supporter_drawer_open">drawer_open</string>
     <string name="supporter_drawer_close">drawer_close</string>
+    <string-array name="supporter_spinner">
+        <item>Business</item>
+        <item>Item</item>
+    </string-array>
 </resources>

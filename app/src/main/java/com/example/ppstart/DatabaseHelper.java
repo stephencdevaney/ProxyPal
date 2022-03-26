@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //insert an example supporter account
         ContentValues insert_supporter = new ContentValues();
-        insert_supporter.put("supporter_username", "James Smith");
+        insert_supporter.put("supporter_username", "James_Smith");
         insert_supporter.put("supporter_password", "password");
         db.insert("supporter_account", null, insert_supporter);
 

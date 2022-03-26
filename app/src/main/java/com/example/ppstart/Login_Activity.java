@@ -24,6 +24,9 @@ public class Login_Activity extends AppCompatActivity {
     private Boolean owner_username_match = false;
     private Boolean owner_password_match = false;
 
+    private String supporter_username;
+    private int supporter_id;
+
 
 
 
@@ -59,6 +62,8 @@ public class Login_Activity extends AppCompatActivity {
 
                             if(login_username_txt.getText().toString().equals(supporter_cursor.getString(supporter_username_index))){
                                 supporter_username_match = true;
+                                supporter_username = supporter_cursor.getString(supporter_username_index); //save the username
+                                supporter_id = supporter_cursor.getInt(supporter_id_index); //save the id
                             }
                             if(login_password_txt.getText().toString().equals(supporter_cursor.getString(supporter_password_index))){
                                 supporter_password_match = true;
@@ -94,6 +99,10 @@ public class Login_Activity extends AppCompatActivity {
 
                 if(supporter_username_match && supporter_password_match){
                     Intent to_browse = new Intent(Login_Activity.this, Supporter_Main_Page_Activity.class);
+                    Bundle supporter_bundle = new Bundle();
+                    supporter_bundle.putInt("supporter_id", supporter_id);
+                    supporter_bundle.putString("supporter_username", supporter_username);
+                    to_browse.putExtra("supporter_bundle", supporter_bundle);
                     startActivity(to_browse);
 
                 }else if(owner_username_match && owner_password_match){
