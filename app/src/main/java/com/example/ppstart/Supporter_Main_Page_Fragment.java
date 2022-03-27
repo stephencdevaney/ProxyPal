@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 
 public class Supporter_Main_Page_Fragment extends Fragment {
-    private BottomNavigationView supporter_main_page_bottom_menu;
+    private BottomNavigationView supporter_bottom_nav_menu;
 
     private RecyclerView browse_profiles_rec_view;
     private BrowseProfilesAdapter profilesAdapter;
@@ -47,31 +46,37 @@ public class Supporter_Main_Page_Fragment extends Fragment {
 
     }
 
+    //initialize UI elements
     private void initViews(View view){
-        supporter_main_page_bottom_menu = view.findViewById(R.id.supporter_main_page_bottom_menu);
+        supporter_bottom_nav_menu = view.findViewById(R.id.supporter_bottom_nav_menu);
         browse_profiles_rec_view = view.findViewById(R.id.browse_profiles_rec_view);
     }
 
     private void initBottomNavigationView() {
-        //selects home as the default view - make this browse for supporter
-        supporter_main_page_bottom_menu.setSelectedItemId(R.id.explore);
-        //use this since the onNavigationItemSelected is deprecated
-        supporter_main_page_bottom_menu.setOnItemSelectedListener(item -> {
+        //sets the explore page as the default page
+        supporter_bottom_nav_menu.setSelectedItemId(R.id.explore);
+
+        //Set the listener for the bottom navigation menu buttons
+        //(note: use this since the onNavigationItemSelected is deprecated)
+        supporter_bottom_nav_menu.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
+                //switch to the Supporter_Search_Activity activity when the "search" button at the bottom is tapped
                 case R.id.search:
-                    Toast.makeText(getActivity(), "search", Toast.LENGTH_SHORT).show();
                     Intent to_search = new Intent(getActivity(), Supporter_Search_Activity.class);
-                    to_search.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  //clears back-stack - might use elsewhere too
                     startActivity(to_search);
                     break;
+                //switch to the Supporter_Main_Page_Activity activity when the "explore" button at the bottom is tapped
                 case R.id.explore:
-                    Toast.makeText(getActivity(), "browse", Toast.LENGTH_SHORT).show();
                     break;
+                //switch to the Discounts_Promos_Activity activity when the "Discounts & Promos" button at the bottom is tapped
                 case R.id.discounts_and_promos:
-                    Toast.makeText(getActivity(), "discounts_and_promos", Toast.LENGTH_SHORT).show();
+                    Intent to_dp = new Intent(getActivity(), Discounts_Promos_Activity.class);
+                    startActivity(to_dp);
                     break;
+                //switch to the Shopping_List_Activity activity when the "Shopping List" button at the bottom is tapped
                 case R.id.shopping:
-                    Toast.makeText(getActivity(), "shopping", Toast.LENGTH_SHORT).show();
+                    Intent to_shopping_list = new Intent(getActivity(), Shopping_List_Activity.class);
+                    startActivity(to_shopping_list);
                     break;
                 default:
                     break;
@@ -82,6 +87,7 @@ public class Supporter_Main_Page_Fragment extends Fragment {
 
     }
 
+    //initialize the recycler view elements
     private void initRecView(){
 
         profilesAdapter = new BrowseProfilesAdapter(getActivity());
@@ -90,7 +96,8 @@ public class Supporter_Main_Page_Fragment extends Fragment {
 
     }
 
-    //this function might be too slow - might need to use threads
+    //get the business profiles from the database and add them to the recycler view for this fragment
+    //(note: this function might be too slow - might need to use threads for when the database is large)
     private void GetProfiles(){
 
         databaseHelper = new DatabaseHelper(getActivity());

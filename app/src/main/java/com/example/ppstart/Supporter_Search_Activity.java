@@ -30,7 +30,7 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     private EditText search_box;
     private ImageView search_btn;
     private Spinner search_spinner;
-    private BottomNavigationView supporter_main_page_bottom_menu;
+    private BottomNavigationView supporter_bottom_nav_menu;
 
     //for database useage
     private DatabaseHelper databaseHelper;
@@ -111,21 +111,30 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     }
 
     private void initBottomNavigationView() {
-        //selects home as the default view - make this browse for supporter
-        supporter_main_page_bottom_menu.setSelectedItemId(R.id.search);
-        //use this since the onNavigationItemSelected is deprecated
-        supporter_main_page_bottom_menu.setOnItemSelectedListener(item -> {
+        //sets the explore page as the default page
+        supporter_bottom_nav_menu.setSelectedItemId(R.id.search);
+
+        //Set the listener for the bottom navigation menu buttons
+        //(note: use this since the onNavigationItemSelected is deprecated)
+        supporter_bottom_nav_menu.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
+                //switch to the Supporter_Search_Activity activity when the "search" button at the bottom is tapped
                 case R.id.search:
                     break;
+                //switch to the Supporter_Main_Page_Activity activity when the "explore" button at the bottom is tapped
                 case R.id.explore:
                     Intent to_explore = new Intent(Supporter_Search_Activity.this, Supporter_Main_Page_Activity.class);
-                    to_explore.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  //clears back-stack - might use elsewhere too
                     startActivity(to_explore);
                     break;
+                //switch to the Discounts_Promos_Activity activity when the "Discounts & Promos" button at the bottom is tapped
                 case R.id.discounts_and_promos:
+                    Intent to_dp = new Intent(Supporter_Search_Activity.this, Discounts_Promos_Activity.class);
+                    startActivity(to_dp);
                     break;
+                //switch to the Shopping_List_Activity activity when the "Shopping List" button at the bottom is tapped
                 case R.id.shopping:
+                    Intent to_shopping_list = new Intent(Supporter_Search_Activity.this, Shopping_List_Activity.class);
+                    startActivity(to_shopping_list);
                     break;
                 default:
                     break;
@@ -136,14 +145,16 @@ public class Supporter_Search_Activity extends AppCompatActivity {
 
     }
 
+    //initialize UI elements
     private void initViews(){
         search_toolbar = findViewById(R.id.search_toolbar);
         search_box = findViewById(R.id.search_box);
         search_btn = findViewById(R.id.search_btn);
-        supporter_main_page_bottom_menu = findViewById(R.id.supporter_main_page_bottom_menu);
+        supporter_bottom_nav_menu = findViewById(R.id.supporter_bottom_nav_menu);
         search_spinner = findViewById(R.id.search_spinner);
     }
 
+    //this method allows the user to search for businesses or items (with rudimentary partial search allowed)
     private void initSearch() {
         //empty Profile ArrayList used for clearing the screen
         ArrayList<Profile> empty_list = new ArrayList<>();

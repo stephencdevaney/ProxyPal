@@ -50,12 +50,15 @@ public class MainActivity extends AppCompatActivity {
         main_test_txt = findViewById(R.id.main_test_txt);
 
 
+
+
+
         /* ----------------------------------------------------------------
         DATABASE ALTERATION HISTORY
         String create_subscription_table = "CREATE TABLE test_table(database_test TEXT)";
         db.execSQL(create_subscription_table);
 
-       NOTE - ADDED THESE COLUMNS TO OWNER ACCOUNT TABLE (do so in the database initialization of the main project)
+        ADDED THESE COLUMNS TO OWNER ACCOUNT TABLE (do so in the database initialization of the main project)
         String alter_owner1 = "ALTER TABLE owner_account ADD card_number INTEGER";
         db.execSQL(alter_owner1);
 
@@ -127,12 +130,28 @@ public class MainActivity extends AppCompatActivity {
         update_profile3.put("profile_avatar_image", "https://media.istockphoto.com/photos/transistor-radio-receiver-on-wood-table-in-home-interior-3d-picture-id1139509180?k=20&m=1139509180&s=612x612&w=0&h=cmU7t-4-gL5Zd7NRj7rFLg6d8OjnecYclqj5fU_8dAk=");
         db.update("profile", update_profile3, "business_name=?", new String[]{"Ramee's Radio Shop"});
 
+        >>>>>>>>>>>>>
+        Added 3/26:
+        (create the table for businesses favorited by a supporter account):
+        String create_profile_favorites = "CREATE TABLE profile_favorites(supporter_id INTEGER, owner_id INTEGER, profile_id INTEGER, PRIMARY KEY(supporter_id, owner_id, profile_id))";
+        db.execSQL(create_profile_favorites);
+
+
+        (inserting a fake favorited profile for the sake of testing):
+        ContentValues insert_test_profile_favorite1 = new ContentValues();
+        insert_test_profile_favorite1.put("supporter_id", 1098);
+        insert_test_profile_favorite1.put("owner_id", 1098);
+        insert_test_profile_favorite1.put("profile_id", 1098);
+
+        db.insert("profile_favorites", null, insert_test_profile_favorite1);
+
+
+
       ---------------------------------------------------------------------
         //START OF TESTING CODE
         //These statements and all of the commented code below are for database testing purposes, you
         //can ignore these or study them to get an idea of how operations on the database work
         main_test_txt.setVisibility(View.VISIBLE);
-
 
         databaseHelper = new DatabaseHelper(MainActivity.this);
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
@@ -202,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
         initial_login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //When the login button is tapped, the app switches to the login activity
                 Intent to_login_activity = new Intent(MainActivity.this, Login_Activity.class);
                 startActivity(to_login_activity);
             }

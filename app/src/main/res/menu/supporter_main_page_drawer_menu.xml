@@ -10,5 +10,15 @@
         android:title="Favorites"
         android:id="@+id/drawer_favorites"
         android:icon="@drawable/ic_favorites"></item>
+    <item
+        android:title="Direct Messages"
+        android:id="@+id/drawer_direct_messages"
+        android:icon="@drawable/ic_favorites"></item>
+
+
+    <item
+        android:title="Logout"
+        android:id="@+id/drawer_logout"
+        android:icon="@drawable/ic_favorites"></item>
 
 </menu>

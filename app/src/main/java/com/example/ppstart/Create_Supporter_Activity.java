@@ -25,6 +25,9 @@ public class Create_Supporter_Activity extends AppCompatActivity {
     private String supporter_password_input = "";
     private String supporter_password_confirm_input = "";
 
+    private String supporter_username;
+    private int supporter_id;
+
     //For database useage
     private DatabaseHelper databaseHelper;
 
@@ -104,10 +107,19 @@ public class Create_Supporter_Activity extends AppCompatActivity {
                         db.insert("supporter_account", null, supporter_account);
                         db.close();
 
+                        supporter_username = supporter_username_txt.getText().toString(); //save the username
+                        //supporter_id = db.rawQuery("SELECT supporter_"); //save the id
 
-                        //switch to browsing test activity for now
+
+                        //switch to supporter account main activity, passing the supporter_username
                         Intent to_browse = new Intent(Create_Supporter_Activity.this, Supporter_Main_Page_Activity.class);
+                        Bundle supporter_bundle = new Bundle();
+                        //supporter_bundle.putInt("supporter_id", supporter_id);
+                        supporter_bundle.putString("supporter_username", supporter_username);
+                        to_browse.putExtra("supporter_bundle", supporter_bundle);
+
                         startActivity(to_browse);
+
 
                     }catch(SQLException e){
                         e.printStackTrace();

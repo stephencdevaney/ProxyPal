@@ -22,16 +22,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Initially just creating tables for supporter accounts, owner accounts, and owner profiles. Owner accounts include payment information
 
         //Create table that contains supporter account data
-        String create_supporter_table = "CREATE TABLE supporter_account(supporter_id INTEGER PRIMARY KEY AUTOINCREMENT, supporter_username VARCHAR NOT NULL, supporter_password NOT NULL)";
+        String create_supporter_table = "CREATE TABLE supporter_account(supporter_id INTEGER PRIMARY KEY AUTOINCREMENT, supporter_username VARCHAR NOT NULL, supporter_password VARCHAR NOT NULL)";
         db.execSQL(create_supporter_table);
 
         //Create table that contains owner account data
-        String create_owner_table = "CREATE TABLE owner_account(owner_id INTEGER PRIMARY KEY AUTOINCREMENT, owner_username VARCHAR NOT NULL, owner_password NOT NULL)";
+        String create_owner_table = "CREATE TABLE owner_account(owner_id INTEGER PRIMARY KEY AUTOINCREMENT, owner_username VARCHAR NOT NULL, owner_password VARCHAR NOT NULL, card_number VARCHAR NOT NULL, first_name VARCHAR NOT NULL, last_name VARCHAR NOT NULL, address VARCHAR NOT NULL, city VARCHAR NOT NULL, state VARCHAR NOT NULL, postal VARCHAR NOT NULL, country VARCHAR NOT NULL)";
         db.execSQL(create_owner_table);
 
         //create the table for business profiles
-        String create_profile_table = "CREATE TABLE profile(profile_id INTEGER PRIMARY KEY AUTOINCREMENT, owner_id INTEGER, profile_avatar_image TEXT, profile_about_image TEXT, profile_about_desc TEXT, profile_hours_desc, profile_map_image TEXT, business_name VARCHAR, FOREIGN KEY(owner_id) REFERENCES owner_account(owner_id))";
+        String create_profile_table = "CREATE TABLE profile(profile_id INTEGER PRIMARY KEY AUTOINCREMENT, owner_id INTEGER, profile_avatar_image TEXT, profile_about_image TEXT, profile_about_desc TEXT, profile_hours_desc TEXT, profile_map_image TEXT, business_name VARCHAR, FOREIGN KEY(owner_id) REFERENCES owner_account(owner_id))";
         db.execSQL(create_profile_table);
+
+        //create the table for businesses favorited by a supporter account
+        String create_profile_favorites = "CREATE TABLE profile_favorites(supporter_id INTEGER, owner_id INTEGER, profile_id INTEGER, PRIMARY KEY(supporter_id, owner_id, profile_id))";
+        db.execSQL(create_profile_favorites);
 
 
         //insert an example supporter account
@@ -98,6 +102,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile3.put("business_name", "Ramee's Radio Shop");
 
         db.insert("profile", null, insert_profile3);
+
+        //inserting a fake favorited profile for the sake of testing
+        ContentValues insert_test_profile_favorite1 = new ContentValues();
+        insert_test_profile_favorite1.put("supporter_id", 1098);
+        insert_test_profile_favorite1.put("owner_id", 1098);
+        insert_test_profile_favorite1.put("profile_id", 1098);
+
+        db.insert("profile_favorites", null, insert_test_profile_favorite1);
+
 
 
 

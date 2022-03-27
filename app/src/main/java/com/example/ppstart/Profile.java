@@ -1,5 +1,7 @@
 package com.example.ppstart;
 
+
+//this is the Java class for a business profile
 public class Profile {
 
     //only include what is necessary for the browse recycler view for now

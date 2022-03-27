@@ -79,7 +79,7 @@ public class Create_Owner_Activity extends AppCompatActivity {
 
 
 
-
+                //check if all of the payment information was entered, display a warning if it was not
                 if(payment_card_num_txt.getText().toString().equals("") || payment_fname_txt.getText().toString().equals("") ||
                         payment_lname_txt.getText().toString().equals("") || payment_address_txt.getText().toString().equals("") ||
                         payment_city_txt.getText().toString().equals("") || payment_state_txt.getText().toString().equals("") ||
@@ -92,7 +92,7 @@ public class Create_Owner_Activity extends AppCompatActivity {
                 }
 
 
-                //If the user has entered a username and two matching passwords, then the account info is entered into the database
+                //If the user has entered a username, two matching passwords, and valid payment info, then the owner account info is entered into the database
                 if(valid_username && valid_password && valid_password_confirm && passwords_match && valid_payment){
 
                     try{
@@ -118,7 +118,7 @@ public class Create_Owner_Activity extends AppCompatActivity {
                         db.close();
 
 
-
+                        //switch to the Business_Profile_Activity activity after the owner account is added to the database
                         Intent to_business_profile = new Intent(Create_Owner_Activity.this, Business_Profile_Activity.class);
                         startActivity(to_business_profile);
 
@@ -150,13 +150,11 @@ public class Create_Owner_Activity extends AppCompatActivity {
         payment_country_txt = findViewById(R.id.payment_country_txt);
         finalize_create_owner_btn = findViewById(R.id.finalize_create_owner_btn);
 
-        //might need to make these unique, since they are identical to what appears in supporter activity
+        //initialize warnings
         username_warning_txt = findViewById(R.id.username_warning_txt);
         password_warning_txt = findViewById(R.id.password_warning_txt);
         password_confirm_warning_txt = findViewById(R.id.password_confirm_warning_txt);
         mismatch_passwords_txt = findViewById(R.id.mismatch_passwords_txt);
-
-        //unique to this activity
         missing_fields_warning_txt = findViewById(R.id.missing_fields_warning_txt);
     }
 }

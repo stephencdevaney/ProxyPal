@@ -1,6 +1,8 @@
 package com.example.ppstart;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +51,11 @@ public class BrowseProfilesAdapter extends RecyclerView.Adapter<BrowseProfilesAd
         holder.browse_rec_view_parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(context, Business_Profile_Activity.class);
+                Bundle profile_bundle = new Bundle();
+                profile_bundle.putInt("owner_id", browsable_profiles.get(position).getOwner_id());
+                intent.putExtra("profile_bundle", profile_bundle);
+                context.startActivity(intent);
             }
         });
 

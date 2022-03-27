@@ -35,23 +35,29 @@ public class Login_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //initialize UI elements
         login_username_txt = findViewById(R.id.login_username_txt);
         login_password_txt = findViewById(R.id.login_password_txt);
         confirm_login_btn = findViewById(R.id.confirm_login_btn);
-
         no_login_match_warning_txt = findViewById(R.id.no_login_match_warning_txt);
 
 
+        //set the on-click listener for the confirm login button
         confirm_login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                //get an instance of the database
                 databaseHelper = new DatabaseHelper(Login_Activity.this);
                 SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
+                //query the database for supporter accounts
                 Cursor supporter_cursor = db.rawQuery("SELECT supporter_id, supporter_username, supporter_password FROM supporter_account", null);
+
+                //query the database for owner accounts
                 Cursor owner_cursor = db.rawQuery("SELECT owner_id, owner_username, owner_password FROM owner_account", null);
 
+                //check for a supporter username and password match
                 if(supporter_cursor != null){
                     if(supporter_cursor.moveToFirst()){
                         int supporter_id_index = supporter_cursor.getColumnIndex("supporter_id");
@@ -74,6 +80,8 @@ public class Login_Activity extends AppCompatActivity {
                         supporter_cursor.close();
                     }
                 }
+
+                //check for an owner username and password match
                 if(owner_cursor != null){
                     if(owner_cursor.moveToFirst()){
                         int owner_id_index = owner_cursor.getColumnIndex("owner_id");
@@ -97,19 +105,28 @@ public class Login_Activity extends AppCompatActivity {
                 }
                 db.close();
 
+                //log the user in if the username and password matched a supporter account
                 if(supporter_username_match && supporter_password_match){
                     Intent to_browse = new Intent(Login_Activity.this, Supporter_Main_Page_Activity.class);
+
+                    //pass the supporter account id and supporter account username to the main supporter browsing page activity
                     Bundle supporter_bundle = new Bundle();
                     supporter_bundle.putInt("supporter_id", supporter_id);
                     supporter_bundle.putString("supporter_username", supporter_username);
                     to_browse.putExtra("supporter_bundle", supporter_bundle);
+                    //switch to the Supporter_Main_Page_Activity activity
                     startActivity(to_browse);
 
-                }else if(owner_username_match && owner_password_match){
 
+
+                    //log the user in if the username and password matched an owner account
+                }else if(owner_username_match && owner_password_match){
                     Intent to_business_profile = new Intent(Login_Activity.this, Business_Profile_Activity.class);
+                    //switch to the Business_Profile_Activity activity
                     startActivity(to_business_profile);
 
+
+                    //display a warning if there was no account in the database that matched the entered username and password
                 }else{
                     no_login_match_warning_txt.setVisibility(View.VISIBLE);
                 }
