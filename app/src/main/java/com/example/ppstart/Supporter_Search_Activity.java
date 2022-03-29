@@ -36,6 +36,9 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
 
 
+    private int supporter_id;
+    private String supporter_username;
+
     //Declare a recycler view for business profile avatars
     private RecyclerView search_rec_view;
 
@@ -46,6 +49,16 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supporter_search);
+
+        //receive the id/username from the bundle passed to this activity from the login or create account activities
+        Intent intent = getIntent();
+        if(intent != null) {
+            Bundle bundle = intent.getBundleExtra("supporter_bundle");
+            if(bundle != null){
+                supporter_username = bundle.getString("supporter_username");
+                supporter_id = bundle.getInt("supporter_id");
+            }
+        }
 
         initViews();
 
@@ -123,26 +136,54 @@ public class Supporter_Search_Activity extends AppCompatActivity {
                     break;
                 //switch to the Supporter_Main_Page_Activity activity when the "explore" button at the bottom is tapped
                 case R.id.explore:
-                    Intent to_explore = new Intent(Supporter_Search_Activity.this, Supporter_Main_Page_Activity.class);
-                    startActivity(to_explore);
+                        Intent to_explore = new Intent(this, Supporter_Main_Page_Activity.class);
+                        //pass the supporter account id and supporter account username to the Favorites_Activity activity
+                        Bundle supporter_bundle_search = createNavMenuBundle();
+                        to_explore.putExtra("supporter_bundle", supporter_bundle_search);
+                        //switch to the Favorites_Activity activity
+                        startActivity(to_explore);
                     break;
                 //switch to the Discounts_Promos_Activity activity when the "Discounts & Promos" button at the bottom is tapped
                 case R.id.discounts_and_promos:
-                    Intent to_dp = new Intent(Supporter_Search_Activity.this, Discounts_Promos_Activity.class);
-                    startActivity(to_dp);
+                    if(supporter_id != -1){
+                        Intent to_dp = new Intent(this, Discounts_Promos_Activity.class);
+                        //pass the supporter account id and supporter account username to the Favorites_Activity activity
+                        Bundle supporter_bundle_dp = createNavMenuBundle();
+                        to_dp.putExtra("supporter_bundle", supporter_bundle_dp);
+                        //switch to the Favorites_Activity activity
+                        startActivity(to_dp);
+                    }else{
+                        Toast.makeText(this, "Sign in or create an account to access this!", Toast.LENGTH_SHORT).show();
+                    }
+
                     break;
                 //switch to the Shopping_List_Activity activity when the "Shopping List" button at the bottom is tapped
                 case R.id.shopping:
-                    Intent to_shopping_list = new Intent(Supporter_Search_Activity.this, Shopping_List_Activity.class);
-                    startActivity(to_shopping_list);
+                    if(supporter_id != -1){
+                        Intent to_shopping_list = new Intent(this, Shopping_List_Activity.class);
+                        //pass the supporter account id and supporter account username to the Favorites_Activity activity
+                        Bundle supporter_bundle_shopping = createNavMenuBundle();
+                        to_shopping_list.putExtra("supporter_bundle", supporter_bundle_shopping);
+                        //switch to the Favorites_Activity activity
+                        startActivity(to_shopping_list);
+                    }else{
+                        Toast.makeText(this, "Sign in or create an account to access this!", Toast.LENGTH_SHORT).show();
+                    }
+
                     break;
                 default:
-                    break;
             }
 
             return true;
         });
 
+    }
+
+    private Bundle createNavMenuBundle(){
+        Bundle bundle = new Bundle();
+        bundle.putInt("supporter_id", supporter_id);
+        bundle.putString("supporter_username", supporter_username);
+        return bundle;
     }
 
     //initialize UI elements

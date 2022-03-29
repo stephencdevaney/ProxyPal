@@ -24,9 +24,24 @@
             android:text="Username"
             android:layout_gravity="right"
             android:layout_marginRight="30dp"
-            android:id="@+id/toolbar_username" />
+            android:id="@+id/toolbar_username"
+            android:visibility="visible" />
 
-            </com.google.android.material.appbar.MaterialToolbar>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign in/Create Account"
+                android:layout_gravity="right"
+                android:layout_marginRight="30dp"
+                android:id="@+id/toolbar_guest_btn"
+                android:visibility="visible"
+                android:backgroundTint="#70B115"
+                android:textAllCaps="false"
+                android:textSize="13sp"
+                ></Button>
+
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <FrameLayout
             android:id="@+id/supporter_main_page_fragment_container"

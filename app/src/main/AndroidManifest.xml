@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ppstart" >
+    package="com.example.ppstart">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -10,7 +11,10 @@
         android:label="ProxyPal"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PPSTART" >
+        android:theme="@style/Theme.PPSTART">
+        <activity
+            android:name=".Supporter_Acc_Options_Activity"
+            android:exported="false" />
         <activity
             android:name=".Shopping_List_Activity"
             android:exported="false" />
@@ -43,7 +47,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

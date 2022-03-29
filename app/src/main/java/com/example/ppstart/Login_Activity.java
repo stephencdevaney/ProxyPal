@@ -2,9 +2,11 @@ package com.example.ppstart;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -116,6 +118,17 @@ public class Login_Activity extends AppCompatActivity {
                     to_browse.putExtra("supporter_bundle", supporter_bundle);
                     //switch to the Supporter_Main_Page_Activity activity
                     startActivity(to_browse);
+
+                    /* switch activities with a better animation - cant tell if this works on emulator
+                    // Check if we're running on Android 5.0 or higher
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        startActivity(to_browse,
+                                ActivityOptions.makeSceneTransitionAnimation(Login_Activity.this).toBundle());
+                    } else {
+                        // Swap without transition
+                        startActivity(to_browse);
+                    }
+                     */
 
 
 

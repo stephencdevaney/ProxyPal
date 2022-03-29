@@ -111,10 +111,10 @@ public class Create_Supporter_Activity extends AppCompatActivity {
                         //supporter_id = db.rawQuery("SELECT supporter_"); //save the id
 
 
-                        //switch to supporter account main activity, passing the supporter_username
+                        //switch to supporter account main activity, passing the supporter_username/id
                         Intent to_browse = new Intent(Create_Supporter_Activity.this, Supporter_Main_Page_Activity.class);
                         Bundle supporter_bundle = new Bundle();
-                        //supporter_bundle.putInt("supporter_id", supporter_id);
+                        supporter_bundle.putInt("supporter_id", supporter_id);
                         supporter_bundle.putString("supporter_username", supporter_username);
                         to_browse.putExtra("supporter_bundle", supporter_bundle);
 

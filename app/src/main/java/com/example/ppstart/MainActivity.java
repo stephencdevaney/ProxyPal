@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
         main_test_txt = findViewById(R.id.main_test_txt);
 
 
-
-
-
         /* ----------------------------------------------------------------
         DATABASE ALTERATION HISTORY
         String create_subscription_table = "CREATE TABLE test_table(database_test TEXT)";
@@ -241,8 +238,14 @@ public class MainActivity extends AppCompatActivity {
         initial_guest_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //When the browse as guest button is tapped, the app switches to the initial guest browsing activity
-                Intent to_guest_activity = new Intent();
+                Intent to_browse = new Intent(MainActivity.this, Supporter_Main_Page_Activity.class);
+                //pass -1 to the supporter supporter main page activity to indicate the user is browsing as a guest
+                Bundle supporter_bundle = new Bundle();
+                supporter_bundle.putInt("supporter_id", -1);
+                supporter_bundle.putString("supporter_username", "");
+                to_browse.putExtra("supporter_bundle", supporter_bundle);
+                //switch to the Supporter_Main_Page_Activity activity
+                startActivity(to_browse);
 
             }
         });

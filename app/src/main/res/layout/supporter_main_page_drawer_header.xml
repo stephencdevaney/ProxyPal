@@ -9,17 +9,19 @@
 
 
     <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@mipmap/ic_launcher_round"></ImageView>
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:id="@+id/drawer_header_image"></ImageView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Account"
+        android:text="Username"
         android:textStyle="bold"
         android:textColor="#FFF"
         android:layout_marginTop="10dp"
-        android:id="@+id/drawer_header_username"></TextView>
+        android:id="@+id/drawer_header_username"
+        android:textSize="16sp"></TextView>
 
 </LinearLayout>

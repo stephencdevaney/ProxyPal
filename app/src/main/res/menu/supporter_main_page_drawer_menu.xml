@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Account"
+        android:title="Options"
         android:id="@+id/drawer_account"
         android:icon="@drawable/ic_account"></item>
 
@@ -13,12 +13,12 @@
     <item
         android:title="Direct Messages"
         android:id="@+id/drawer_direct_messages"
-        android:icon="@drawable/ic_favorites"></item>
+        android:icon="@drawable/ic_messages"></item>
 
 
     <item
         android:title="Logout"
         android:id="@+id/drawer_logout"
-        android:icon="@drawable/ic_favorites"></item>
+        android:icon="@drawable/ic_logout"></item>
 
 </menu>

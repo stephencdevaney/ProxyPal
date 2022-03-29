@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Initially just creating tables for supporter accounts, owner accounts, and owner profiles. Owner accounts include payment information
 
         //Create table that contains supporter account data
-        String create_supporter_table = "CREATE TABLE supporter_account(supporter_id INTEGER PRIMARY KEY AUTOINCREMENT, supporter_username VARCHAR NOT NULL, supporter_password VARCHAR NOT NULL)";
+        String create_supporter_table = "CREATE TABLE supporter_account(supporter_id INTEGER PRIMARY KEY AUTOINCREMENT, supporter_username VARCHAR NOT NULL, supporter_password VARCHAR NOT NULL, supporter_avatar BLOB)";
         db.execSQL(create_supporter_table);
 
         //Create table that contains owner account data
