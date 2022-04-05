@@ -6,12 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".Shopping_List_Activity">
 
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/header"
+        android:background="#F1FEFF"
+        >
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Add to your shopping list!"
+            android:layout_centerInParent="true"
+            android:id="@+id/itemInput"
+            />
+        <!--ChandlerEditFurther-->
+        <ImageView
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_toRightOf="@id/itemInput"
+            android:id="@+id/add"
+            android:layout_marginLeft="7sp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/add_item_to_list"
+            />
+    </RelativeLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listview"
+        android:layout_below="@id/header"
+        android:layout_above="@id/supporter_bottom_nav_menu"
+        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/supporter_bottom_nav_menu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/supporter_main_page_bottom_menu"></com.google.android.material.bottomnavigation.BottomNavigationView>
+        app:menu="@menu/supporter_main_page_bottom_menu"
+        />
+
+
 </RelativeLayout>
