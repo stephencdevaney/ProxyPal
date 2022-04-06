@@ -23,6 +23,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
     private FragmentManager fragment_manager;
     private int owner_Id;
     private int supporter_Id;
+    private String supporter_username;
     private DatabaseHelper databaseHelper;
     private Cursor profile_cursor;
 
@@ -50,18 +51,22 @@ public class Business_Profile_Activity extends AppCompatActivity {
                 if (bundle.containsKey("supporter_id") && bundle.containsKey("supporter_username")){
                     supporter_Id = bundle.getInt("supporter_id");
                     if(supporter_Id == -1) {
+                        supporter_username = "Guest";
                         owner_username_view.setVisibility(View.GONE);
                         guest_btn.setVisibility(View.VISIBLE);
                         guestButtonSetup();
                     }
                     else {
+                            supporter_username = bundle.getString("supporter_username");
                             owner_username_view.setVisibility(View.VISIBLE);
-                            owner_username_view.setText("Hello, " + bundle.getString("supporter_username") + "!");
+                            owner_username_view.setText("Hello, " + supporter_username + "!");
                             guest_btn.setVisibility(View.GONE);
                         }
                 }
                 else{ // provide owner functionality
                     //create cursor to move query the db and move through the query
+                    supporter_Id = -2;
+                    supporter_username = "";
                     Cursor owner_cursor = db.rawQuery("SELECT owner_id, first_name, last_name FROM owner_account", null);
 
                     // build indices for the cursor
@@ -143,6 +148,19 @@ public class Business_Profile_Activity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-    //    super.onBackPressed();
+        if(supporter_Id == -2){
+
+        }
+        else{
+            Intent explore_view = new Intent(Business_Profile_Activity.this, Supporter_Main_Page_Activity.class);
+            explore_view.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            Bundle supporter_bundle = new Bundle();
+            supporter_bundle.putInt("supporter_id", supporter_Id);
+            supporter_bundle.putString("supporter_username", supporter_username);
+            explore_view.putExtra("supporter_bundle", supporter_bundle);
+
+            startActivity(explore_view);
+        }
     }
 }
