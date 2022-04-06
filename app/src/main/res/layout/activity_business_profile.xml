@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Business_Profile_Activity">
+    tools:context=".Supporter_Main_Page_Activity"
+    android:id="@+id/supporter_main_page_drawer">
 
     <RelativeLayout
-        android:layout_width="411dp"
-        android:layout_height="732dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/owner_main_page_toolbar"
@@ -29,8 +24,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="30dp"
-                android:text="Owner ID"
-                android:textColor="#E1BEE7" />
+                android:text="Owner Username"
+                android:textColor="#E1BEE7"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/buss_pro_guest_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="30dp"
+                android:backgroundTint="#70B115"
+                android:text="Sign in/Create Account"
+                android:textAllCaps="false"
+                android:textSize="13sp"
+                android:visibility="visible"></Button>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -51,18 +59,21 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/profile_bottem_nav"
             android:layout_width="match_parent"
-            android:layout_height="86dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="-4dp"
-            android:layout_marginTop="644dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="2dp">
-
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
+            app:menu="@menu/bussiness_profile_menu"></com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
     </RelativeLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/owner_navigationView"
+        app:headerLayout="@layout/supporter_main_page_drawer_header"
+        app:menu="@menu/owner_menu_drawer"
+        android:layout_gravity="start">
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

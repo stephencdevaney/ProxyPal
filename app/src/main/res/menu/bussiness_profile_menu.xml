@@ -3,17 +3,22 @@
 
     <item
         android:id="@+id/about_button"
+        android:icon="@android:drawable/ic_menu_info_details"
         android:title="About" />
     <item
         android:id="@+id/inventory_button"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
         android:title="Inventory" />
     <item
         android:id="@+id/hours_button"
+        android:icon="@android:drawable/ic_lock_idle_alarm"
         android:title="Hours" />
     <item
         android:id="@+id/layout_button"
+        android:icon="@android:drawable/ic_menu_mapmode"
         android:title="Layout" />
     <item
         android:id="@+id/faq_button"
+        android:icon="@android:drawable/ic_menu_help"
         android:title="FAQ" />
 </menu>
