@@ -48,21 +48,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //insert 3 example owner accounts
         //owner account 1
         ContentValues insert_owner = new ContentValues();
-        insert_owner.put("owner_username", "Michael_White");
-        insert_owner.put("owner_password", "12345");
+        insert_owner.put("owner_username", "Bobs_Antiques");
+        insert_owner.put("owner_password", "password");
+        insert_owner.put("card_number", "1234567887654321");
+        insert_owner.put("first_name", "Michael");
+        insert_owner.put("last_name", "White");
+        insert_owner.put("address", "123 My Street");
+        insert_owner.put("city", "Lubbock");
+        insert_owner.put("state", "Texas");
+        insert_owner.put("postal", "79413");
+        insert_owner.put("country", "USA");
         db.insert("owner_account", null, insert_owner);
 
         //owner account 2
         ContentValues insert_owner2 = new ContentValues();
-        insert_owner2.put("owner_username", "Samuel_Ben");
-        insert_owner2.put("owner_password", "securepassword");
+        insert_owner2.put("owner_username", "Sweetings");
+        insert_owner2.put("owner_password", "password");
+        insert_owner2.put("card_number", "1234567887654321");
+        insert_owner2.put("first_name", "Samuel");
+        insert_owner2.put("last_name", "Ben");
+        insert_owner2.put("address", "124 My Street");
+        insert_owner2.put("city", "Lubbock");
+        insert_owner2.put("state", "Texas");
+        insert_owner2.put("postal", "79413");
+        insert_owner2.put("country", "USA");
         db.insert("owner_account", null, insert_owner2);
 
 
         //owner account 3
         ContentValues insert_owner3 = new ContentValues();
-        insert_owner3.put("owner_username", "David_Bach");
-        insert_owner3.put("owner_password", "bluesky357");
+        insert_owner3.put("owner_username", "Ramees_Radio_Shop");
+        insert_owner3.put("owner_password", "password");
+        insert_owner3.put("card_number", "1234567887654321");
+        insert_owner3.put("first_name", "David");
+        insert_owner3.put("last_name", "Bach");
+        insert_owner3.put("address", "125 My Street");
+        insert_owner3.put("city", "Lubbock");
+        insert_owner3.put("state", "Texas");
+        insert_owner3.put("postal", "79413");
+        insert_owner3.put("country", "USA");
         db.insert("owner_account", null, insert_owner3);
 
 

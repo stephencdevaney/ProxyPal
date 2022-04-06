@@ -1,38 +1,97 @@
 package com.example.ppstart;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.TextView;
 
 public class Business_Profile_Activity extends AppCompatActivity {
 
-    private TextView test_txt;
-    private int owner_id;
+    private TextView owner_username_view;
+    private FragmentManager fragment_manager;
+    private int owner_Id;
+    private int supporter_Id;
+    private DatabaseHelper databaseHelper;
+    private Cursor profile_cursor;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_profile);
+        owner_username_view = findViewById(R.id.owner_username);
 
-        test_txt = findViewById(R.id.test_txt);
+        databaseHelper = new DatabaseHelper(Business_Profile_Activity.this);
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
         //receive the bundle passed from the BrowseProfilesAdapter (containing the owner_id of the business profile)
         Intent intent = getIntent();
-        if(intent != null){
+        if(intent != null) {
             Bundle bundle = intent.getBundleExtra("profile_bundle");
-            if(bundle != null){
-                test_txt.setText(String.valueOf(bundle.getInt("owner_id")));
+            if (bundle != null){
+                owner_Id = bundle.getInt("owner_id");
+
+
+                // provide supporter functionality
+                if (bundle.containsKey("supporter_id") && bundle.containsKey("supporter_username")){
+                    supporter_Id = bundle.getInt("supporter_id");
+                    if(supporter_Id == -1) owner_username_view.setText("Hello Guest!");
+                    else owner_username_view.setText("Hello, " + bundle.getString("supporter_username") + "!");
+                }
+                else{ // provide owner functionality
+                    //create cursor to move query the db and move through the query
+                    Cursor owner_cursor = db.rawQuery("SELECT owner_id, first_name, last_name FROM owner_account", null);
+
+                    // build indices for the cursor
+                    if(owner_cursor != null) {
+                        if (owner_cursor.moveToFirst()) {
+                            int owner_id_index = owner_cursor.getColumnIndex("owner_id");
+                            int fname_index = owner_cursor.getColumnIndex("first_name");
+                            int lname_index = owner_cursor.getColumnIndex("last_name");
+
+                            // parse through the query
+                            for(int i = 0; i < owner_cursor.getCount(); i++){
+                                if (owner_Id == owner_cursor.getInt(owner_id_index)) break;
+                                owner_cursor.moveToNext();
+                            }
+                            owner_username_view.setText("Hello, " + owner_cursor.getString(fname_index) + " " + owner_cursor.getString(lname_index) + "!");
+                        }
+                    }
+                }
+                profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id,null);
+                createAboutFragmentManager();
+            }
+        }
+    }
+
+    private void createAboutFragmentManager(){
+        String name = "Business Name";
+        String about = "About Description Not Provided!";
+        if (profile_cursor != null){
+            if(profile_cursor.moveToFirst()){
+                int business_name_index = profile_cursor.getColumnIndex("business_name");
+                int about_index = profile_cursor.getColumnIndex("profile_about_desc");
+                if (!profile_cursor.isNull(about_index)) {
+                    if (!profile_cursor.getString(about_index).trim().equals("")) about = "ABOUT\n\n" + profile_cursor.getString(about_index);
+                }
+                name = profile_cursor.getString(business_name_index);
             }
         }
 
+        Bundle fragment_info = new Bundle();
+        fragment_info.putString("name", name);
+        fragment_info.putString("info", about);
 
+        fragment_manager = getSupportFragmentManager();
+        fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+    public void onBackPressed() { super.onBackPressed(); }
 }

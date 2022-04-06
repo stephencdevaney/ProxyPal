@@ -28,6 +28,8 @@ public class Login_Activity extends AppCompatActivity {
 
     private String supporter_username;
     private int supporter_id;
+    private String owner_username;
+    private int owner_id;
 
 
 
@@ -93,6 +95,8 @@ public class Login_Activity extends AppCompatActivity {
                         for(int i = 0; i < owner_cursor.getCount(); i++){
                             if(login_username_txt.getText().toString().equals(owner_cursor.getString(owner_username_index))){
                                 owner_username_match = true;
+                                owner_username = owner_cursor.getString(owner_username_index); //save the username
+                                owner_id = owner_cursor.getInt(owner_id_index); //save the id
                             }
                             if(login_password_txt.getText().toString().equals(owner_cursor.getString(owner_password_index))){
                                 owner_password_match = true;
@@ -135,6 +139,13 @@ public class Login_Activity extends AppCompatActivity {
                     //log the user in if the username and password matched an owner account
                 }else if(owner_username_match && owner_password_match){
                     Intent to_business_profile = new Intent(Login_Activity.this, Business_Profile_Activity.class);
+
+                    //pass the owner account id and owner account username to the business profile activity
+                    Bundle profile_bundle = new Bundle();
+                    profile_bundle.putInt("owner_id", owner_id);
+                    profile_bundle.putString("owner_username", owner_username);
+                    to_business_profile.putExtra("profile_bundle", profile_bundle);
+
                     //switch to the Business_Profile_Activity activity
                     startActivity(to_business_profile);
 

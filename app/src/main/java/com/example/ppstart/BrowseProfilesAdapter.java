@@ -28,6 +28,9 @@ public class BrowseProfilesAdapter extends RecyclerView.Adapter<BrowseProfilesAd
         this.context = context;
     }
 
+    private int supporter_id;
+    private String supporter_username;
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,6 +57,8 @@ public class BrowseProfilesAdapter extends RecyclerView.Adapter<BrowseProfilesAd
                 Intent intent = new Intent(context, Business_Profile_Activity.class);
                 Bundle profile_bundle = new Bundle();
                 profile_bundle.putInt("owner_id", browsable_profiles.get(position).getOwner_id());
+                profile_bundle.putInt("supporter_id", supporter_id);
+                profile_bundle.putString("supporter_username", supporter_username);
                 intent.putExtra("profile_bundle", profile_bundle);
                 context.startActivity(intent);
             }
@@ -85,5 +90,10 @@ public class BrowseProfilesAdapter extends RecyclerView.Adapter<BrowseProfilesAd
     public void setBrowsable_profiles(ArrayList<Profile> browsable_profiles) {
         this.browsable_profiles = browsable_profiles;
         notifyDataSetChanged();
+    }
+
+    public void passUserInfo(int id, String username){
+        this.supporter_id = id;
+        this.supporter_username = username;
     }
 }

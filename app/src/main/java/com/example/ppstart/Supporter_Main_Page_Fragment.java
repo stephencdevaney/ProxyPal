@@ -136,6 +136,7 @@ public class Supporter_Main_Page_Fragment extends Fragment {
         profilesAdapter = new BrowseProfilesAdapter(getActivity());
         browse_profiles_rec_view.setAdapter(profilesAdapter);
         browse_profiles_rec_view.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        profilesAdapter.passUserInfo(supporter_id, supporter_username);
 
     }
 
