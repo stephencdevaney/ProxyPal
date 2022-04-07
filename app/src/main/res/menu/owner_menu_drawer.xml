@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/drawer_account"
+        android:icon="@drawable/ic_account"
+        android:title="Options"></item>
 
+
+    <item
+        android:title="Favorites"
+        android:id="@+id/drawer_favorites"
+        android:icon="@drawable/ic_favorites"></item>
+    <item
+        android:title="Direct Messages"
+        android:id="@+id/drawer_direct_messages"
+        android:icon="@drawable/ic_messages"></item>
+
+
+    <item
+        android:title="Logout"
+        android:id="@+id/drawer_logout"
+        android:icon="@drawable/ic_logout"></item>
 </menu>

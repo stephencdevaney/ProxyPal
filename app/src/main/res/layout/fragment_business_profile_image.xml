@@ -1,26 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:textAlignment="center"
     tools:context=".business_profile_image">
 
     <TextView
-        android:id="@+id/business_name"
-        android:layout_width="match_parent"
+        android:id="@+id/business_name_image"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="Business Name"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/not_provided"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/not_provided"
+        android:layout_width="386dp"
+        android:layout_height="606dp"
+        android:layout_marginTop="60dp"
+        android:text="\n\nBusiness Layout Not Provided"
+        android:textAlignment="center"
+        android:textSize="60sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="gone" />
 
     <ImageView
-        android:id="@+id/StoreLayout"
-        android:layout_width="match_parent"
-        android:layout_height="560dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="83dp"
-        android:contentDescription="Not Provided"
-        android:src="?android:attr/alertDialogIcon" />
+        android:id="@+id/layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@android:drawable/ic_dialog_alert"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/business_name_image" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

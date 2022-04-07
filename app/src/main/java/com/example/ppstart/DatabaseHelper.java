@@ -42,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(create_item);
 
         //create inventory for stores
-        String create_store_inventory = "CREATE TABLE store_inventory(price DECIMAL NOT NULL, additional_information, PRIMARY KEY(item_number, owner_id, profile_id))";
+        String create_store_inventory = "CREATE TABLE store_inventory(item_number VARCHAR, profile_id INTEGER, owner_id INTEGER, price DECIMAL NOT NULL, additional_information TEXT, PRIMARY KEY(item_number, owner_id, profile_id))";
         db.execSQL(create_store_inventory);
 
 
@@ -138,8 +138,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //inserting a fake favorited profile for the sake of testing
         ContentValues insert_test_profile_favorite1 = new ContentValues();
         insert_test_profile_favorite1.put("supporter_id", 1098);
-        insert_test_profile_favorite1.put("owner_id", 1098);
-        insert_test_profile_favorite1.put("profile_id", 1098);
+        insert_test_profile_favorite1.put("owner_id", 1);
+        insert_test_profile_favorite1.put("profile_id", 1);
 
         db.insert("profile_favorites", null, insert_test_profile_favorite1);
 

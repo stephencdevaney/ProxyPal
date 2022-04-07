@@ -1,6 +1,5 @@
 package com.example.ppstart;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -49,7 +48,6 @@ public class business_profile_text extends Fragment {
     //initialize UI elements
     private void initViews(View view){
         name = view.findViewById(R.id.business_name_text);
-        info = view.findViewById(R.id.about_hours_faq);
+        info = view.findViewById(R.id.business_info);
     }
-
 }
