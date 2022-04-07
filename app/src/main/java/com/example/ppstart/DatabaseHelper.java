@@ -37,6 +37,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String create_profile_favorites = "CREATE TABLE profile_favorites(supporter_id INTEGER, owner_id INTEGER, profile_id INTEGER, PRIMARY KEY(supporter_id, owner_id, profile_id))";
         db.execSQL(create_profile_favorites);
 
+        //create the table for item
+        String create_item = "CREATE TABLE item(item_number VARCHAR PRIMARY KEY, item_name VARCHAR NOT NULL, item_desc TEXT NOT NULL, item_picture TEXT)";
+        db.execSQL(create_item);
+
+        //create inventory for stores
+        String create_store_inventory = "CREATE TABLE store_inventory(price DECIMAL NOT NULL, additional_information, PRIMARY KEY(item_number, owner_id, profile_id))";
+        db.execSQL(create_store_inventory);
+
 
         //insert an example supporter account
         ContentValues insert_supporter = new ContentValues();
