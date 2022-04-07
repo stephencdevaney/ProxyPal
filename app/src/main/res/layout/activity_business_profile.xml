@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Supporter_Main_Page_Activity"
-    android:id="@+id/supporter_main_page_drawer">
+    tools:context=".Business_Profile_Activity"
+    android:id="@+id/business_main_page_drawer">
 
     <RelativeLayout
         android:layout_width="match_parent"
