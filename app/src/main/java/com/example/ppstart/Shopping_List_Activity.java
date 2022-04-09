@@ -31,6 +31,7 @@ public class Shopping_List_Activity extends AppCompatActivity {
 
     private BottomNavigationView supporter_bottom_nav_menu;
 
+
     static ListView listView;
     static ArrayList<String> items;
     static ListViewAdapter adapter;

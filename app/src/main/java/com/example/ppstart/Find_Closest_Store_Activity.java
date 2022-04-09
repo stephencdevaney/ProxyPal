@@ -5,11 +5,16 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,34 +36,59 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
 public class Find_Closest_Store_Activity extends AppCompatActivity {
     FusedLocationProviderClient mFusedLocationClient;
-    TextView latitudeTextView, longitTextView;
+    //TextView latitudeTextView, longitTextView;
+
+    static ListView listview;
+    static ArrayList<String> companyList;
+    static ArrayList<Float> distanceList;
+    static ListViewAdapter_closest_business adapter;
+
+    // database tools
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase db;
+    private Cursor profile_cursor;
+
+    int distanceRange;
     int PERMISSION_ID = 44;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_find_closest_store);
+
+        //System.out.println(profile_cursor);
+        //Log.d("Debug tag", profile_cursor);
+
+
+        listview = findViewById(R.id.listview_business);
+        companyList = new ArrayList<>();
+        distanceList = new ArrayList<>();
+
+        loadBusinesses();
+
+        //adapter = new ListViewAdapter_closest_business(getApplicationContext(), companyList, distanceList);
+        //listview.setAdapter(adapter);
 
         //read data from bundle concerning distange range to find stores
+
+
         Intent intent = getIntent();
         if (intent != null) {
             Bundle bundle = intent.getBundleExtra("closestBundle");
             if (bundle != null) {
                 int destRange = bundle.getInt("distReq");
             }
-
         }
 
-        //latitudeTextView = findViewById(R.id.latTextView);
-        //longitTextView = findViewById(R.id.lonTextView);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // method to get the location
+        // method to get User long/lat
         getLastLocation();
-
     }
 
     @SuppressLint("Missing Permission")
@@ -90,7 +120,6 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
                         } else {
                             String lon = Double.toString(location.getLongitude());
                             String lat = Double.toString(location.getLatitude());
-                            String toast = "Lat: " + lat + " Long: " + lon;
 
                             Toast.makeText(Find_Closest_Store_Activity.this, "Lat: " + lat + "Lon: " + lon, Toast.LENGTH_LONG).show();                            //Toast.makeText(this, "adf", Toast.LENGTH_LONG).show();
                         }
@@ -154,6 +183,66 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
             if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                 getLastLocation();
             }
+        }
+    }
+
+
+    //databaseHelper = new DatabaseHelper(Find_Closest_Store_Activity.this);
+    //db = databaseHelper.getReadableDatabase();
+
+    //profile_cursor = db.rawQuery("SELECT business_name FROM profile", null);
+
+    private void loadBusinesses(){
+        databaseHelper = new DatabaseHelper(Find_Closest_Store_Activity.this);
+        db = databaseHelper.getWritableDatabase();
+
+        try{
+            Cursor cursor = db.rawQuery("SELECT * FROM profile", null);
+            if(cursor != null){
+                if(cursor.moveToFirst()){
+                    //companyList = new ArrayList<>();
+                    //distanceList = new ArrayList<>();
+
+                    int nameIndex = cursor.getColumnIndex("business_name");
+                    for (int i = 0; i<cursor.getCount();i++){
+                        companyList.add(cursor.getString(nameIndex));
+                        distanceList.add(0.0F);
+                    }
+
+                    /*
+                    ArrayList<Profile> browsable_profiles = new ArrayList<>();
+
+                    int profile_id_index = cursor.getColumnIndex("profile_id");
+                    int owner_id_index = cursor.getColumnIndex("owner_id");
+                    int business_name_index = cursor.getColumnIndex("business_name");
+                    int profile_avatar_image_index = cursor.getColumnIndex("profile_avatar_image");
+
+                    for(int i = 0; i < cursor.getCount(); i++){
+                        Profile p  = new Profile();
+                        p.setProfile_id(cursor.getInt(profile_id_index));
+                        p.setOwner_id(cursor.getInt(owner_id_index));
+                        p.setBusiness_name(cursor.getString(business_name_index));
+                        p.setProfile_avatar_image(cursor.getString(profile_avatar_image_index));
+
+                        browsable_profiles.add(p);
+                        cursor.moveToNext();
+                    }
+
+                     */
+                    cursor.close();
+                    db.close();
+                    adapter = new ListViewAdapter_closest_business(getApplicationContext(), companyList, distanceList);
+                    listview.setAdapter(adapter);
+
+                }else{
+                    cursor.close();
+                    db.close();
+                }
+            }else{
+                db.close();
+            }
+        }catch(SQLiteException e){
+            e.printStackTrace();
         }
     }
 }

@@ -54,14 +54,28 @@ public class Supporter_Main_Page_Fragment<location_Spinner> extends Fragment {
                     Toast.makeText(getContext(),adapterView.getItemAtPosition(i).toString() , Toast.LENGTH_SHORT).show();
 
                     Intent to_Closest = new Intent(getActivity(), Find_Closest_Store_Activity.class);
+
                     Bundle closestBundle = new Bundle();
-                    closestBundle.putInt("distReq", 5);
+                    if(adapterView.getItemAtPosition(i).toString()=="5 miles"){
+                        closestBundle.putInt("distReq", 5);
+                    }
+                    else if(adapterView.getItemAtPosition(i).toString()=="10 miles"){
+                        closestBundle.putInt("distReq", 10);
+                    }
+                    else if(adapterView.getItemAtPosition(i).toString()=="15 miles"){
+                        closestBundle.putInt("distReq", 15);
+                    }
+                    else if(adapterView.getItemAtPosition(i).toString()=="25 miles"){
+                        closestBundle.putInt("distReq", 25);
+                    }
+                    else{
+                        closestBundle.putInt("distReq", 50);
+                    }
+
 
                     to_Closest.putExtra("closestBundle", closestBundle);
                     startActivity(to_Closest);
 
-                    //Intent to_search = new Intent(Shopping_List_Activity.this, Supporter_Search_Activity.class);
-                    //startActivity(to_search);
                 }
             }
 

@@ -22,27 +22,70 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Initially just creating tables for supporter accounts, owner accounts, and owner profiles. Owner accounts include payment information
 
         //Create table that contains supporter account data
-        String create_supporter_table = "CREATE TABLE supporter_account(supporter_id INTEGER PRIMARY KEY AUTOINCREMENT, supporter_username VARCHAR NOT NULL, supporter_password VARCHAR NOT NULL, supporter_avatar BLOB)";
+        String create_supporter_table = "CREATE TABLE " +
+                "supporter_account(supporter_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "supporter_username VARCHAR NOT NULL, " +
+                "supporter_password VARCHAR NOT NULL, " +
+                "supporter_avatar BLOB)";
         db.execSQL(create_supporter_table);
 
         //Create table that contains owner account data
-        String create_owner_table = "CREATE TABLE owner_account(owner_id INTEGER PRIMARY KEY AUTOINCREMENT, owner_username VARCHAR NOT NULL, owner_password VARCHAR NOT NULL, card_number VARCHAR NOT NULL, first_name VARCHAR NOT NULL, last_name VARCHAR NOT NULL, address VARCHAR NOT NULL, city VARCHAR NOT NULL, state VARCHAR NOT NULL, postal VARCHAR NOT NULL, country VARCHAR NOT NULL)";
+        String create_owner_table = "CREATE TABLE " +
+                "owner_account(owner_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "owner_username VARCHAR NOT NULL, " +
+                "owner_password VARCHAR NOT NULL, " +
+                "card_number VARCHAR NOT NULL, " +
+                "first_name VARCHAR NOT NULL, " +
+                "last_name VARCHAR NOT NULL, " +
+                "address VARCHAR NOT NULL, " +
+                "city VARCHAR NOT NULL, " +
+                "state VARCHAR NOT NULL, " +
+                "postal VARCHAR NOT NULL, " +
+                "country VARCHAR NOT NULL)";
+                //"longitude DOUBLE NOT NULL," +
+                //"latitude DOUBLE NOT NULL)";
         db.execSQL(create_owner_table);
 
         //create the table for business profiles
-        String create_profile_table = "CREATE TABLE profile(profile_id INTEGER PRIMARY KEY AUTOINCREMENT, owner_id INTEGER, profile_avatar_image TEXT, profile_about_image TEXT, profile_about_desc TEXT, profile_hours_desc TEXT, profile_map_image TEXT, business_name VARCHAR, FOREIGN KEY(owner_id) REFERENCES owner_account(owner_id))";
+        String create_profile_table = "CREATE TABLE " +
+                "profile(profile_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "owner_id INTEGER, " +
+                "profile_avatar_image TEXT, " +
+                "profile_about_image TEXT, " +
+                "profile_about_desc TEXT, " +
+                "profile_hours_desc TEXT, " +
+                "profile_map_image TEXT, " +
+                "business_name VARCHAR, " +
+                "latitude DOUBLE NOT NULL," +
+                "longitude DOUBLE NOT NULL," +
+                "FOREIGN KEY(owner_id) " +
+                "REFERENCES owner_account(owner_id))";
         db.execSQL(create_profile_table);
 
         //create the table for businesses favorited by a supporter account
-        String create_profile_favorites = "CREATE TABLE profile_favorites(supporter_id INTEGER, owner_id INTEGER, profile_id INTEGER, PRIMARY KEY(supporter_id, owner_id, profile_id))";
+        String create_profile_favorites = "CREATE TABLE " +
+                "profile_favorites(supporter_id INTEGER, " +
+                "owner_id INTEGER, " +
+                "profile_id INTEGER, " +
+                "PRIMARY KEY(supporter_id, owner_id, profile_id))";
         db.execSQL(create_profile_favorites);
 
         //create the table for item
-        String create_item = "CREATE TABLE item(item_number VARCHAR PRIMARY KEY, item_name VARCHAR NOT NULL, item_desc TEXT NOT NULL, item_picture TEXT)";
+        String create_item = "CREATE TABLE item" +
+                "(item_number VARCHAR PRIMARY KEY, " +
+                "item_name VARCHAR NOT NULL, " +
+                "item_desc TEXT NOT NULL, " +
+                "item_picture TEXT)";
         db.execSQL(create_item);
 
         //create inventory for stores
-        String create_store_inventory = "CREATE TABLE store_inventory(item_number VARCHAR, profile_id INTEGER, owner_id INTEGER, price DECIMAL NOT NULL, additional_information TEXT, PRIMARY KEY(item_number, owner_id, profile_id))";
+        String create_store_inventory = "CREATE TABLE " +
+                "store_inventory(item_number VARCHAR, " +
+                "profile_id INTEGER, " +
+                "owner_id INTEGER, " +
+                "price DECIMAL NOT NULL, " +
+                "additional_information TEXT, " +
+                "PRIMARY KEY(item_number, owner_id, profile_id))";
         db.execSQL(create_store_inventory);
 
 
@@ -66,6 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_owner.put("state", "Texas");
         insert_owner.put("postal", "79413");
         insert_owner.put("country", "USA");
+
         db.insert("owner_account", null, insert_owner);
 
         //owner account 2
@@ -80,6 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_owner2.put("state", "Texas");
         insert_owner2.put("postal", "79413");
         insert_owner2.put("country", "USA");
+
         db.insert("owner_account", null, insert_owner2);
 
 
@@ -95,6 +140,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_owner3.put("state", "Texas");
         insert_owner3.put("postal", "79413");
         insert_owner3.put("country", "USA");
+
         db.insert("owner_account", null, insert_owner3);
 
 
@@ -108,6 +154,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile1.put("profile_hours_desc", "Open 24/7/365");
         insert_profile1.put("profile_map_image", "https://i.pinimg.com/originals/78/a1/65/78a165f3db1121f23fe4524f40da2608.png");
         insert_profile1.put("business_name", "Bob's Antiques");
+        insert_owner.put("latitude", "33.570000");
+        insert_owner.put("longitude", "-101.865518");
 
         db.insert("profile", null, insert_profile1);
 
@@ -120,6 +168,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile2.put("profile_hours_desc", "Closed forever");
         insert_profile2.put("profile_map_image", "https://durfeehardware.com/wp-content/uploads/2016/10/Map_First_Floor.png");
         insert_profile2.put("business_name", "Sweetings");
+        insert_owner2.put("latitude", "33.5735781");
+        insert_owner2.put("longitude", "-101.865518");
 
         db.insert("profile", null, insert_profile2);
 
@@ -132,6 +182,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile3.put("profile_hours_desc", "Open only on Mondays at 1:00pm - 1:05pm");
         insert_profile3.put("profile_map_image", "https://www.littletraveler.com/wp-content/uploads/2014/05/storemap.png");
         insert_profile3.put("business_name", "Ramee's Radio Shop");
+        insert_owner3.put("latitude", "34.5735781");
+        insert_owner3.put("longitude", "-101.865518");
 
         db.insert("profile", null, insert_profile3);
 
@@ -144,17 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert("profile_favorites", null, insert_test_profile_favorite1);
 
 
-
-
-
     }
-
-
-
-
-
-
-
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
