@@ -141,6 +141,21 @@ public class Shopping_List_Activity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //Save data when backing out of app as well
+    @Override
+    public void onBackPressed() {
+        File path = getApplicationContext().getFilesDir();
+        try{
+            FileOutputStream writer = new FileOutputStream(new File(path, "list.txt"));
+            writer.write(items.toString().getBytes());
+            writer.close();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        super.onBackPressed();
+        this.finish();
+    }
+
     public static void addItem(String item){
         items.add(item);
         listView.setAdapter(adapter);

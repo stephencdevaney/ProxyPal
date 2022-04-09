@@ -10,8 +10,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,12 +35,11 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
     private String supporter_username;
     private int supporter_id;
 
+    //private Spinner spinner;
+
     private TextView toolbar_username;
 
     private Button toolbar_guest_btn;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,9 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
         supporter_main_page_drawer = findViewById(R.id.supporter_main_page_drawer);
         supporter_main_page_navigationView = findViewById(R.id.supporter_main_page_navigationView);
         supporter_main_page_toolbar = findViewById(R.id.supporter_main_page_toolbar);
+
+        Spinner firstSpinner = (Spinner) findViewById(R.id.location_spinner);
+
 
         toolbar_guest_btn = findViewById(R.id.toolbar_guest_btn);
 
@@ -63,8 +68,6 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
         View header_view = supporter_main_page_navigationView.getHeaderView(0);
         ImageView proxypal_logo = (ImageView) header_view.findViewById(R.id.drawer_header_image);
         TextView supporter_account_username = (TextView) header_view.findViewById(R.id.drawer_header_username);
-
-
 
 
         //receive the id/username from the bundle passed to this activity from the login or create account activities
@@ -100,6 +103,7 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
                 .into(proxypal_logo);
 
 
+
         //toolbar button
         toolbar_guest_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +113,6 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
                 startActivity(logout);
             }
         });
-
 
         //set the listener for when options in the drawer menu are tapped
         supporter_main_page_navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -165,7 +168,6 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
             }
         });
 
-
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         Bundle to_fragment_bundle = new Bundle();
@@ -175,7 +177,6 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
         fragInfo.setArguments(to_fragment_bundle);
         transaction.replace(R.id.supporter_main_page_fragment_container, fragInfo);
         transaction.commit();
-
 
     }
 

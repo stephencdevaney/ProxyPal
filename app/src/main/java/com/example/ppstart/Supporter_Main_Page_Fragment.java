@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +23,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-public class Supporter_Main_Page_Fragment extends Fragment {
+
+public class Supporter_Main_Page_Fragment<location_Spinner> extends Fragment {
     private BottomNavigationView supporter_bottom_nav_menu;
 
     private RecyclerView browse_profiles_rec_view;
@@ -29,18 +33,50 @@ public class Supporter_Main_Page_Fragment extends Fragment {
 
     private int supporter_id;
     private String supporter_username;
+    private Spinner location_Spinner;
+
+    public int j = 0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.supporter_main_page_fragment, container, false);
 
+        location_Spinner = view.findViewById(R.id.location_spinner);
+        location_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //hack to fix activity opening with 1st index sellected
+                if(j ==0){
+                    j++;
+                }
+                else{
+                    Toast.makeText(getContext(),adapterView.getItemAtPosition(i).toString() , Toast.LENGTH_SHORT).show();
+
+                    Intent to_Closest = new Intent(getActivity(), Find_Closest_Store_Activity.class);
+                    Bundle closestBundle = new Bundle();
+                    closestBundle.putInt("distReq", 5);
+
+                    to_Closest.putExtra("closestBundle", closestBundle);
+                    startActivity(to_Closest);
+
+                    //Intent to_search = new Intent(Shopping_List_Activity.this, Supporter_Search_Activity.class);
+                    //startActivity(to_search);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         Bundle main_fragment_bundle = this.getArguments();
         if(main_fragment_bundle != null){
             supporter_id = main_fragment_bundle.getInt("supporter_id");
             supporter_username = main_fragment_bundle.getString("supporter_username");
         }
+
 
         initViews(view);
         initBottomNavigationView();
@@ -50,11 +86,14 @@ public class Supporter_Main_Page_Fragment extends Fragment {
         return view;
     }
 
+
+
     @Override
     public void onResume() {
         super.onResume();
 
     }
+
 
     //initialize UI elements
     private void initViews(View view){
