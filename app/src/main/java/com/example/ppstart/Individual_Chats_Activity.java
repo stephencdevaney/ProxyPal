@@ -26,8 +26,11 @@ import java.util.Calendar;
 
 public class Individual_Chats_Activity extends AppCompatActivity {
 
-    private String supporter_username;
-    private int supporter_id;
+    private String supporter_username, owner_username;
+    private int supporter_id, owner_id;
+    private String message;
+    private String sender;
+    private String viewer;
 
 
     private FirebaseFirestore db;
@@ -46,7 +49,7 @@ public class Individual_Chats_Activity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
-    private String senderroom,recieverroom;
+    private String senderroom, recieverroom;
 
     //private ImageButton mbackbuttonofspecificchat;
 
@@ -100,14 +103,42 @@ public class Individual_Chats_Activity extends AppCompatActivity {
 
 
 
+/*
+        Intent to_individual_chat = new Intent(getActivity(), Individual_Chats_Activity.class);
+        Bundle chats_bundle = new Bundle();
+
+        if(viewer == "supporter"){
+            chats_bundle.putInt("supporter_id", supporter_id);
+            chats_bundle.putInt("owner_id", model.getOwner_id());
+            chats_bundle.putString("owner_username", model.getOwner_username());
+            //supporter_bundle.putString("profile_pic", model.getImage());
+            chats_bundle.putInt("viewer_id", supporter_id);
+            GetLoggedInID.logged_in_id = supporter_id;
+            to_individual_chat.putExtra("chats_bundle", chats_bundle);
+            startActivity(to_individual_chat);
+
+
+        }else if (viewer == "owner"){
+            chats_bundle.putInt("supporter_id", owner_id);
+            chats_bundle.putInt("owner_id", model.getSupporter_id());
+            //supporter_bundle.putString("profile_pic", model.getImage());
+            chats_bundle.putString("supporter_username", model.getSupporter_username());
+            chats_bundle.putInt("viewer_id", owner_id);
+            GetLoggedInID.logged_in_id = owner_id;
+            to_individual_chat.putExtra("chats_bundle", chats_bundle);
+            startActivity(to_individual_chat);
+
+ */
+
         Intent intent = getIntent();
         if(intent != null) {
-            Bundle bundle = intent.getBundleExtra("supporter_bundle");
+            Bundle bundle = intent.getBundleExtra("chats_bundle");
             if(bundle != null){
                 supporter_username = bundle.getString("supporter_username");
                 supporter_id = bundle.getInt("supporter_id");
-                mrecieveruid = bundle.getString("receiver_uid");
-                mrecievername = bundle.getString("username");
+                owner_id = bundle.getInt("owner_id");
+                owner_username = bundle.getString("owner_username");
+                viewer = bundle.getString("viewer");
             }
         }
 
@@ -128,12 +159,17 @@ public class Individual_Chats_Activity extends AppCompatActivity {
          */
 
 
-        senderroom = "123456";
+        //senderroom = "123456";
+        System.out.println("DSSSSSSSFSDFSGSDFADAFSGSDFAWFADSC" + viewer);
         //?
-        //senderroom=msenderuid+mrecieveruid;
-        //recieverroom=mrecieveruid+msenderuid;
-
-
+        if(viewer.equals("supporter")){
+            senderroom = String.valueOf(supporter_id) + String.valueOf(owner_id);
+            System.out.println("DSSSSSSSFSDFSGSDFADAFSGSDFAWFADSC" + senderroom);
+            recieverroom = String.valueOf(owner_id) + String.valueOf(supporter_id);
+        }else if(viewer.equals("owner")){
+            senderroom = String.valueOf(owner_id) + String.valueOf(supporter_id);
+            recieverroom = String.valueOf(supporter_id) + String.valueOf(owner_id);
+        }
 
         FirebaseFirestore.getInstance().collection("Messages").whereEqualTo("senderroom", senderroom).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -141,14 +177,37 @@ public class Individual_Chats_Activity extends AppCompatActivity {
                 for(QueryDocumentSnapshot doc : task.getResult()){
                     MessagesClass message = new MessagesClass();
                     message.setMessage(doc.get("message").toString());
-                    message.setSenderId(doc.get("sender_id").toString());
+                    message.setSender(doc.get("sender").toString());
+                    message.setOwner_username(doc.get("owner_username").toString());
+                    message.setSupporter_username(doc.get("supporter_username").toString());
+                    message.setOwner_id(Integer.parseInt((doc.get("owner_id").toString())));
+                    message.setOwner_id(Integer.parseInt((doc.get("supporter_id").toString())));
                     messages_array_list.add(message);
 
+                }
+                //messagesAdapter.notifyDataSetChanged();
+            }
+        });
+
+        FirebaseFirestore.getInstance().collection("Messages").whereEqualTo("receiverroom", senderroom).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(QueryDocumentSnapshot doc : task.getResult()){
+                    MessagesClass message = new MessagesClass();
+                    message.setMessage(doc.get("message").toString());
+                    message.setSender(doc.get("sender").toString());
+                    message.setOwner_username(doc.get("owner_username").toString());
+                    message.setSupporter_username(doc.get("supporter_username").toString());
+                    message.setOwner_id(Integer.parseInt((doc.get("owner_id").toString())));
+                    message.setOwner_id(Integer.parseInt((doc.get("supporter_id").toString())));
+                    messages_array_list.add(message);
 
                 }
                 messagesAdapter.notifyDataSetChanged();
             }
         });
+
+        //.whereEqualTo("receiverroom", senderroom)
 
 
         /*

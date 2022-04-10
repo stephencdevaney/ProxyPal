@@ -1,5 +1,6 @@
 package com.example.ppstart;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,8 +24,9 @@ import com.google.firebase.firestore.Query;
 
 public class All_Chats_Fragment extends Fragment {
 
-    private int supporter_id;
-    private String supporter_username;
+    private int supporter_id, owner_id;
+    private String supporter_username, owner_username;
+    private String viewer;
 
     private RecyclerView all_chats_rec_view;
 
@@ -42,38 +44,84 @@ public class All_Chats_Fragment extends Fragment {
         if(bundle != null){
             supporter_id = bundle.getInt("supporter_id");
             supporter_username = bundle.getString("supporter_username");
+            owner_id = bundle.getInt("owner_id");
+            owner_username = bundle.getString("owner_username");
         }
-
 
 
         firebaseFirestore = FirebaseFirestore.getInstance();
 
+        Query query;
+
+        //? make this better
+        if(supporter_username == null){
+            System.out.println("This is an owner account");
+            viewer = "owner";
+            query = firebaseFirestore.collection("Chats").whereEqualTo("owner_id", owner_id);
+        }
+        else if(owner_username == null){
+            System.out.println("This is a supporter account");
+            viewer = "supporter";
+            query = firebaseFirestore.collection("Chats").whereEqualTo("supporter_id", supporter_id);
+        }
+        else{
+            query = firebaseFirestore.collection("Chats").whereEqualTo("supporter_id", supporter_id);
+        }
+
+
+
+
+
         all_chats_rec_view = (RecyclerView) view.findViewById(R.id.all_chats_rec_view);
 
-        Query query = firebaseFirestore.collection("Users");
 
         FirestoreRecyclerOptions<AllChatsClass> all_chats = new FirestoreRecyclerOptions.Builder<AllChatsClass>().setQuery(query, AllChatsClass.class).build();
 
         all_chats_adapter = new FirestoreRecyclerAdapter<AllChatsClass, FRA_ViewHolder>(all_chats) {
             @Override
             protected void onBindViewHolder(@NonNull FRA_ViewHolder holder, int position, @NonNull AllChatsClass model) {
-                holder.username_txt.setText(model.getName());
 
-                String uri = model.getImage();
-                Glide.with(getContext()).asBitmap().load(uri).into(holder.profile_pic);
+                if(viewer == "supporter"){
+                    holder.username_txt.setText(model.getOwner_username());
+                }else if(viewer == "owner"){
+                    holder.username_txt.setText(model.getSupporter_username());
+                }
+
+                //String uri = model.getOwner_pic();
+                //Glide.with(getContext()).asBitmap().load(uri).into(holder.profile_pic);
 
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         Intent to_individual_chat = new Intent(getActivity(), Individual_Chats_Activity.class);
-                        Bundle supporter_bundle = new Bundle();
-                        supporter_bundle.putInt("supporter_id", supporter_id);
-                        supporter_bundle.putString("username", model.getName());
-                        supporter_bundle.putString("receiver_uid", model.getUid());
-                        supporter_bundle.putString("profile_pic", model.getImage());
-                        to_individual_chat.putExtra("supporter_bundle", supporter_bundle);
-                        startActivity(to_individual_chat);
+                        Bundle chats_bundle = new Bundle();
+
+                        if(viewer == "supporter"){
+                            chats_bundle.putInt("supporter_id", supporter_id);
+                            chats_bundle.putInt("owner_id", model.getOwner_id());
+                            chats_bundle.putString("owner_username", model.getOwner_username());
+                            chats_bundle.putString("supporter_username", supporter_username);
+                            //supporter_bundle.putString("profile_pic", model.getImage());
+                            chats_bundle.putString("viewer", "supporter");
+                            GetLoggedInID.logged_in_id = supporter_id;
+                            to_individual_chat.putExtra("chats_bundle", chats_bundle);
+                            startActivity(to_individual_chat);
+
+
+                        }else if (viewer == "owner"){
+                            chats_bundle.putInt("supporter_id", owner_id);
+                            chats_bundle.putInt("owner_id", model.getSupporter_id());
+                            //supporter_bundle.putString("profile_pic", model.getImage());
+                            chats_bundle.putString("supporter_username", model.getSupporter_username());
+                            chats_bundle.putString("owner_username", owner_username);
+                            chats_bundle.putString("viewer", "owner");
+                            GetLoggedInID.logged_in_id = owner_id;
+                            to_individual_chat.putExtra("chats_bundle", chats_bundle);
+                            startActivity(to_individual_chat);
+                        }
+                       ;
                     }
                 });
 

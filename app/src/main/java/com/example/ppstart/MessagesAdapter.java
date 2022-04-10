@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 public class MessagesAdapter extends RecyclerView.Adapter {
@@ -28,6 +30,8 @@ public class MessagesAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        System.out.println("on create reached");
         if(viewType == ITEM_SEND){
             View view = LayoutInflater.from(context).inflate(R.layout.sender_ind_chat_rec_layout, parent, false);
             return new SenderViewHolder(view);
@@ -41,6 +45,7 @@ public class MessagesAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        System.out.println("on bind reached");
         MessagesClass messages = messages_array_list.get(position);
         if(holder.getClass() == SenderViewHolder.class){
             SenderViewHolder viewHolder=(SenderViewHolder)holder;
@@ -55,16 +60,32 @@ public class MessagesAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
+        System.out.println("get view type reached");
+        //Messages messages=messagesArrayList.get(position);
+        //if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(messages.getSenderId()))
+
+        //fix this
         MessagesClass messages = messages_array_list.get(position);
-        //FirebaseAuth.getInstance().getCurrentUser().getUid().equals(messages.getSenderId())
-        if(messages.getSenderId().equals("123"))
-        {
-            return  ITEM_SEND;
-        }
-        else
-        {
-            return ITEM_RECEIVE;
-        }
+            if(messages.getSender().equals("owner"))
+            {
+                if(GetLoggedInID.logged_in_id == messages.getSupporter_id()){
+                    return  ITEM_SEND;
+                }else{
+                    return ITEM_RECEIVE;
+                }
+
+            }
+            else if(messages.getSender().equals("supporter")){
+
+                if(GetLoggedInID.logged_in_id == messages.getOwner_id()){
+                    return  ITEM_SEND;
+                }else{
+                    return ITEM_RECEIVE;
+                }
+            }else{
+                return -1;
+            }
+
     }
 
     @Override

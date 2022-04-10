@@ -39,6 +39,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
     private TextView account_username;
     private ActionBarDrawerToggle toggle;
 
+    // buttons added by Blake for the supporter to message/favorite a bussiness
+    private Button add_to_fav_btn;
+    private Button direct_message_btn;
+
     // database tools
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase db;
@@ -72,6 +76,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
         owner_username_view = findViewById(R.id.owner_username);
         bottom_nav_menu = findViewById(R.id.profile_bottem_nav);
 
+        //Blake's buttons
+        add_to_fav_btn = findViewById(R.id.add_to_fav_btn);
+        direct_message_btn = findViewById(R.id.direct_message_btn);
+
         // setup button
         guest_btn = findViewById(R.id.buss_pro_guest_btn);
 
@@ -92,14 +100,22 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         // setup small views in the toolbar
                         supporter_username = "Guest";
                         owner_username_view.setVisibility(View.GONE);
+
+                        add_to_fav_btn.setVisibility(View.GONE);
+                        direct_message_btn.setVisibility(View.GONE);
+
                         guest_btn.setVisibility(View.VISIBLE);
                         guestButtonSetup();
                     }
                     else {
                             // setup small views in the toolbar
                             supporter_username = bundle.getString("supporter_username");
-                            owner_username_view.setVisibility(View.VISIBLE);
-                            owner_username_view.setText("Hello, " + supporter_username + "!");
+                            owner_username_view.setVisibility(View.GONE);
+                            //owner_username_view.setText("Hello, " + supporter_username + "!");
+
+                            add_to_fav_btn.setVisibility(View.VISIBLE);
+                            direct_message_btn.setVisibility(View.VISIBLE);
+
                             guest_btn.setVisibility(View.GONE);
                         }
                     SupporterGuestNavMenuSetup();
@@ -120,6 +136,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
                             owner_username = owner_cursor.getString(owner_username_index);
 
                             // setup small views int the toolbar
+
+                            add_to_fav_btn.setVisibility(View.GONE);
+                            direct_message_btn.setVisibility(View.GONE);
+
                             owner_username_view.setVisibility(View.VISIBLE);
                             owner_username_view.setText("Hello, " + owner_cursor.getString(fname_index) + " " + owner_cursor.getString(lname_index) + "!");
                             guest_btn.setVisibility(View.GONE);
@@ -165,6 +185,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
     private void OwnerNavMenuSetup(){
         //create the toggleable drawer inside the toolbar at the top of this page
         setSupportActionBar(toolbar);
+
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, (R.string.supporter_drawer_open), (R.string.supporter_drawer_close));
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -313,6 +334,12 @@ public class Business_Profile_Activity extends AppCompatActivity {
     private void SupporterGuestNavMenuSetup(){
         //create the toggleable drawer inside the toolbar at the top of this page
         setSupportActionBar(toolbar);
+
+        //this gets rid of the title of the app in the toolbar since there's no space after the new button were added
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setTitle("");
+        toolbar.setSubtitle("");
+
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, (R.string.supporter_drawer_open), (R.string.supporter_drawer_close));
         drawer.addDrawerListener(toggle);
         toggle.syncState();
