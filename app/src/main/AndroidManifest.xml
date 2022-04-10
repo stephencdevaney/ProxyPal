@@ -19,6 +19,12 @@
             android:name=".Find_Closest_Store_Activity"
             android:exported="false" />
         <activity
+            android:name=".Individual_Chats_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".All_Chats_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Supporter_Acc_Options_Activity"
             android:exported="false" />
         <activity

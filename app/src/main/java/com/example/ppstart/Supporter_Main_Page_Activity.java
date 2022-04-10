@@ -123,7 +123,7 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
                    case R.id.drawer_account:
                        if(supporter_id != -1){
                            Intent to_options = new Intent(Supporter_Main_Page_Activity.this, Supporter_Acc_Options_Activity.class);
-                           //pass the supporter account id and supporter account username to the Favorites_Activity activity
+                           //pass the supporter account id and supporter account username
                            Bundle supporter_bundle = new Bundle();
                            supporter_bundle.putInt("supporter_id", supporter_id);
                            supporter_bundle.putString("supporter_username", supporter_username);
@@ -150,7 +150,12 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
                         break;
                     case R.id.drawer_direct_messages:
                         if(supporter_id != -1){
-                            Toast.makeText(Supporter_Main_Page_Activity.this, "Coming Soon!", Toast.LENGTH_SHORT).show();
+                            Intent to_dm = new Intent(Supporter_Main_Page_Activity.this, All_Chats_Activity.class);
+                            Bundle supporter_bundle = new Bundle();
+                            supporter_bundle.putInt("supporter_id", supporter_id);
+                            supporter_bundle.putString("supporter_username", supporter_username);
+                            to_dm.putExtra("supporter_bundle", supporter_bundle);
+                            startActivity(to_dm);
                         }else{
                             Toast.makeText(Supporter_Main_Page_Activity.this, "Sign in or create an account to access this!", Toast.LENGTH_SHORT).show();
                         }
