@@ -211,9 +211,17 @@ public class MainActivity extends AppCompatActivity {
 
         END OF TESTING CODE
         ------------------------ */
+        /*databaseHelper = new DatabaseHelper(getApplicationContext());
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        String create_dp_table = "CREATE TABLE promotions(dp_id VARCHAR PRIMARY KEY, store_id VARCHAR, item_id VARCHAR, dp_desc VARCHAR)";
+        db.execSQL(create_dp_table);
+        ContentValues insert_test_promo1 = new ContentValues();
+        insert_test_promo1.put("dp_id", "1");
+        insert_test_promo1.put("store_id", "1");
+        insert_test_promo1.put("item_id", "1");
+        insert_test_promo1.put("dp_desc", "20% Off.");
 
-
-
+        db.insert("promotions", null, insert_test_promo1);*/
         //Set the on-click listener for the login button
         initial_login_btn.setOnClickListener(new View.OnClickListener() {
             @Override

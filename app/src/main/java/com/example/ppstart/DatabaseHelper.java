@@ -88,6 +88,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "PRIMARY KEY(item_number, owner_id, profile_id))";
         db.execSQL(create_store_inventory);
 
+        //Create the table for discounts and promotions
+        //String create_discounts_and_promos_table = "CREATE TABLE promos(dp_id VARCHAR PRIMARY KEY, store_id VARCHAR, item_id VARCHAR, dp_desc VARCHAR, FOREIGN KEY (store_id) REFERENCES profile (profile_id), FOREIGN KEY (item_id) REFERENCES item(item_number))";
+        //db.execSQL(create_discounts_and_promos_table);
+        String create_dp_table = "CREATE TABLE promotions(dp_id VARCHAR PRIMARY KEY, store_id VARCHAR, item_id VARCHAR, dp_desc VARCHAR)";
+        db.execSQL(create_dp_table);
+
 
         //insert an example supporter account
         ContentValues insert_supporter = new ContentValues();
@@ -143,6 +149,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.insert("owner_account", null, insert_owner3);
 
+        //Inserting in a fake promo
+        ContentValues insert_test_promo1 = new ContentValues();
+        insert_test_promo1.put("dp_id", "1");
+        insert_test_promo1.put("store_id", "1");
+        insert_test_promo1.put("item_id", "1");
+        insert_test_promo1.put("dp_desc", "20% Off.");
+
+        db.insert("promotions", null, insert_test_promo1);
 
         //insert 3 example profiles into the profile database
         //example profile 1
@@ -195,6 +209,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.insert("profile_favorites", null, insert_test_profile_favorite1);
 
+        //Inserting a fake item
+        ContentValues insert_test_item1 = new ContentValues();
+        insert_test_item1.put("item_number", "1");
+        insert_test_item1.put("item_name", "Gumballs");
+        insert_test_item1.put("item_desc", "A 20 pack of gumballs");
+
+        db.insert("item", null, insert_test_item1);
 
     }
     @Override
