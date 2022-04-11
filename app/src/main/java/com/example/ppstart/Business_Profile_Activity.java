@@ -401,7 +401,12 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         break;
                     case R.id.drawer_direct_messages:
                         if(supporter_Id != -1){
-                            Toast.makeText(Business_Profile_Activity.this, "Coming Soon!", Toast.LENGTH_SHORT).show();
+                            Intent to_dm = new Intent(Business_Profile_Activity.this, All_Chats_Activity.class);
+                            Bundle supporter_bundle = new Bundle();
+                            supporter_bundle.putInt("supporter_id", supporter_Id);
+                            supporter_bundle.putString("supporter_username", supporter_username);
+                            to_dm.putExtra("supporter_bundle", supporter_bundle);
+                            startActivity(to_dm);
                         }else{
                             Toast.makeText(Business_Profile_Activity.this, "Sign in or create an account to access this!", Toast.LENGTH_SHORT).show();
                         }
