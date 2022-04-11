@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "56749169965",
+    "project_id": "proxypaldemo",
+    "storage_bucket": "proxypaldemo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56749169965:android:f7f054847d382510b947a4",
+        "android_client_info": {
+          "package_name": "com.example.ppstart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56749169965-moe2hcqmck4a2rjned47pl04thfvdgbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBU36TshMh2gNrGUtkNKa1fFSj2lk4pzPo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56749169965-moe2hcqmck4a2rjned47pl04thfvdgbj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
