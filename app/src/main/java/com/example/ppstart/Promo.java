@@ -1,15 +1,15 @@
 package com.example.ppstart;
 
 public class Promo {
-    private String dp_id;
-    private String store_id;
-    private String item_id;
+    private int dp_id;
+    private int store_id;
+    private int item_id;
     private String store_name;
     private byte[] item_image;
     private String dp_desc;
     private String item_name;
 
-    public Promo(String dp_id, String store_id, String item_id, String store_name, byte[] item_image, String dp_desc, String item_name) {
+    public Promo(int dp_id, int store_id, int item_id, String store_name, byte[] item_image, String dp_desc, String item_name) {
         this.dp_id = dp_id;
         this.store_id = store_id;
         this.item_id = item_id;
@@ -23,27 +23,27 @@ public class Promo {
         //Empty constructor
     }
 
-    public String getDp_id() {
+    public int getDp_id() {
         return dp_id;
     }
 
-    public void setDp_id(String dp_id) {
+    public void setDp_id(int dp_id) {
         this.dp_id = dp_id;
     }
 
-    public String getStore_id() {
+    public int getStore_id() {
         return store_id;
     }
 
-    public void setStore_id(String store_id) {
+    public void setStore_id(int store_id) {
         this.store_id = store_id;
     }
 
-    public String getItem_id() {
+    public int getItem_id() {
         return item_id;
     }
 
-    public void setItem_id(String item_id) {
+    public void setItem_id(int item_id) {
         this.item_id = item_id;
     }
 

@@ -51,7 +51,7 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
         //promosList.add(new Promo("1", "1","1", "Store Name", null, "Description", "Product Name"));
 
         try{
-            Cursor pCursor = db.rawQuery("SELECT * FROM promotions", null);
+            Cursor pCursor = db.rawQuery("SELECT * FROM promos", null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,13 +68,13 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
                     for(int i = 0; i < pCursor.getCount(); i++){
                         Promo p  = new Promo();
 
-                        p.setDp_id(pCursor.getString(dp_id_index));
-                        p.setStore_id(pCursor.getString(store_id_index));
-                        p.setItem_id(pCursor.getString(item_id_index));
+                        p.setDp_id(pCursor.getInt(dp_id_index));
+                        p.setStore_id(pCursor.getInt(store_id_index));
+                        p.setItem_id(pCursor.getInt(item_id_index));
                         p.setDp_desc(pCursor.getString(dp_desc_index));
 
-                        Cursor sCursor = db.rawQuery("SELECT business_name FROM profile WHERE profile_id = ?", new String[] {p.getStore_id()});
-                        Cursor iCursor = db.rawQuery("Select item_name, item_desc, item_picture FROM item WHERE item_number = ?",new String[] {p.getItem_id()});
+                        //Cursor sCursor = db.rawQuery("SELECT business_name FROM profile WHERE profile_id = ?", new String[] {String.valueOf(p.getStore_id())});
+                        //Cursor iCursor = db.rawQuery("Select item_name, item_desc, item_picture FROM item WHERE item_number = ?",new String[] {String.valueOf(p.getItem_id())});
 
                         int business_name_index = sCursor.getColumnIndex("business_name");
                         int item_name_index = iCursor.getColumnIndex("item_name");
@@ -87,8 +87,8 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
                         p.setItem_image(iCursor.getBlob(item_picture_index));
 
                         promosList.add(p);
-                        sCursor.close();
-                        iCursor.close();
+                        //sCursor.close();
+                        //iCursor.close();
                         pCursor.moveToNext();
                     }
                     pCursor.close();

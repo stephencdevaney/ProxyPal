@@ -42,8 +42,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "state VARCHAR NOT NULL, " +
                 "postal VARCHAR NOT NULL, " +
                 "country VARCHAR NOT NULL)";
-                //"longitude DOUBLE NOT NULL," +
-                //"latitude DOUBLE NOT NULL)";
+        //"longitude DOUBLE NOT NULL," +
+        //"latitude DOUBLE NOT NULL)";
         db.execSQL(create_owner_table);
 
         //create the table for business profiles
@@ -168,8 +168,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile1.put("profile_hours_desc", "Open 24/7/365");
         insert_profile1.put("profile_map_image", "https://i.pinimg.com/originals/78/a1/65/78a165f3db1121f23fe4524f40da2608.png");
         insert_profile1.put("business_name", "Bob's Antiques");
-        insert_owner.put("latitude", "33.570000");
-        insert_owner.put("longitude", "-101.865518");
+        insert_profile1.put("latitude", "33.570000");
+        insert_profile1.put("longitude", "-101.865518");
 
         db.insert("profile", null, insert_profile1);
 
@@ -182,8 +182,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile2.put("profile_hours_desc", "Closed forever");
         insert_profile2.put("profile_map_image", "https://durfeehardware.com/wp-content/uploads/2016/10/Map_First_Floor.png");
         insert_profile2.put("business_name", "Sweetings");
-        insert_owner2.put("latitude", "33.5735781");
-        insert_owner2.put("longitude", "-101.865518");
+        insert_profile2.put("latitude", "33.5735781");
+        insert_profile2.put("longitude", "-101.865518");
 
         db.insert("profile", null, insert_profile2);
 
@@ -196,8 +196,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile3.put("profile_hours_desc", "Open only on Mondays at 1:00pm - 1:05pm");
         insert_profile3.put("profile_map_image", "https://www.littletraveler.com/wp-content/uploads/2014/05/storemap.png");
         insert_profile3.put("business_name", "Ramee's Radio Shop");
-        insert_owner3.put("latitude", "34.5735781");
-        insert_owner3.put("longitude", "-101.865518");
+        insert_profile3.put("latitude", "34.5735781");
+        insert_profile3.put("longitude", "-101.865518");
 
         db.insert("profile", null, insert_profile3);
 
