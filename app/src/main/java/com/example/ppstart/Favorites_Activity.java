@@ -47,12 +47,6 @@ public class Favorites_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_favorites);
 
 
-        profile_favorites = new ArrayList<>();
-        //initialize recycler view elements
-        business_favorites_rec_view = findViewById(R.id.business_favorites_rec_view);
-        profilesAdapter = new BrowseProfilesAdapter(this);
-        business_favorites_rec_view.setAdapter(profilesAdapter);
-        business_favorites_rec_view.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
         //initialize texts that will be displayed if the user hasn't favorited any businesses or items
         no_business_favorites_txt = findViewById(R.id.no_business_favorites_txt);
@@ -69,6 +63,15 @@ public class Favorites_Activity extends AppCompatActivity {
                 supporter_id = bundle.getInt("supporter_id");
             }
         }
+
+        profile_favorites = new ArrayList<>();
+        //initialize recycler view elements
+        business_favorites_rec_view = findViewById(R.id.business_favorites_rec_view);
+        profilesAdapter = new BrowseProfilesAdapter(this);
+        business_favorites_rec_view.setAdapter(profilesAdapter);
+        business_favorites_rec_view.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        //DO NOT FORGET THIS STATEMENT!!!!!
+        profilesAdapter.passUserInfo(supporter_id, supporter_username);
 
 
         System.out.println("INSIDE FAVORITES: " + supporter_username + " " + supporter_id);
@@ -189,8 +192,8 @@ public class Favorites_Activity extends AppCompatActivity {
                         for (Profile profile : all_browsable_profiles) {
                             if (profile_favorites != null) {
                                 for (ProfileFavorites profileFavorites : profile_favorites) {
-                                    if (profile.getOwner_id() == profileFavorites.getProf_fav_owner_id() && profile.getProfile_id() == profileFavorites.getProf_fav_profile_id()
-                                            && supporter_id == profileFavorites.getProf_fav_supporter_id()) {
+                                    //add profile.getProfile_id() == profileFavorites.getProf_fav_profile_id() when ready
+                                    if (profile.getOwner_id() == profileFavorites.getProf_fav_owner_id() && supporter_id == profileFavorites.getProf_fav_supporter_id()) {
                                         favorited_browsable_profiles.add(profile);
                                     }
                                 }

@@ -1,6 +1,7 @@
 package com.example.ppstart;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,9 +21,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Business_Profile_Activity extends AppCompatActivity {
     // layout and fragment view
@@ -54,6 +69,14 @@ public class Business_Profile_Activity extends AppCompatActivity {
     private int supporter_Id;
     private String supporter_username;
 
+    //ArrayList to store favorited businesses
+    private ArrayList<ProfileFavorites> profile_favorites;
+
+    //Variable for storing instance of the firestore database
+    private FirebaseFirestore firebaseFirestore;
+
+    private Boolean business_favorited = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +102,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
         //Blake's buttons
         add_to_fav_btn = findViewById(R.id.add_to_fav_btn);
         direct_message_btn = findViewById(R.id.direct_message_btn);
+
+        //Initializing array list of favorited profiles
+        profile_favorites = new ArrayList<>();
+
 
         // setup button
         guest_btn = findViewById(R.id.buss_pro_guest_btn);
@@ -108,6 +135,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         guestButtonSetup();
                     }
                     else {
+
                             // setup small views in the toolbar
                             supporter_username = bundle.getString("supporter_username");
                             owner_username_view.setVisibility(View.GONE);
@@ -117,6 +145,13 @@ public class Business_Profile_Activity extends AppCompatActivity {
                             direct_message_btn.setVisibility(View.VISIBLE);
 
                             guest_btn.setVisibility(View.GONE);
+
+                            //Handle the favorites button
+                            HandleFavoritesButton();
+
+
+                            //set the on-click listener for the messages button
+
                         }
                     SupporterGuestNavMenuSetup();
                 }
@@ -312,6 +347,112 @@ public class Business_Profile_Activity extends AppCompatActivity {
             startActivity(explore_view);
         }
     }
+
+    //Method for handling the favorites button (to keep the code neat)
+    private void HandleFavoritesButton(){
+
+        //Query the Favorited_Profiles collection in Firestore to see if this business is already
+        //favorited by this supporter account
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.collection("Favorited_Profiles").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        ProfileFavorites pf = new ProfileFavorites();
+                        pf.setProf_fav_supporter_id(Integer.parseInt(doc.get("supporter_id").toString()));
+                        pf.setProf_fav_owner_id(Integer.parseInt(doc.get("owner_id").toString()));
+                        pf.setProf_fav_profile_id(Integer.parseInt(doc.get("profile_id").toString()));
+                        System.out.println(Integer.parseInt(doc.get("supporter_id").toString()));
+
+                        profile_favorites.add(pf);
+
+                    }
+
+                    System.out.println("FAVORITES ARRAY LIST");
+                    for (int i = 0; i < profile_favorites.size(); i++) {
+                        System.out.println(profile_favorites.get(i));
+                        System.out.println(supporter_Id);
+                        System.out.println(owner_Id);
+                    }
+                    //check if this business profile has already been favorited by the supporter viewing it
+                    for(ProfileFavorites pf : profile_favorites){
+                        if(pf.getProf_fav_owner_id() == owner_Id && pf.getProf_fav_supporter_id() == supporter_Id){
+                            business_favorited = true;
+                        }
+                    }
+                    if(business_favorited){
+                        add_to_fav_btn.setText("Unfavorite");
+                    }else{
+                        add_to_fav_btn.setText("Favorite");
+                    }
+
+
+                }
+            }
+
+        });
+
+        //set on-click listener for favorites button
+        add_to_fav_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(business_favorited){
+                    CollectionReference DeleteBusinessFavorite = firebaseFirestore.collection("Favorited_Profiles");
+                    Query query = DeleteBusinessFavorite.whereEqualTo("owner_id", String.valueOf(owner_Id));
+                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    //DelRecModel drm = new DelRecModel();
+                                    //drm.setId(document.get("id").toString());
+                                    //String test = document.get("id").toString();
+                                    //System.out.println("AAWEDRAWODNAOWIDN" + test);
+                                    profile_favorites.removeIf(del -> String.valueOf(del.getProf_fav_owner_id()).equals(document.get("owner_id")));
+                                    firebaseFirestore.collection("Favorited_Profiles").document(document.getId()).delete();
+
+                                    //this refreshes the recyclerview after deletion; probably a weak workaround, callback interface might be better
+                                    //recreate();
+
+                                }
+                            }
+                        }
+
+                    });
+                    Toast.makeText(Business_Profile_Activity.this, "Business removed from favorites", Toast.LENGTH_SHORT).show();
+                    add_to_fav_btn.setText("Favorite");
+                    business_favorited = false;
+                }else{
+                    //add business to the Favorited_Profiles collection of Firestore database
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("owner_id", String.valueOf(owner_Id));
+                    data.put("supporter_id", String.valueOf(supporter_Id));
+                    //profile_id not defined yet
+                    data.put("profile_id", String.valueOf(-999));
+                    firebaseFirestore.collection("Favorited_Profiles").add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(Business_Profile_Activity.this, "Business Favorited", Toast.LENGTH_SHORT).show();
+                                ProfileFavorites pf = new ProfileFavorites();
+                                pf.setProf_fav_profile_id(owner_Id);
+                                pf.setProf_fav_profile_id(-999);
+                                pf.setProf_fav_supporter_id(supporter_Id);
+                                add_to_fav_btn.setText("Unfavorite");
+                                business_favorited = true;
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
+        //set the on-click listener for the messages button
+    }
+
 
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
