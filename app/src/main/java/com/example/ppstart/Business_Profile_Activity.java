@@ -70,6 +70,8 @@ public class Business_Profile_Activity extends AppCompatActivity {
     private String owner_username;
     private int supporter_Id;
     private String supporter_username;
+    private boolean edit_view_flag;
+    private String businessName;
 
     //ArrayList to store favorited businesses
     private ArrayList<ProfileFavorites> profile_favorites;
@@ -88,9 +90,13 @@ public class Business_Profile_Activity extends AppCompatActivity {
     private Boolean chat_exists = false;
 
 
+    // Method to run code when an instance of the business profile is created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //flag setup
+        edit_view_flag = false;
 
         // setup database
         databaseHelper = new DatabaseHelper(Business_Profile_Activity.this);
@@ -171,6 +177,9 @@ public class Business_Profile_Activity extends AppCompatActivity {
                 }
                 else{ // provide owner functionality
                     //create cursor to move query the db and move through the query
+                    if (bundle.containsKey("edit_view_flag")){
+                        edit_view_flag = bundle.getBoolean("edit_view_flag");
+                    }
                     supporter_Id = -2;
                     supporter_username = "";
                     Cursor owner_cursor = db.rawQuery("SELECT * FROM owner_account WHERE owner_id=" + owner_Id, null);
@@ -205,7 +214,9 @@ public class Business_Profile_Activity extends AppCompatActivity {
     }
 
 
+    // Method to create the initial fragment when business profiles is loaded - Stephen
     private void createAboutFragmentManager(){
+
         // gather information for the bundle
         String name = "Business Name";
         String about = "About Description Not Provided!";
@@ -231,6 +242,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
     }
 
 
+    // Method for setting up the owners navigation menu - Stephen
     private void OwnerNavMenuSetup(){
         //create the toggleable drawer inside the toolbar at the top of this page
         setSupportActionBar(toolbar);
@@ -263,23 +275,55 @@ public class Business_Profile_Activity extends AppCompatActivity {
         menu.removeItem(R.id.drawer_favorites);
         menu.removeItem(R.id.drawer_direct_messages);
 
-        //set the listener for when options in the drawer menu are tapped
-        main_nav_menu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()){
-                    case R.id.drawer_logout:
-                        Intent logout = new Intent(Business_Profile_Activity.this, MainActivity.class);
-                        logout.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(logout);
-                        break;
+        // setup for database queries
+        if (profile_cursor != null) {
+            if (profile_cursor.moveToFirst()) {
+                Bundle fragment_info = new Bundle();
+                int business_name_index = profile_cursor.getColumnIndex("business_name");
+                businessName = "Business Name";
+                if (!profile_cursor.isNull(business_name_index)) {
+                    if (!profile_cursor.getString(business_name_index).trim().equals(""))
+                        businessName = profile_cursor.getString(business_name_index);
                 }
-                return false;
+
+                //set the listener for when options in the drawer menu are tapped
+                main_nav_menu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.supporter_view:
+                                edit_view_flag = false;
+                                int about_index = profile_cursor.getColumnIndex("profile_about_desc");
+                                String about = "About Description Not Provided!";
+                                if (!profile_cursor.isNull(about_index)) {
+                                    if (!profile_cursor.getString(about_index).trim().equals(""))
+                                        about = "ABOUT\n\n" + profile_cursor.getString(about_index);
+                                }
+                                fragment_info.putString("name", businessName);
+                                fragment_info.putString("info", about);
+                                fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                                break;
+                            case R.id.edit_supporter_view:
+                                edit_view_flag = true;
+                                break;
+                            case R.id.account_management:
+                                break;
+                            case R.id.drawer_logout:
+                                Intent logout = new Intent(Business_Profile_Activity.this, MainActivity.class);
+                                logout.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(logout);
+                                break;
+                        }
+                        drawer.close();
+                        return false;
+                    }
+                });
             }
-        });
+        }
     }
 
-    private void BottomNavMenuSetup(){
+
+    private void BottomNavMenuSetup(){  // Setup bottom navigation menu for owner, supporter, and guest functionality - Stephen
         // setup for bottom navigation menu
         bottom_nav_menu.setSelectedItemId(R.id.about_button);
         bottom_nav_menu.setOnItemSelectedListener(item -> {
@@ -289,7 +333,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
                 if(profile_cursor.moveToFirst()){
                     Bundle fragment_info = new Bundle();
                     int business_name_index = profile_cursor.getColumnIndex("business_name");
-                    String businessName = "Business Name";
+                    businessName = "Business Name";
                     if (!profile_cursor.isNull(business_name_index)) {
                         if (!profile_cursor.getString(business_name_index).trim().equals("")) businessName = profile_cursor.getString(business_name_index);
                     }
@@ -338,7 +382,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
         });
     }
 
-
+    //Method for handling the push of the back button on an android phone - Stephen
     @Override
     public void onBackPressed() {
         if(supporter_Id == -2){
@@ -361,6 +405,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
             startActivity(explore_view);
         }
     }
+
 
     //Method for handling the favorites button (to keep the code neat) -Blake
     private void HandleFavoritesButton(){
@@ -407,6 +452,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
             }
 
         });
+
 
         //set on-click listener for favorites button  -Blake
         add_to_fav_btn.setOnClickListener(new View.OnClickListener() {
@@ -635,6 +681,12 @@ public class Business_Profile_Activity extends AppCompatActivity {
         header_view = main_nav_menu.getHeaderView(0);
         logo = (ImageView) header_view.findViewById(R.id.drawer_header_image);
         account_username = (TextView) header_view.findViewById(R.id.drawer_header_username);
+
+        // remove owner menu items - added by Stephen
+        Menu menu = main_nav_menu.getMenu();
+        menu.removeItem(R.id.supporter_view);
+        menu.removeItem(R.id.edit_supporter_view);
+        menu.removeItem(R.id.account_management);
 
 
 

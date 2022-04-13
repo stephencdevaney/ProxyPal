@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/supporter_view"
+        android:icon="@drawable/ic_browse"
+        android:title="Customer View"></item>
+    <item
+        android:id="@+id/edit_supporter_view"
+        android:icon="@drawable/ic_account"
+        android:title="Edit Customer View"></item>
+    <item
+        android:id="@+id/account_management"
+        android:icon="@drawable/ic_account"
+        android:title="Account Management"></item>
     <item
         android:id="@+id/drawer_account"
         android:icon="@drawable/ic_account"
         android:title="Options"></item>
-
-
     <item
         android:title="Favorites"
         android:id="@+id/drawer_favorites"

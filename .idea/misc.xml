@@ -3,7 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/discounts_promos_view_layout.xml" value="0.2234375" />
         <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_all_chats.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_browsing.xml" value="0.35462962962962963" />
         <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_business_profile.xml" value="0.35462962962962963" />
@@ -55,6 +54,7 @@
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/supporter_main_page_drawer_header.xml" value="0.3625" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/supporter_main_page_fragment.xml" value="0.3625" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/menu/bussiness_profile_menu.xml" value="0.3398148148148148" />
+        <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/menu/owner_menu_drawer.xml" value="0.32760416666666664" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/menu/shopping_list.xml" value="0.2760416666666667" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/menu/supporter_main_page_bottom_menu.xml" value="0.3625" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/menu/supporter_main_page_drawer_menu.xml" value="0.3625" />
