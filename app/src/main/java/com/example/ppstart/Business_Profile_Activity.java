@@ -259,7 +259,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
         //set the TextView inside the drawer header for this activity to the supporter account's username
         account_username.setText(owner_username);
 
-        //set the icon in the drawer header to the ProxyPal logo
+        //set the icon in the drawer header to the business logo
         if (profile_cursor != null){
             if(profile_cursor.moveToFirst()){
                 int image_index = profile_cursor.getColumnIndex("profile_avatar_image");
