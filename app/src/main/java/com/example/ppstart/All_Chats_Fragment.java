@@ -1,3 +1,5 @@
+//CREATED BY BLAKE
+
 package com.example.ppstart;
 
 import android.app.DownloadManager;
@@ -25,7 +27,7 @@ import com.google.firebase.firestore.Query;
 public class All_Chats_Fragment extends Fragment {
 
     private int supporter_id, owner_id;
-    private String supporter_username, owner_username;
+    private String supporter_username, owner_username, business_name;
     private String viewer;
 
     private RecyclerView all_chats_rec_view;
@@ -59,20 +61,16 @@ public class All_Chats_Fragment extends Fragment {
             viewer = "owner";
             query = firebaseFirestore.collection("Chats").whereEqualTo("owner_id", owner_id);
         }
-        else if(owner_username == null){
+        else{
             System.out.println("This is a supporter account");
             viewer = "supporter";
             query = firebaseFirestore.collection("Chats").whereEqualTo("supporter_id", supporter_id);
         }
-        else{
-            query = firebaseFirestore.collection("Chats").whereEqualTo("supporter_id", supporter_id);
-        }
 
 
 
 
-
-        all_chats_rec_view = (RecyclerView) view.findViewById(R.id.all_chats_rec_view);
+        all_chats_rec_view =  view.findViewById(R.id.all_chats_rec_view);
 
 
         FirestoreRecyclerOptions<AllChatsClass> all_chats = new FirestoreRecyclerOptions.Builder<AllChatsClass>().setQuery(query, AllChatsClass.class).build();
@@ -82,7 +80,8 @@ public class All_Chats_Fragment extends Fragment {
             protected void onBindViewHolder(@NonNull FRA_ViewHolder holder, int position, @NonNull AllChatsClass model) {
 
                 if(viewer == "supporter"){
-                    holder.username_txt.setText(model.getOwner_username());
+                    System.out.println("#####################################################" + model.getBusiness_name());
+                    holder.username_txt.setText(model.getBusiness_name());
                 }else if(viewer == "owner"){
                     holder.username_txt.setText(model.getSupporter_username());
                 }
@@ -94,6 +93,8 @@ public class All_Chats_Fragment extends Fragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        /*
 
                         Intent to_individual_chat = new Intent(getActivity(), Individual_Chats_Activity.class);
                         Bundle chats_bundle = new Bundle();
@@ -121,9 +122,10 @@ public class All_Chats_Fragment extends Fragment {
                             to_individual_chat.putExtra("chats_bundle", chats_bundle);
                             startActivity(to_individual_chat);
                         }
-                       ;
+                       */
                     }
                 });
+
 
 
             }

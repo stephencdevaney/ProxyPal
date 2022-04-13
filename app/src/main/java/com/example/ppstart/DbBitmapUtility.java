@@ -1,3 +1,7 @@
+//FROM STACKOVERFLOW
+//URL: https://stackoverflow.com/questions/9357668/how-to-store-image-in-sqlite-database
+//CREDIT TO USER: Lazy Ninja WITH USER TAG: user:1503155
+
 package com.example.ppstart;
 
 

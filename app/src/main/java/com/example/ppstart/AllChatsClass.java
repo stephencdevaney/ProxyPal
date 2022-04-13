@@ -1,3 +1,5 @@
+//CREATED BY BLAKE
+
 package com.example.ppstart;
 
 public class AllChatsClass {
@@ -6,16 +8,18 @@ public class AllChatsClass {
    private String owner_pic;
    private String supporter_username;
    private String owner_username;
+   private String business_name;
 
     public AllChatsClass() {
     }
 
-    public AllChatsClass(int owner_id, int supporter_id, String owner_pic, String supporter_username, String owner_username) {
+    public AllChatsClass(int owner_id, int supporter_id, String owner_pic, String supporter_username, String owner_username, String business_name) {
         this.owner_id = owner_id;
         this.supporter_id = supporter_id;
         this.owner_pic = owner_pic;
         this.supporter_username = supporter_username;
         this.owner_username = owner_username;
+        this.business_name = business_name;
     }
 
     public int getOwner_id() {
@@ -56,5 +60,13 @@ public class AllChatsClass {
 
     public void setOwner_username(String owner_username) {
         this.owner_username = owner_username;
+    }
+
+    public String getBusiness_name() {
+        return business_name;
+    }
+
+    public void setBusiness_name(String business_name) {
+        this.business_name = business_name;
     }
 }

@@ -1,3 +1,5 @@
+//CREATED BY BLAKE
+
 package com.example.ppstart;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,17 +17,21 @@ import android.widget.TextView;
 
 public class Login_Activity extends AppCompatActivity {
 
+    //Declare the UI elements
     private EditText login_username_txt, login_password_txt;
     private Button confirm_login_btn;
     private DatabaseHelper databaseHelper;
     private TextView no_login_match_warning_txt;
 
+    //Declare the booleans used to check if the account info entered by the user matches
+    //one found in the database
     private Boolean supporter_username_match = false;
     private Boolean supporter_password_match = false;
 
     private Boolean owner_username_match = false;
     private Boolean owner_password_match = false;
 
+    //These variables can be used to pass info in bundles to the activities switched from this activity
     private String supporter_username;
     private int supporter_id;
     private String owner_username;
@@ -69,14 +75,15 @@ public class Login_Activity extends AppCompatActivity {
                         int supporter_password_index = supporter_cursor.getColumnIndex("supporter_password");
 
                         for(int i = 0; i < supporter_cursor.getCount(); i++){
-
+                            //get the text entered into the username box and compare it to the supporter usernames in the db
                             if(login_username_txt.getText().toString().equals(supporter_cursor.getString(supporter_username_index))){
-                                supporter_username_match = true;
+                                supporter_username_match = true; //match!
                                 supporter_username = supporter_cursor.getString(supporter_username_index); //save the username
                                 supporter_id = supporter_cursor.getInt(supporter_id_index); //save the id
                             }
+                            //get the text entered into the password box and compare it to the supporter passwords in the db
                             if(login_password_txt.getText().toString().equals(supporter_cursor.getString(supporter_password_index))){
-                                supporter_password_match = true;
+                                supporter_password_match = true; //match!
                             }
 
                             supporter_cursor.moveToNext();
@@ -93,13 +100,15 @@ public class Login_Activity extends AppCompatActivity {
                         int owner_password_index = owner_cursor.getColumnIndex("owner_password");
 
                         for(int i = 0; i < owner_cursor.getCount(); i++){
+                            //get the text entered into the username box and compare it to the owner usernames in the db
                             if(login_username_txt.getText().toString().equals(owner_cursor.getString(owner_username_index))){
-                                owner_username_match = true;
+                                owner_username_match = true; //match!
                                 owner_username = owner_cursor.getString(owner_username_index); //save the username
                                 owner_id = owner_cursor.getInt(owner_id_index); //save the id
                             }
+                            //get the text entered into the password box and compare it to the owner passwords in the db
                             if(login_password_txt.getText().toString().equals(owner_cursor.getString(owner_password_index))){
-                                owner_password_match = true;
+                                owner_password_match = true; //match!
                             }
 
                             owner_cursor.moveToNext();

@@ -1,3 +1,5 @@
+//CREATED BY BLAKE
+
 package com.example.ppstart;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,13 +16,13 @@ import android.widget.TextView;
 
 public class Create_Owner_Activity extends AppCompatActivity {
 
-    //Declare interactive UI elements
+    //Declare interactive UI elements -Blake
     private EditText owner_username_txt, owner_password_txt, owner_password_confirm_txt;
     private EditText payment_card_num_txt, payment_fname_txt, payment_lname_txt, payment_address_txt, payment_city_txt, payment_state_txt, payment_postal_txt, payment_country_txt;
     private Button  finalize_create_owner_btn;
     private TextView username_warning_txt, password_warning_txt, password_confirm_warning_txt, mismatch_passwords_txt, missing_fields_warning_txt;
 
-    //For database useage
+    //For database useage -Blake
     private DatabaseHelper databaseHelper;
 
 
@@ -29,20 +31,24 @@ public class Create_Owner_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_owner);
 
+        //Method that initialized the views; this keeps the code neat -Blake
         initViews();
 
 
-        //set the on-click listener for the create account button
+        //set the on-click listener for the create account button -Blake
         finalize_create_owner_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //These booleans are used to ensure login entries are valid
+                //All booleans must be evaluated to true for the owner account to be created -Blake
                 boolean valid_username;
                 boolean valid_password;
                 boolean valid_password_confirm;
                 boolean passwords_match;
                 boolean valid_payment;
 
-                //Display a warning if the user did not enter a username
+                //Display a warning if the user did not enter a username -Blake
                 if(owner_username_txt.getText().toString().equals("")){
                     username_warning_txt.setVisibility(View.VISIBLE);
                     valid_username = false;
@@ -50,7 +56,7 @@ public class Create_Owner_Activity extends AppCompatActivity {
                     username_warning_txt.setVisibility(View.GONE);
                     valid_username = true;
                 }
-                //Display a warning if the user did not enter a password
+                //Display a warning if the user did not enter a password -Blake
                 if(owner_password_txt.getText().toString().equals("")){
                     password_warning_txt.setVisibility(View.VISIBLE);
                     valid_password = false;
@@ -58,7 +64,7 @@ public class Create_Owner_Activity extends AppCompatActivity {
                     password_warning_txt.setVisibility(View.GONE);
                     valid_password = true;
                 }
-                //Display a warning if the user did not enter a password confirmation
+                //Display a warning if the user did not enter a password confirmation -Blake
                 if(owner_password_confirm_txt.getText().toString().equals("")){
                     password_confirm_warning_txt.setVisibility(View.VISIBLE);
                     valid_password_confirm = false;
@@ -66,7 +72,7 @@ public class Create_Owner_Activity extends AppCompatActivity {
                     password_confirm_warning_txt.setVisibility(View.GONE);
                     valid_password_confirm = true;
                 }
-                //Display a warning if the passwords entered by the user do not match
+                //Display a warning if the passwords entered by the user do not match -Blake
                 if((!owner_password_txt.getText().toString().equals(owner_password_confirm_txt.getText().toString())) &&
                         (!owner_password_txt.getText().toString().equals(""))
                         && (!owner_password_confirm_txt.getText().toString().equals(""))){
@@ -79,7 +85,7 @@ public class Create_Owner_Activity extends AppCompatActivity {
 
 
 
-                //check if all of the payment information was entered, display a warning if it was not
+                //check if all of the payment information was entered, display a warning if it was not -Blake
                 if(payment_card_num_txt.getText().toString().equals("") || payment_fname_txt.getText().toString().equals("") ||
                         payment_lname_txt.getText().toString().equals("") || payment_address_txt.getText().toString().equals("") ||
                         payment_city_txt.getText().toString().equals("") || payment_state_txt.getText().toString().equals("") ||
@@ -92,16 +98,16 @@ public class Create_Owner_Activity extends AppCompatActivity {
                 }
 
 
-                //If the user has entered a username, two matching passwords, and valid payment info, then the owner account info is entered into the database
+                //If the user has entered a username, two matching passwords, and valid payment info, then the owner account info is entered into the database -Blake
                 if(valid_username && valid_password && valid_password_confirm && passwords_match && valid_payment){
 
                     try{
+                        //Initialize the databaseHelper variable -Blake
                         databaseHelper = new DatabaseHelper(Create_Owner_Activity.this);
+                        //Get a writeable instance of the database (since data is about to be inserted into it) -Blake
                         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-                        //payment_card_num_txt, payment_fname_txt, payment_lname_txt, payment_address_txt, payment_city_txt, payment_state_txt, payment_postal_txt, payment_country_txt;
-
-
+                        //Insert the information in the to "owner_account" table of the database -Blake
                         ContentValues owner_account = new ContentValues();
                         owner_account.put("owner_username", owner_username_txt.getText().toString());
                         owner_account.put("owner_password", owner_password_txt.getText().toString());
@@ -118,7 +124,7 @@ public class Create_Owner_Activity extends AppCompatActivity {
                         db.close();
 
 
-                        //switch to the Business_Profile_Activity activity after the owner account is added to the database
+                        //switch to the Business_Profile_Activity activity after the owner account is added to the database -Blake
                         Intent to_business_profile = new Intent(Create_Owner_Activity.this, Business_Profile_Activity.class);
                         startActivity(to_business_profile);
 

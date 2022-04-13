@@ -1,3 +1,5 @@
+//CREATED BY BLAKE - EDITED BY CHANDLER, JOHNATHAN, AND STEPHEN
+
 package com.example.ppstart;
 
 import android.content.ContentValues;
@@ -19,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        //Initially just creating tables for supporter accounts, owner accounts, and owner profiles. Owner accounts include payment information
+        //owner accounts include payment info
 
         //Create table that contains supporter account data
         String create_supporter_table = "CREATE TABLE " +

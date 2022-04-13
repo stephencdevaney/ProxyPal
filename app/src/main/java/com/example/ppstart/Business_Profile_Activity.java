@@ -6,10 +6,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -54,7 +56,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
     private TextView account_username;
     private ActionBarDrawerToggle toggle;
 
-    // buttons added by Blake for the supporter to message/favorite a bussiness
+    // buttons added by Blake for the supporter to message/favorite a business
     private Button add_to_fav_btn;
     private Button direct_message_btn;
 
@@ -72,10 +74,18 @@ public class Business_Profile_Activity extends AppCompatActivity {
     //ArrayList to store favorited businesses
     private ArrayList<ProfileFavorites> profile_favorites;
 
+    //ArrayList to store all chats for the supporter
+    private ArrayList<AllChatsClass> all_chats_arr_list;
+
     //Variable for storing instance of the firestore database
     private FirebaseFirestore firebaseFirestore;
 
+    //For use with the direct messages button
+    String business_name;
+    String owner_username_msg;
+
     private Boolean business_favorited = false;
+    private Boolean chat_exists = false;
 
 
     @Override
@@ -105,6 +115,9 @@ public class Business_Profile_Activity extends AppCompatActivity {
 
         //Initializing array list of favorited profiles
         profile_favorites = new ArrayList<>();
+
+        //Initializing array list of all chats
+        all_chats_arr_list = new ArrayList<>();
 
 
         // setup button
@@ -148,6 +161,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
 
                             //Handle the favorites button
                             HandleFavoritesButton();
+                            HandleMessagesButton();
 
 
                             //set the on-click listener for the messages button
@@ -348,11 +362,11 @@ public class Business_Profile_Activity extends AppCompatActivity {
         }
     }
 
-    //Method for handling the favorites button (to keep the code neat)
+    //Method for handling the favorites button (to keep the code neat) -Blake
     private void HandleFavoritesButton(){
 
         //Query the Favorited_Profiles collection in Firestore to see if this business is already
-        //favorited by this supporter account
+        //favorited by this supporter account  -Blake
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseFirestore.collection("Favorited_Profiles").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -369,13 +383,14 @@ public class Business_Profile_Activity extends AppCompatActivity {
 
                     }
 
+                    //for testing -Blake
                     System.out.println("FAVORITES ARRAY LIST");
                     for (int i = 0; i < profile_favorites.size(); i++) {
                         System.out.println(profile_favorites.get(i));
                         System.out.println(supporter_Id);
                         System.out.println(owner_Id);
                     }
-                    //check if this business profile has already been favorited by the supporter viewing it
+                    //check if this business profile has already been favorited by the supporter viewing it  -Blake
                     for(ProfileFavorites pf : profile_favorites){
                         if(pf.getProf_fav_owner_id() == owner_Id && pf.getProf_fav_supporter_id() == supporter_Id){
                             business_favorited = true;
@@ -393,7 +408,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
 
         });
 
-        //set on-click listener for favorites button
+        //set on-click listener for favorites button  -Blake
         add_to_fav_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -425,7 +440,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
                     add_to_fav_btn.setText("Favorite");
                     business_favorited = false;
                 }else{
-                    //add business to the Favorited_Profiles collection of Firestore database
+                    //add business to the Favorited_Profiles collection of Firestore database  -Blake
                     Map<String, Object> data = new HashMap<>();
                     data.put("owner_id", String.valueOf(owner_Id));
                     data.put("supporter_id", String.valueOf(supporter_Id));
@@ -436,10 +451,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if(task.isSuccessful()){
                                 Toast.makeText(Business_Profile_Activity.this, "Business Favorited", Toast.LENGTH_SHORT).show();
-                                ProfileFavorites pf = new ProfileFavorites();
-                                pf.setProf_fav_profile_id(owner_Id);
-                                pf.setProf_fav_profile_id(-999);
-                                pf.setProf_fav_supporter_id(supporter_Id);
+                                //ProfileFavorites pf = new ProfileFavorites();
+                                //pf.setProf_fav_profile_id(owner_Id);
+                                //pf.setProf_fav_profile_id(-999);
+                                //pf.setProf_fav_supporter_id(supporter_Id);
                                 add_to_fav_btn.setText("Unfavorite");
                                 business_favorited = true;
                             }
@@ -450,7 +465,138 @@ public class Business_Profile_Activity extends AppCompatActivity {
             }
         });
 
-        //set the on-click listener for the messages button
+
+    }
+
+
+    //Method for handling the messages button (to keep the code neat) - by Blake
+    private void HandleMessagesButton(){
+        /* Exempting this from the demo for now - it is not complete enough to showcase
+
+        //Query the Favorited_Profiles collection in Firestore to see if this business is already
+        //favorited by this supporter account  - by Blake
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.collection("Chats").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        AllChatsClass ac = new AllChatsClass();
+                        ac.setOwner_id(Integer.parseInt(doc.get("owner_id").toString()));
+                        ac.setOwner_username(doc.get("owner_username").toString());
+                        ac.setSupporter_id(Integer.parseInt(doc.get("supporter_id").toString()));
+                        ac.setSupporter_username(doc.get("supporter_username").toString());
+                        System.out.println(Integer.parseInt(doc.get("supporter_id").toString()));
+
+                        all_chats_arr_list.add(ac);
+
+                    }
+
+
+                    System.out.println("ALL CHATS ARRAY LIST");
+                    for (int i = 0; i < all_chats_arr_list.size(); i++) {
+                        System.out.println(all_chats_arr_list.get(i));
+                        System.out.println(supporter_Id);
+                        System.out.println(owner_Id);
+                    }
+
+                    //check if this there is already a chat between this supporter and business  - by Blake
+                    for(AllChatsClass ac : all_chats_arr_list){
+                        if(ac.getOwner_id() == owner_Id && ac.getSupporter_id() == supporter_Id){
+                            chat_exists = true;
+                        }
+                    }
+                    if(chat_exists){
+                        direct_message_btn.setText("Message");
+                    }else{
+                        direct_message_btn.setText("Start Chat");
+                    }
+
+
+                }
+            }
+
+        });
+
+
+        //set on-click listener for messages button  - by Blake
+        direct_message_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(chat_exists){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    Bundle to_fragment_bundle = new Bundle();
+                    to_fragment_bundle.putInt("supporter_id", supporter_Id);
+                    to_fragment_bundle.putString("supporter_username", supporter_username);
+                    All_Chats_Fragment fragInfo = new All_Chats_Fragment();
+                    fragInfo.setArguments(to_fragment_bundle);
+                    transaction.replace(R.id.all_chats_fragment_container, fragInfo);
+                    transaction.commit();
+
+                }else{
+
+
+                    //get the business_name using the owner_id  - by Blake
+                     try{
+                         Cursor business_name_cursor = db.rawQuery("SELECT business_name FROM profile WHERE owner_id = ?", new String[] {String.valueOf(owner_Id)});
+                         Cursor owner_username_cursor = db.rawQuery("SELECT owner_username FROM owner_account WHERE owner_id = ?", new String[] {String.valueOf(owner_Id)});
+                             if(business_name_cursor != null) {
+                                 if (business_name_cursor.moveToFirst()) {
+                                     int business_name_index = business_name_cursor.getColumnIndex("business_name");
+                                     business_name = (business_name_cursor.getString(business_name_index));
+                                     business_name_cursor.close();
+                                     //db.close();
+                                 }else{
+                                     business_name_cursor.close();
+                                     //db.close();
+                                 }
+
+                             }else{
+                                     //db.close();
+                                 }
+
+                             if(owner_username_cursor != null){
+                                 if(owner_username_cursor.moveToFirst()){
+                                     int owner_username_index = owner_username_cursor.getColumnIndex("owner_username");
+                                     owner_username_msg = (owner_username_cursor.getString(owner_username_index));
+                                 }else{
+                                     owner_username_cursor.close();
+                                     db.close();
+                                 }
+                             }else{
+                                 db.close();
+                             }
+
+                     }catch(SQLiteException e){
+                         e.printStackTrace();
+                     }
+
+                    //add a chat to the Chats collection of Firestore database  - by Blake
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("owner_id", String.valueOf(owner_Id));
+                    data.put("supporter_id", String.valueOf(supporter_Id));
+                    data.put("supporter_username", supporter_username);
+                    data.put("owner_username", owner_username_msg);
+                    data.put("business_name", business_name);
+                    firebaseFirestore.collection("Chats").add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(Business_Profile_Activity.this, "Chat Started!", Toast.LENGTH_SHORT).show();
+                                direct_message_btn.setText("Message");
+                                chat_exists = true;
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
+         */
+
+
+
     }
 
 

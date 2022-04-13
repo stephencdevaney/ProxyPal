@@ -1,3 +1,5 @@
+//CREATED BY BLAKE
+
 package com.example.ppstart;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         /* ----------------------------------------------------------------
-        DATABASE ALTERATION HISTORY
+        DATABASE ALTERATION HISTORY - KEPT IN TO HELP GROUP MEMBERS SEE HOW TO MANIPULATE DATABASE
         String create_subscription_table = "CREATE TABLE test_table(database_test TEXT)";
         db.execSQL(create_subscription_table);
 
@@ -222,6 +223,8 @@ public class MainActivity extends AppCompatActivity {
         insert_test_promo1.put("dp_desc", "20% Off.");
 
         db.insert("promotions", null, insert_test_promo1);*/
+
+
         //Set the on-click listener for the login button
         initial_login_btn.setOnClickListener(new View.OnClickListener() {
             @Override

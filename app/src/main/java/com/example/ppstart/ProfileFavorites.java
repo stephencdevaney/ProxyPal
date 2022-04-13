@@ -1,5 +1,8 @@
+//CREATED BY BLAKE
+
 package com.example.ppstart;
 
+//This class is used to store the "link" between a supporter account and a business it favorited using the id's of the respective accounts
 public class ProfileFavorites {
     private int prof_fav_supporter_id, prof_fav_owner_id, prof_fav_profile_id;
 

@@ -1,3 +1,7 @@
+//FROM STACKOVERFLOW
+//URL: https://stackoverflow.com/questions/31759171/recyclerview-and-java-lang-indexoutofboundsexception-inconsistency-detected-in
+//CREDIT TO USER: sakiM  WITH USER TAG: user:3792350
+
 package com.example.ppstart;
 
 import android.content.Context;
@@ -5,8 +9,6 @@ import android.util.Log;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-//FROM STACK OVERFLOW
 
 
 public class WrapContentLinearLayoutManager extends LinearLayoutManager {
