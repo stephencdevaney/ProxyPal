@@ -23,10 +23,27 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
     private BottomNavigationView supporter_bottom_nav_menu;
     private DatabaseHelper databaseHelper;
 
+    private String supporter_username;
+    private int supporter_id;
+
+    private Bundle supporter_bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discounts_promos);
+
+        Intent intent = getIntent();
+        if(intent != null) {
+            Bundle bundle = intent.getBundleExtra("supporter_bundle");
+            if(bundle != null){
+                supporter_username = bundle.getString("supporter_username");
+                supporter_id = bundle.getInt("supporter_id");
+            }
+        }
+
+
+
         promosList = new ArrayList<>();
         rvPromos = findViewById(R.id.dp_rv);
 
@@ -101,7 +118,7 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
 
 
     private void initBottomNavigationView() {
-        //sets the explore page as the default page
+        //sets the discounts/promos page as the default page
         supporter_bottom_nav_menu.setSelectedItemId(R.id.discounts_and_promos);
 
         //Set the listener for the bottom navigation menu buttons
@@ -111,11 +128,19 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
                 //switch to the Supporter_Search_Activity activity when the "search" button at the bottom is tapped
                 case R.id.search:
                     Intent to_search = new Intent(Discounts_Promos_Activity.this, Supporter_Search_Activity.class);
+                    supporter_bundle = new Bundle();
+                    supporter_bundle.putInt("supporter_id", supporter_id);
+                    supporter_bundle.putString("supporter_username", supporter_username);
+                    to_search.putExtra("supporter_bundle", supporter_bundle);
                     startActivity(to_search);
                     break;
                 //switch to the Supporter_Main_Page_Activity activity when the "explore" button at the bottom is tapped
                 case R.id.explore:
                     Intent to_explore = new Intent(Discounts_Promos_Activity.this, Supporter_Main_Page_Activity.class);
+                    supporter_bundle = new Bundle();
+                    supporter_bundle.putInt("supporter_id", supporter_id);
+                    supporter_bundle.putString("supporter_username", supporter_username);
+                    to_explore.putExtra("supporter_bundle", supporter_bundle);
                     startActivity(to_explore);
                     break;
                 //switch to the Discounts_Promos_Activity activity when the "Discounts & Promos" button at the bottom is tapped
@@ -124,6 +149,10 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
                 //switch to the Shopping_List_Activity activity when the "Shopping List" button at the bottom is tapped
                 case R.id.shopping:
                     Intent to_shopping_list = new Intent(Discounts_Promos_Activity.this, Shopping_List_Activity.class);
+                    supporter_bundle = new Bundle();
+                    supporter_bundle.putInt("supporter_id", supporter_id);
+                    supporter_bundle.putString("supporter_username", supporter_username);
+                    to_shopping_list.putExtra("supporter_bundle", supporter_bundle);
                     startActivity(to_shopping_list);
                     break;
                 default:

@@ -230,6 +230,7 @@ public class Favorites_Activity extends AppCompatActivity {
                                     }
                                 }
                             } else {
+
                             }
                         }
 
@@ -240,8 +241,14 @@ public class Favorites_Activity extends AppCompatActivity {
                         }
 
 
-                        //set the adapter for the recycler view of favorited profiles, as described above -Blake
-                        profilesAdapter.setBrowsable_profiles(favorited_browsable_profiles);
+                        if(favorited_browsable_profiles.isEmpty()) {
+                            //display a message if no businesses are favorited
+                            no_business_favorites_txt.setVisibility(View.VISIBLE);
+                        }else{
+                            //set the adapter for the recycler view of favorited profiles, as described above -Blake
+                            profilesAdapter.setBrowsable_profiles(favorited_browsable_profiles);
+                        }
+
 
 
                     } catch (SQLiteException e) {

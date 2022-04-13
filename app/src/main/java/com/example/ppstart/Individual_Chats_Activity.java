@@ -47,18 +47,16 @@ public class Individual_Chats_Activity extends AppCompatActivity {
 
     private String entered_message;
     private Intent intent;
-    private String mrecievername,sendername,mrecieveruid,msenderuid;
 
     private FirebaseAuth firebaseAuth;
 
-    private String senderroom, recieverroom;
+    private String sender_room, receiver_room;
 
-    //private ImageButton mbackbuttonofspecificchat;
 
     private RecyclerView individual_chats_rec_view;
 
     /*
-    String currenttime;
+    String current_time;
     Calendar calendar;
     SimpleDateFormat simpleDateFormat;
 
@@ -82,19 +80,9 @@ public class Individual_Chats_Activity extends AppCompatActivity {
         individual_chat_toolbar=findViewById(R.id.individual_chat_toolbar);
         individual_username=findViewById(R.id.individual_username);
         individual_prof_pic=findViewById(R.id.individual_prof_pic);
-        //mbackbuttonofspecificchat=findViewById(R.id.backbuttonofspecificchat);
 
         messages_array_list=new ArrayList<>();
         individual_chats_rec_view = findViewById(R.id.individual_chats_rec_view);
-
-        /*
-        all_chats_rec_view.setHasFixedSize(true);
-        // all_chats_rec_view.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        //USE WrapContentLinearLayoutManager CLASS TO FIX THE BACK-BUTTON CRASH BUG
-        all_chats_rec_view.setLayoutManager(new WrapContentLinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        all_chats_rec_view.setAdapter(all_chats_adapter);
-
-         */
 
 
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
@@ -154,26 +142,22 @@ public class Individual_Chats_Activity extends AppCompatActivity {
 
 
         /*
-        msenderuid = firebaseAuth.getUid();
-        mrecieveruid=getIntent().getStringExtra("receiveruid");
-        mrecievername=getIntent().getStringExtra("name");
-
-         */
 
 
-        //senderroom = "123456";
-        System.out.println("DSSSSSSSFSDFSGSDFADAFSGSDFAWFADSC" + viewer);
+
+
+
+        //sender_room = "123456";
         //?
         if(viewer.equals("supporter")){
-            senderroom = String.valueOf(supporter_id) + String.valueOf(owner_id);
-            System.out.println("DSSSSSSSFSDFSGSDFADAFSGSDFAWFADSC" + senderroom);
-            recieverroom = String.valueOf(owner_id) + String.valueOf(supporter_id);
+            sender_room = String.valueOf(supporter_id) + String.valueOf(owner_id);
+            reciever_room = String.valueOf(owner_id) + String.valueOf(supporter_id);
         }else if(viewer.equals("owner")){
-            senderroom = String.valueOf(owner_id) + String.valueOf(supporter_id);
-            recieverroom = String.valueOf(supporter_id) + String.valueOf(owner_id);
+            sender_room = String.valueOf(owner_id) + String.valueOf(supporter_id);
+            reciever_room = String.valueOf(supporter_id) + String.valueOf(owner_id);
         }
 
-        FirebaseFirestore.getInstance().collection("Messages").whereEqualTo("senderroom", senderroom).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        FirebaseFirestore.getInstance().collection("Messages").whereEqualTo("sender_room", sender_room).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(QueryDocumentSnapshot doc : task.getResult()){
@@ -191,7 +175,7 @@ public class Individual_Chats_Activity extends AppCompatActivity {
             }
         });
 
-        FirebaseFirestore.getInstance().collection("Messages").whereEqualTo("receiverroom", senderroom).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        FirebaseFirestore.getInstance().collection("Messages").whereEqualTo("receiver_room", sender_room).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(QueryDocumentSnapshot doc : task.getResult()){
@@ -209,19 +193,13 @@ public class Individual_Chats_Activity extends AppCompatActivity {
             }
         });
 
-        //.whereEqualTo("receiverroom", senderroom)
+        //.whereEqualTo("receiver_room", sender_room)
 
 
-        /*
-        mbackbuttonofspecificchat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
 
-        mnameofspecificuser.setText(mrecievername);
+
+
         String uri=intent.getStringExtra("imageuri");
         if(uri.isEmpty())
         {
@@ -229,15 +207,15 @@ public class Individual_Chats_Activity extends AppCompatActivity {
         }
         else
         {
-            Picasso.get().load(uri).into(mimageviewofspecificuser);
+
         }
 
 
-        msendmessagebutton.setOnClickListener(new View.OnClickListener() {
+        sendmessagebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                enteredmessage=mgetmessage.getText().toString();
+                enteredmessage = getmessage.getText().toString();
                 if(enteredmessage.isEmpty())
                 {
                     Toast.makeText(getApplicationContext(),"Enter message first",Toast.LENGTH_SHORT).show();
@@ -251,14 +229,14 @@ public class Individual_Chats_Activity extends AppCompatActivity {
                     Messages messages=new Messages(enteredmessage,firebaseAuth.getUid(),date.getTime(),currenttime);
                     firebaseDatabase=FirebaseDatabase.getInstance();
                     firebaseDatabase.getReference().child("chats")
-                            .child(senderroom)
+                            .child(sender_room)
                             .child("messages")
                             .push().setValue(messages).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             firebaseDatabase.getReference()
                                     .child("chats")
-                                    .child(recieverroom)
+                                    .child(reciever_room)
                                     .child("messages")
                                     .push()
                                     .setValue(messages).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -270,7 +248,7 @@ public class Individual_Chats_Activity extends AppCompatActivity {
                         }
                     });
 
-                    mgetmessage.setText(null);
+                    getmessage.setText(null);
 
 
 

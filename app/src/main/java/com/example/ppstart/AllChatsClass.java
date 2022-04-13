@@ -5,10 +5,11 @@ package com.example.ppstart;
 public class AllChatsClass {
    private int owner_id;
    private int supporter_id;
-   private String owner_pic;
+   private String business_pic;
    private String supporter_username;
    private String owner_username;
    private String business_name;
+
 
     public AllChatsClass() {
     }
@@ -16,7 +17,7 @@ public class AllChatsClass {
     public AllChatsClass(int owner_id, int supporter_id, String owner_pic, String supporter_username, String owner_username, String business_name) {
         this.owner_id = owner_id;
         this.supporter_id = supporter_id;
-        this.owner_pic = owner_pic;
+        this.business_pic = owner_pic;
         this.supporter_username = supporter_username;
         this.owner_username = owner_username;
         this.business_name = business_name;
@@ -38,12 +39,12 @@ public class AllChatsClass {
         this.supporter_id = supporter_id;
     }
 
-    public String getOwner_pic() {
-        return owner_pic;
+    public String getBusiness_pic() {
+        return business_pic;
     }
 
-    public void setOwner_pic(String owner_pic) {
-        this.owner_pic = owner_pic;
+    public void setBusiness_pic(String owner_pic) {
+        this.business_pic = owner_pic;
     }
 
     public String getSupporter_username() {

@@ -35,7 +35,7 @@
                 android:layout_marginRight="30dp"
                 android:id="@+id/toolbar_guest_btn"
                 android:visibility="visible"
-                android:backgroundTint="#70B115"
+                android:backgroundTint="#2196F3"
                 android:textAllCaps="false"
                 android:textSize="13sp"
                 ></Button>
@@ -46,8 +46,7 @@
         <FrameLayout
             android:id="@+id/supporter_main_page_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            ></FrameLayout>
+            android:layout_height="match_parent"></FrameLayout>
 
 
     </RelativeLayout>

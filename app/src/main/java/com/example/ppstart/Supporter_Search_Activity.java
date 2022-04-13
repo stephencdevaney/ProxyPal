@@ -83,6 +83,7 @@ public class Supporter_Search_Activity extends AppCompatActivity {
         search_rec_view = findViewById(R.id.search_recycler_view);
         search_rec_view.setAdapter(searchAdapter);
         search_rec_view.setLayoutManager(new GridLayoutManager(this, 2));
+        searchAdapter.passUserInfo(supporter_id, supporter_username);
 
 
         //set the on-click listener for the search icon -Blake
