@@ -290,21 +290,24 @@ public class Business_Profile_Activity extends AppCompatActivity {
                 main_nav_menu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        int about_index = profile_cursor.getColumnIndex("profile_about_desc");
+                        String about = "About Description Not Provided!";
+                        if (!profile_cursor.isNull(about_index)) {
+                            if (!profile_cursor.getString(about_index).trim().equals(""))
+                                about = "ABOUT\n\n" + profile_cursor.getString(about_index);
+                        }
+                        fragment_info.putString("name", businessName);
+                        fragment_info.putString("info", about);
+                        fragment_info.putInt("owner_id", owner_Id);
+
                         switch (item.getItemId()) {
                             case R.id.supporter_view:
                                 edit_view_flag = false;
-                                int about_index = profile_cursor.getColumnIndex("profile_about_desc");
-                                String about = "About Description Not Provided!";
-                                if (!profile_cursor.isNull(about_index)) {
-                                    if (!profile_cursor.getString(about_index).trim().equals(""))
-                                        about = "ABOUT\n\n" + profile_cursor.getString(about_index);
-                                }
-                                fragment_info.putString("name", businessName);
-                                fragment_info.putString("info", about);
                                 fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                                 break;
                             case R.id.edit_supporter_view:
                                 edit_view_flag = true;
+                                fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_textEditor.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                                 break;
                             case R.id.account_management:
                                 break;
@@ -348,12 +351,20 @@ public class Business_Profile_Activity extends AppCompatActivity {
                             }
                             fragment_info.putString("name", businessName);
                             fragment_info.putString("info", about);
-                            fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            if(edit_view_flag) {
+                                fragment_info.putInt("owner_id", owner_Id);
+                                fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_textEditor.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            }
+                            else fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             break;
                         case R.id.inventory_button: // logic control for inventory button and switching to inventory screen
                             fragment_info.putString("name", businessName);
                             fragment_info.putString("info", "This page is coming soon!");
-                            fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            if (edit_view_flag) {
+                                fragment_info.putInt("owner_id", owner_Id);
+                                fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            }
+                            else fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             break;
                         case R.id.hours_button:  // logic hours for about button and switching to hours screen
                             int hours_index = profile_cursor.getColumnIndex("profile_hours_desc");
@@ -363,7 +374,12 @@ public class Business_Profile_Activity extends AppCompatActivity {
                             }
                             fragment_info.putString("name", businessName);
                             fragment_info.putString("info", hours);
-                            fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            if (edit_view_flag){
+                                fragment_info.putInt("owner_id", owner_Id);
+                                fragment_info.putString("info", "This page is coming soon!");
+                                fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            }
+                            else fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             break;
                         case R.id.layout_button:  // logic layout for about button and switching to layout screen
                             int layout_index = profile_cursor.getColumnIndex("profile_map_image");
@@ -373,7 +389,12 @@ public class Business_Profile_Activity extends AppCompatActivity {
                             }
                             fragment_info.putString("name", businessName);
                             fragment_info.putString("info", layout);
-                            fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_image.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            if (edit_view_flag){
+                                fragment_info.putInt("owner_id", owner_Id);
+                                fragment_info.putString("info", "This page is coming soon!");
+                                fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            }
+                            else fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_image.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             break;
                     }
                 }

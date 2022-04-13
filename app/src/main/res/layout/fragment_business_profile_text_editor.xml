@@ -9,10 +9,10 @@
     tools:context=".business_profile_textEditor">
 
     <TextView
-        android:id="@+id/business_name_text"
+        android:id="@+id/business_name_text_editor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="15dp"
         android:text="Business Name"
         android:textAlignment="center"
         android:textSize="34sp"
@@ -25,9 +25,8 @@
 
     <EditText
         android:id="@+id/edit_business_info"
-        android:layout_width="395dp"
-        android:layout_height="554dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="386dp"
+        android:layout_height="530dp"
         android:ems="16"
         android:gravity="center|top"
         android:inputType="textMultiLine"
@@ -37,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/business_name_text_editor"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
@@ -46,13 +45,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="158dp"
         android:layout_marginEnd="158dp"
-        android:layout_marginBottom="90dp"
+        android:layout_marginBottom="80dp"
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_business_info" />
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

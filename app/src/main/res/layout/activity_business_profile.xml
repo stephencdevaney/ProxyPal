@@ -71,13 +71,13 @@
             android:id="@+id/business_fragment_view"
             android:name="com.example.ppstart.business_profile_text"
             android:layout_width="wrap_content"
-            android:layout_height="676dp"
+            android:layout_height="656dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="-3dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="75dp"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="0dp" />
 
