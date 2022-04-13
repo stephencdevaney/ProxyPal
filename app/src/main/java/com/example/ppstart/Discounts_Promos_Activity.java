@@ -68,14 +68,14 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
 
         try{
             Cursor pCursor = db.rawQuery("SELECT * FROM promos", null);
+            //For the promos tab, we want to grab all promos from the database. A filter will be added to allow the user to better sort.
             if(pCursor != null){
                 if(pCursor.moveToFirst()){
-
                     int dp_id_index = pCursor.getColumnIndex("dp_id");
                     int store_id_index = pCursor.getColumnIndex("store_id");
                     int item_id_index = pCursor.getColumnIndex("item_id");
                     int dp_desc_index = pCursor.getColumnIndex("dp_desc");
-                    for(int i = 0; i < pCursor.getCount(); i++){
+                    for(int i = 0; i < pCursor.getCount(); i++){ //This allows us to create all promos objects that have been found in the database.
                         Promo p  = new Promo();
 
                         p.setDp_id(pCursor.getInt(dp_id_index));
@@ -83,6 +83,7 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
                         p.setItem_id(pCursor.getInt(item_id_index));
                         p.setDp_desc(pCursor.getString(dp_desc_index));
 
+                        //2 Cursors to find information about the store and the item which are related to the promo.
                         Cursor sCursor = db.rawQuery("SELECT business_name FROM profile WHERE profile_id = ?", new String[] {String.valueOf(p.getStore_id())});
                         Cursor iCursor = db.rawQuery("Select item_name, item_picture FROM item WHERE item_number = ?",new String[] {String.valueOf(p.getItem_id())});
                         if(sCursor.moveToFirst()){
@@ -110,7 +111,6 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
             }else{
                 db.close();
             }
-
         }catch(SQLiteException e){
             e.printStackTrace();
         }

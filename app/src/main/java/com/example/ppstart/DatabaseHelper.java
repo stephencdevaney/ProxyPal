@@ -93,8 +93,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Create the table for discounts and promotions
         String create_discounts_and_promos_table = "CREATE TABLE promos(dp_id INTEGER PRIMARY KEY, store_id INTEGER, item_id INTEGER, dp_desc VARCHAR, FOREIGN KEY (store_id) REFERENCES profile (profile_id), FOREIGN KEY (item_id) REFERENCES item(item_number))";
         db.execSQL(create_discounts_and_promos_table);
-        //String create_dp_table = "CREATE TABLE promotions(dp_id VARCHAR PRIMARY KEY, store_id VARCHAR, item_id VARCHAR, dp_desc VARCHAR)";
-        //db.execSQL(create_dp_table);
 
 
         //insert an example supporter account
@@ -154,11 +152,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Inserting in a fake promo
         ContentValues insert_test_promo1 = new ContentValues();
         insert_test_promo1.put("dp_id", 1);
-        insert_test_promo1.put("store_id", 1);
+        insert_test_promo1.put("store_id", 2);
         insert_test_promo1.put("item_id", 1);
         insert_test_promo1.put("dp_desc", "20% Off.");
 
         db.insert("promos", null, insert_test_promo1);
+
+        //Inserting in a fake promo
+        ContentValues insert_test_promo2 = new ContentValues();
+        insert_test_promo2.put("dp_id", 2);
+        insert_test_promo2.put("store_id", 1);
+        insert_test_promo2.put("item_id", 2);
+        insert_test_promo2.put("dp_desc", "Buy 1 get 1 half off.");
+
+        db.insert("promos", null, insert_test_promo2);
+
+        //Inserting in a fake promo
+        ContentValues insert_test_promo3 = new ContentValues();
+        insert_test_promo3.put("dp_id", 3);
+        insert_test_promo3.put("store_id", 1);
+        insert_test_promo3.put("item_id", 3);
+        insert_test_promo3.put("dp_desc", "10% Off.");
+
+        db.insert("promos", null, insert_test_promo3);
+
 
         //insert 3 example profiles into the profile database
         //example profile 1
@@ -211,13 +228,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.insert("profile_favorites", null, insert_test_profile_favorite1);
 
-        //Inserting a fake item
+        //Inserting a fake item1
         ContentValues insert_test_item1 = new ContentValues();
         insert_test_item1.put("item_number", "1");
         insert_test_item1.put("item_name", "Gumballs");
         insert_test_item1.put("item_desc", "A 20 pack of gumballs");
 
         db.insert("item", null, insert_test_item1);
+
+        //Inserting a fake item2
+        ContentValues insert_test_item2 = new ContentValues();
+        insert_test_item2.put("item_number", "2");
+        insert_test_item2.put("item_name", "Cinnamon Toast Crunch");
+        insert_test_item2.put("item_desc", "1 LB box");
+
+        db.insert("item", null, insert_test_item2);
+
+        //Inserting a fake item3
+        ContentValues insert_test_item3 = new ContentValues();
+        insert_test_item3.put("item_number", "3");
+        insert_test_item3.put("item_name", "Paper");
+        insert_test_item3.put("item_desc", "White: 8.5\" x 11\"");
+
+        db.insert("item", null, insert_test_item3);
 
     }
     @Override

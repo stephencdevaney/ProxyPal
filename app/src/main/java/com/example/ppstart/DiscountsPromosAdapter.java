@@ -26,7 +26,7 @@ public class DiscountsPromosAdapter extends RecyclerView.Adapter<DiscountsPromos
         private ImageView itemImage;
 
 
-        public PromosViewHolder(@NonNull View itemView) {
+        public PromosViewHolder(@NonNull View itemView) { //Get the information needed for the display
             super(itemView);
 
             storeName = itemView.findViewById(R.id.dp_store_tv);
@@ -44,7 +44,7 @@ public class DiscountsPromosAdapter extends RecyclerView.Adapter<DiscountsPromos
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PromosViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PromosViewHolder holder, int position) { //Interfaces with the UI to display the proper information
         holder.storeName.setText(promosList.get(position).getStore_name());
         holder.itemName.setText(promosList.get(position).getItem_name());
         holder.itemDesc.setText(promosList.get(position).getDp_desc());

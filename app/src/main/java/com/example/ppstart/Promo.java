@@ -1,5 +1,7 @@
 package com.example.ppstart;
 
+//Naming Scheme: dp = discount/promo
+
 public class Promo {
     private int dp_id;
     private int store_id;
