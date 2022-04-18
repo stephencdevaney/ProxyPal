@@ -7,18 +7,18 @@ public class MessagesClass {
    private String supporter_username;
    private int owner_id;
    private int supporter_id;
-   private String sender;
+   private String viewer_username;
    private String message;
 
    public MessagesClass() {
    }
 
-   public MessagesClass(String owner_username, String supporter_username, int owner_id, int supporter_id, String sender, String message) {
+   public MessagesClass(String owner_username, String supporter_username, int owner_id, int supporter_id, String viewer_username, String message) {
       this.owner_username = owner_username;
       this.supporter_username = supporter_username;
       this.owner_id = owner_id;
       this.supporter_id = supporter_id;
-      this.sender = sender;
+      this.viewer_username = viewer_username;
       this.message = message;
    }
 
@@ -54,12 +54,12 @@ public class MessagesClass {
       this.supporter_id = supporter_id;
    }
 
-   public String getSender() {
-      return sender;
+   public String getViewer_username() {
+      return viewer_username;
    }
 
-   public void setSender(String sender) {
-      this.sender = sender;
+   public void setViewer_username(String viewer_username) {
+      this.viewer_username = viewer_username;
    }
 
    public String getMessage() {

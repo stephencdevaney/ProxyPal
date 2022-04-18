@@ -167,6 +167,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
 
                             //Handle the favorites button
                             HandleFavoritesButton();
+                            //Handle the messages button
                             HandleMessagesButton();
 
 
@@ -273,7 +274,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
         Menu menu = main_nav_menu.getMenu();
         menu.removeItem(R.id.drawer_account);
         menu.removeItem(R.id.drawer_favorites);
-        menu.removeItem(R.id.drawer_direct_messages);
+
+
+        //commented out so that Owners can access their DM's -Blake
+        //menu.removeItem(R.id.drawer_direct_messages);
 
         // setup for database queries
         if (profile_cursor != null) {
@@ -310,6 +314,14 @@ public class Business_Profile_Activity extends AppCompatActivity {
                                 fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_textEditor.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                                 break;
                             case R.id.account_management:
+                                break;
+                            case R.id.drawer_direct_messages:
+                                Intent to_dm = new Intent(Business_Profile_Activity.this, All_Chats_Activity.class);
+                                Bundle dm_bundle = new Bundle();
+                                dm_bundle.putInt("owner_id", owner_Id);
+                                dm_bundle.putString("owner_username", owner_username);
+                                to_dm.putExtra("dm_bundle", dm_bundle);
+                                startActivity(to_dm);
                                 break;
                             case R.id.drawer_logout:
                                 Intent logout = new Intent(Business_Profile_Activity.this, MainActivity.class);
@@ -538,10 +550,9 @@ public class Business_Profile_Activity extends AppCompatActivity {
 
     //Method for handling the messages button (to keep the code neat) - by Blake
     private void HandleMessagesButton(){
-        /* Exempting this from the demo for now - it is not complete enough to showcase
 
-        //Query the Favorited_Profiles collection in Firestore to see if this business is already
-        //favorited by this supporter account  - by Blake
+
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseFirestore.collection("Chats").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -553,19 +564,18 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         ac.setOwner_username(doc.get("owner_username").toString());
                         ac.setSupporter_id(Integer.parseInt(doc.get("supporter_id").toString()));
                         ac.setSupporter_username(doc.get("supporter_username").toString());
-                        System.out.println(Integer.parseInt(doc.get("supporter_id").toString()));
-
+                        ac.setBusiness_name(doc.get("business_name").toString());
                         all_chats_arr_list.add(ac);
-
                     }
 
 
+                    /*  -for testing
                     System.out.println("ALL CHATS ARRAY LIST");
                     for (int i = 0; i < all_chats_arr_list.size(); i++) {
                         System.out.println(all_chats_arr_list.get(i));
                         System.out.println(supporter_Id);
                         System.out.println(owner_Id);
-                    }
+                    */
 
                     //check if this there is already a chat between this supporter and business  - by Blake
                     for(AllChatsClass ac : all_chats_arr_list){
@@ -586,62 +596,82 @@ public class Business_Profile_Activity extends AppCompatActivity {
         });
 
 
+
         //set on-click listener for messages button  - by Blake
         direct_message_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //get business username and name
+                try{
+                    Cursor business_name_cursor = db.rawQuery("SELECT business_name FROM profile WHERE owner_id = ?", new String[] {String.valueOf(owner_Id)});
+                    Cursor owner_username_cursor = db.rawQuery("SELECT owner_username FROM owner_account WHERE owner_id = ?", new String[] {String.valueOf(owner_Id)});
+                    if(business_name_cursor != null) {
+                        if (business_name_cursor.moveToFirst()) {
+                            int business_name_index = business_name_cursor.getColumnIndex("business_name");
+                            business_name = (business_name_cursor.getString(business_name_index));
+                            business_name_cursor.close();
+                            //db.close();
+                        }else{
+                            business_name_cursor.close();
+                            //db.close();
+                        }
+
+                    }else{
+                        //db.close();
+                    }
+
+                    if(owner_username_cursor != null){
+                        if(owner_username_cursor.moveToFirst()){
+                            int owner_username_index = owner_username_cursor.getColumnIndex("owner_username");
+                            owner_username_msg = (owner_username_cursor.getString(owner_username_index));
+                        }else{
+                            owner_username_cursor.close();
+                            db.close();
+                        }
+                    }else{
+                        db.close();
+                    }
+
+                }catch(SQLiteException e){
+                    e.printStackTrace();
+                }
+
+
                 if(chat_exists){
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    Bundle to_fragment_bundle = new Bundle();
-                    to_fragment_bundle.putInt("supporter_id", supporter_Id);
-                    to_fragment_bundle.putString("supporter_username", supporter_username);
-                    All_Chats_Fragment fragInfo = new All_Chats_Fragment();
-                    fragInfo.setArguments(to_fragment_bundle);
-                    transaction.replace(R.id.all_chats_fragment_container, fragInfo);
-                    transaction.commit();
+
+                    /*
+                            chats_bundle.putInt("supporter_id", supporter_id);
+                            chats_bundle.putInt("owner_id", model.getOwner_id());
+                            chats_bundle.putString("owner_username", model.getOwner_username());
+                            chats_bundle.putString("supporter_username", supporter_username);
+                            chats_bundle.putString("viewer_username", supporter_username);
+                            chats_bundle.putString("viewed_username", owner_username);
+                            to_individual_chat.putExtra("chats_bundle", chats_bundle);
+                            startActivity(to_individual_chat);
+
+
+
+                     */
+
+                    Intent to_individual_chat = new Intent(Business_Profile_Activity.this, Individual_Chats_Activity.class);
+                    Bundle chats_bundle = new Bundle();
+                    chats_bundle.putInt("supporter_id", supporter_Id);
+                    chats_bundle.putInt("owner_id", owner_Id);
+                    chats_bundle.putString("owner_username", owner_username_msg);
+                    chats_bundle.putString("supporter_username", supporter_username);
+                    chats_bundle.putString("business_name", business_name);
+                    chats_bundle.putString("viewer_username", supporter_username);
+                    chats_bundle.putString("viewed_username", owner_username_msg);
+                    to_individual_chat.putExtra("chats_bundle", chats_bundle);
+                    startActivity(to_individual_chat);
+
+
 
                 }else{
-
-
-                    //get the business_name using the owner_id  - by Blake
-                     try{
-                         Cursor business_name_cursor = db.rawQuery("SELECT business_name FROM profile WHERE owner_id = ?", new String[] {String.valueOf(owner_Id)});
-                         Cursor owner_username_cursor = db.rawQuery("SELECT owner_username FROM owner_account WHERE owner_id = ?", new String[] {String.valueOf(owner_Id)});
-                             if(business_name_cursor != null) {
-                                 if (business_name_cursor.moveToFirst()) {
-                                     int business_name_index = business_name_cursor.getColumnIndex("business_name");
-                                     business_name = (business_name_cursor.getString(business_name_index));
-                                     business_name_cursor.close();
-                                     //db.close();
-                                 }else{
-                                     business_name_cursor.close();
-                                     //db.close();
-                                 }
-
-                             }else{
-                                     //db.close();
-                                 }
-
-                             if(owner_username_cursor != null){
-                                 if(owner_username_cursor.moveToFirst()){
-                                     int owner_username_index = owner_username_cursor.getColumnIndex("owner_username");
-                                     owner_username_msg = (owner_username_cursor.getString(owner_username_index));
-                                 }else{
-                                     owner_username_cursor.close();
-                                     db.close();
-                                 }
-                             }else{
-                                 db.close();
-                             }
-
-                     }catch(SQLiteException e){
-                         e.printStackTrace();
-                     }
-
                     //add a chat to the Chats collection of Firestore database  - by Blake
                     Map<String, Object> data = new HashMap<>();
-                    data.put("owner_id", String.valueOf(owner_Id));
-                    data.put("supporter_id", String.valueOf(supporter_Id));
+                    data.put("owner_id", owner_Id);
+                    data.put("supporter_id", supporter_Id);
                     data.put("supporter_username", supporter_username);
                     data.put("owner_username", owner_username_msg);
                     data.put("business_name", business_name);
@@ -660,7 +690,8 @@ public class Business_Profile_Activity extends AppCompatActivity {
             }
         });
 
-         */
+
+
 
 
 
@@ -762,10 +793,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
                     case R.id.drawer_direct_messages:
                         if(supporter_Id != -1){
                             Intent to_dm = new Intent(Business_Profile_Activity.this, All_Chats_Activity.class);
-                            Bundle supporter_bundle = new Bundle();
-                            supporter_bundle.putInt("supporter_id", supporter_Id);
-                            supporter_bundle.putString("supporter_username", supporter_username);
-                            to_dm.putExtra("supporter_bundle", supporter_bundle);
+                            Bundle dm_bundle = new Bundle();
+                            dm_bundle.putInt("supporter_id", supporter_Id);
+                            dm_bundle.putString("supporter_username", supporter_username);
+                            to_dm.putExtra("dm_bundle", dm_bundle);
                             startActivity(to_dm);
                         }else{
                             Toast.makeText(Business_Profile_Activity.this, "Sign in or create an account to access this!", Toast.LENGTH_SHORT).show();

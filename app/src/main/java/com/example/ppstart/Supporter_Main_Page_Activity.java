@@ -186,10 +186,10 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
                     case R.id.drawer_direct_messages:
                         if(supporter_id != -1){
                             Intent to_dm = new Intent(Supporter_Main_Page_Activity.this, All_Chats_Activity.class);
-                            Bundle supporter_bundle = new Bundle();
-                            supporter_bundle.putInt("supporter_id", supporter_id);
-                            supporter_bundle.putString("supporter_username", supporter_username);
-                            to_dm.putExtra("supporter_bundle", supporter_bundle);
+                            Bundle dm_bundle = new Bundle();
+                            dm_bundle.putInt("supporter_id", supporter_id);
+                            dm_bundle.putString("supporter_username", supporter_username);
+                            to_dm.putExtra("dm_bundle", dm_bundle);
                             startActivity(to_dm);
                         }else{
                             //if the user is browsing as a Guest, this feature is not available to them; this toast message pops up letting the user know this

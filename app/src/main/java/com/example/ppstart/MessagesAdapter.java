@@ -68,25 +68,26 @@ public class MessagesAdapter extends RecyclerView.Adapter {
 
         //fix this
         MessagesClass messages = messages_array_list.get(position);
-            if(messages.getSender().equals("owner"))
-            {
-                if(GetLoggedInID.logged_in_id == messages.getSupporter_id()){
+           // if(messages.getSender().equals("owner"))
+
+                if(GetLoggedInID.logged_in_username.equals(messages.getViewer_username())){
                     return  ITEM_SEND;
                 }else{
                     return ITEM_RECEIVE;
                 }
 
-            }
-            else if(messages.getSender().equals("supporter")){
 
-                if(GetLoggedInID.logged_in_id == messages.getOwner_id()){
-                    return  ITEM_SEND;
-                }else{
-                    return ITEM_RECEIVE;
-                }
-            }else{
-                return -1;
-            }
+
+            //else if(messages.getSender().equals("supporter")){
+
+              //  if(GetLoggedInID.logged_in_id == messages.getOwner_id()){
+                //    return  ITEM_SEND;
+                //}else{
+                  //  return ITEM_RECEIVE;
+                //}
+            //}else{
+              //  return -1;
+           // }
 
     }
 

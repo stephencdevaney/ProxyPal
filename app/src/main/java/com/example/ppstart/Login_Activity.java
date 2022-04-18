@@ -129,6 +129,11 @@ public class Login_Activity extends AppCompatActivity {
                     supporter_bundle.putInt("supporter_id", supporter_id);
                     supporter_bundle.putString("supporter_username", supporter_username);
                     to_browse.putExtra("supporter_bundle", supporter_bundle);
+
+                    //set loggedin_id
+                    GetLoggedInID.logged_in_id = supporter_id;
+                    GetLoggedInID.logged_in_username = supporter_username;
+
                     //switch to the Supporter_Main_Page_Activity activity
                     startActivity(to_browse);
 
@@ -154,6 +159,11 @@ public class Login_Activity extends AppCompatActivity {
                     profile_bundle.putInt("owner_id", owner_id);
                     profile_bundle.putString("owner_username", owner_username);
                     to_business_profile.putExtra("profile_bundle", profile_bundle);
+
+
+                    //set loggedin_id
+                    GetLoggedInID.logged_in_id = owner_id;
+                    GetLoggedInID.logged_in_username = owner_username;
 
                     //switch to the Business_Profile_Activity activity
                     startActivity(to_business_profile);
