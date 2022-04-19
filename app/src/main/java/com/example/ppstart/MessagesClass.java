@@ -2,24 +2,26 @@
 
 package com.example.ppstart;
 
-public class MessagesClass {
+public class MessagesClass implements Comparable{
    private String owner_username;
    private String supporter_username;
    private int owner_id;
    private int supporter_id;
    private String viewer_username;
    private String message;
+   private long timestamp_ms;
 
    public MessagesClass() {
    }
 
-   public MessagesClass(String owner_username, String supporter_username, int owner_id, int supporter_id, String viewer_username, String message) {
+   public MessagesClass(String owner_username, String supporter_username, int owner_id, int supporter_id, String viewer_username, String message, long timestamp_ms) {
       this.owner_username = owner_username;
       this.supporter_username = supporter_username;
       this.owner_id = owner_id;
       this.supporter_id = supporter_id;
       this.viewer_username = viewer_username;
       this.message = message;
+      this.timestamp_ms = timestamp_ms;
    }
 
    public String getOwner_username() {
@@ -68,5 +70,19 @@ public class MessagesClass {
 
    public void setMessage(String message) {
       this.message = message;
+   }
+
+   public long getTimestamp_ms() {
+      return timestamp_ms;
+   }
+
+   public void setTimestamp_ms(long timestamp_ms) {
+      this.timestamp_ms = timestamp_ms;
+   }
+
+   @Override
+   public int compareTo(Object o) {
+      long compare_timestamps = ((MessagesClass)o).getTimestamp_ms();
+      return (int) this.timestamp_ms - (int) compare_timestamps;
    }
 }

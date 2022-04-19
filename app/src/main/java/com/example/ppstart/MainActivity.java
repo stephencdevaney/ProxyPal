@@ -2,12 +2,14 @@
 
 package com.example.ppstart;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,6 +232,21 @@ public class MainActivity extends AppCompatActivity {
         insert_test_promo1.put("dp_desc", "20% Off.");
 
         db.insert("promotions", null, insert_test_promo1);*/
+        //Instant instant = Instant.now();
+        //System.out.println(instant);
+        //main_test_txt.setText(instant.toString());
+
+        //String current_time;
+        //Calendar calendar;
+        //SimpleDateFormat simpleDateFormat;
+
+        //calendar = Calendar.getInstance();
+       // simpleDateFormat=new SimpleDateFormat("hh:mm a");
+
+        // Date date = new Date();
+        //current_time = simpleDateFormat.format(calendar.getTime());
+
+
 
 
         //Set the on-click listener for the login button

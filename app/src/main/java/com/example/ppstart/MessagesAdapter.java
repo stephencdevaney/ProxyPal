@@ -47,7 +47,6 @@ public class MessagesAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        System.out.println("on bind reached");
         MessagesClass messages = messages_array_list.get(position);
         if(holder.getClass() == SenderViewHolder.class){
             SenderViewHolder viewHolder=(SenderViewHolder)holder;

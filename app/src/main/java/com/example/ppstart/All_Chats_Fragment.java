@@ -85,9 +85,9 @@ public class All_Chats_Fragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull FRA_ViewHolder holder, int position, @NonNull AllChatsClass model) {
 
-                if(viewer_username == supporter_username){
+                if(viewer_username.equals(supporter_username)){
                     holder.username_txt.setText(model.getBusiness_name());
-                  }else if(viewer_username == owner_username){
+                  }else if(viewer_username.equals(owner_username)){
                     holder.username_txt.setText(model.getSupporter_username());
                    }
 
@@ -104,7 +104,7 @@ public class All_Chats_Fragment extends Fragment {
                         Intent to_individual_chat = new Intent(getActivity(), Individual_Chats_Activity.class);
                         Bundle chats_bundle = new Bundle();
 
-                        if(viewer_username == supporter_username){
+                        if(viewer_username.equals(supporter_username)){
                             chats_bundle.putInt("supporter_id", supporter_id);
                             chats_bundle.putInt("owner_id", model.getOwner_id());
                             chats_bundle.putString("owner_username", model.getOwner_username());
@@ -116,7 +116,7 @@ public class All_Chats_Fragment extends Fragment {
 
 
 
-                        }else if (viewer_username == owner_username){
+                        }else if (viewer_username.equals(owner_username)){
                             chats_bundle.putInt("supporter_id", owner_id);
                             chats_bundle.putInt("owner_id", model.getSupporter_id());
                             chats_bundle.putString("supporter_username", model.getSupporter_username());
@@ -160,12 +160,12 @@ public class All_Chats_Fragment extends Fragment {
 
     public class FRA_ViewHolder extends RecyclerView.ViewHolder{
         private TextView username_txt;
-        private ImageView profile_pic;
+        //private ImageView profile_pic;
 
         public FRA_ViewHolder(@NonNull View itemView) {
             super(itemView);
             username_txt = itemView.findViewById(R.id.username_txt);
-            profile_pic = itemView.findViewById(R.id.profile_pic);
+            //profile_pic = itemView.findViewById(R.id.profile_pic);
         }
 
     }

@@ -19,35 +19,12 @@
             android:gravity="center_vertical">
 
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:id="@+id/individual_user_img_cv"
-                android:layout_marginLeft="5dp"
-                android:layout_centerVertical="true"
-                app:cardCornerRadius="35dp">
-
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/individual_prof_pic"
-                    android:scaleType="centerCrop">
-
-                </ImageView>
-
-
-
-            </androidx.cardview.widget.CardView>
-
-
             <TextView
                 android:id="@+id/individual_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/individual_user_img_cv"
                 android:text="Name of User"
                 android:textColor="@color/white"
                 android:textSize="20sp"
@@ -105,7 +82,7 @@
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/ic_send_message"
             android:padding="5dp"
             android:backgroundTint="@android:color/transparent"
             android:background="@android:color/transparent"
