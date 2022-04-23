@@ -133,16 +133,16 @@ public class Business_Profile_Activity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent != null) {
             Bundle bundle = intent.getBundleExtra("profile_bundle");
-            if (bundle != null){
+            if (bundle != null) {
                 owner_Id = bundle.getInt("owner_id");
 
                 // database query setup on profile table for profile used in createAboutFragmentManager and BottemNavMenuSetup functions
-                profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id,null);
+                profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id, null);
 
                 // provide guest and supporter functionality for views
-                if (bundle.containsKey("supporter_id") && bundle.containsKey("supporter_username")){
+                if (bundle.containsKey("supporter_id") && bundle.containsKey("supporter_username")) {
                     supporter_Id = bundle.getInt("supporter_id");
-                    if(supporter_Id == -1) {
+                    if (supporter_Id == -1) {
                         // setup small views in the toolbar
                         supporter_username = "Guest";
                         owner_username_view.setVisibility(View.GONE);
@@ -152,33 +152,31 @@ public class Business_Profile_Activity extends AppCompatActivity {
 
                         guest_btn.setVisibility(View.VISIBLE);
                         guestButtonSetup();
+                    } else {
+
+                        // setup small views in the toolbar
+                        supporter_username = bundle.getString("supporter_username");
+                        owner_username_view.setVisibility(View.GONE);
+                        //owner_username_view.setText("Hello, " + supporter_username + "!");
+
+                        add_to_fav_btn.setVisibility(View.VISIBLE);
+                        direct_message_btn.setVisibility(View.VISIBLE);
+
+                        guest_btn.setVisibility(View.GONE);
+
+                        //Handle the favorites button
+                        HandleFavoritesButton();
+                        //Handle the messages button
+                        HandleMessagesButton();
+
+
+                        //set the on-click listener for the messages button
+
                     }
-                    else {
-
-                            // setup small views in the toolbar
-                            supporter_username = bundle.getString("supporter_username");
-                            owner_username_view.setVisibility(View.GONE);
-                            //owner_username_view.setText("Hello, " + supporter_username + "!");
-
-                            add_to_fav_btn.setVisibility(View.VISIBLE);
-                            direct_message_btn.setVisibility(View.VISIBLE);
-
-                            guest_btn.setVisibility(View.GONE);
-
-                            //Handle the favorites button
-                            HandleFavoritesButton();
-                            //Handle the messages button
-                            HandleMessagesButton();
-
-
-                            //set the on-click listener for the messages button
-
-                        }
                     SupporterGuestNavMenuSetup();
-                }
-                else{ // provide owner functionality
+                } else { // provide owner functionality
                     //create cursor to move query the db and move through the query
-                    if (bundle.containsKey("edit_view_flag")){
+                    if (bundle.containsKey("edit_view_flag")) {
                         edit_view_flag = bundle.getBoolean("edit_view_flag");
                     }
                     supporter_Id = -2;
@@ -186,7 +184,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
                     Cursor owner_cursor = db.rawQuery("SELECT * FROM owner_account WHERE owner_id=" + owner_Id, null);
 
                     // build indices for the cursor
-                    if(owner_cursor != null) {
+                    if (owner_cursor != null) {
                         if (owner_cursor.moveToFirst()) {
                             int owner_username_index = owner_cursor.getColumnIndex("owner_username");
                             int fname_index = owner_cursor.getColumnIndex("first_name");
@@ -202,11 +200,11 @@ public class Business_Profile_Activity extends AppCompatActivity {
                             owner_username_view.setVisibility(View.VISIBLE);
                             owner_username_view.setText("Hello, " + owner_cursor.getString(fname_index) + " " + owner_cursor.getString(lname_index) + "!");
                             guest_btn.setVisibility(View.GONE);
+                            owner_cursor.close();
                             OwnerNavMenuSetup();
                         }
                     }
                 }
-
                 // fragment and bottom navigation menu setup as well as fragment control
                 createAboutFragmentManager();
                 BottomNavMenuSetup();
@@ -229,6 +227,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
                     if (!profile_cursor.getString(about_index).trim().equals("")) about = "ABOUT\n\n" + profile_cursor.getString(about_index);
                 }
                 name = profile_cursor.getString(business_name_index);
+                profile_cursor.close();
             }
         }
 
@@ -279,62 +278,88 @@ public class Business_Profile_Activity extends AppCompatActivity {
         //commented out so that Owners can access their DM's -Blake
         //menu.removeItem(R.id.drawer_direct_messages);
 
-        // setup for database queries
-        if (profile_cursor != null) {
-            if (profile_cursor.moveToFirst()) {
+        //set the listener for when options in the drawer menu are tapped
+        main_nav_menu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Bundle fragment_info = new Bundle();
-                int business_name_index = profile_cursor.getColumnIndex("business_name");
-                businessName = "Business Name";
-                if (!profile_cursor.isNull(business_name_index)) {
-                    if (!profile_cursor.getString(business_name_index).trim().equals(""))
-                        businessName = profile_cursor.getString(business_name_index);
-                }
-
-                //set the listener for when options in the drawer menu are tapped
-                main_nav_menu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        int about_index = profile_cursor.getColumnIndex("profile_about_desc");
-                        String about = "About Description Not Provided!";
-                        if (!profile_cursor.isNull(about_index)) {
-                            if (!profile_cursor.getString(about_index).trim().equals(""))
-                                about = "ABOUT\n\n" + profile_cursor.getString(about_index);
-                        }
-                        fragment_info.putString("name", businessName);
-                        fragment_info.putString("info", about);
-                        fragment_info.putInt("owner_id", owner_Id);
-
-                        switch (item.getItemId()) {
-                            case R.id.supporter_view:
+                switch (item.getItemId()) {
+                    case R.id.supporter_view:
+                        bottom_nav_menu.setSelectedItemId(R.id.about_button);
+                        // setup for database queries
+                        profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id, null);
+                        if (profile_cursor != null){
+                            if (profile_cursor.moveToFirst()) {
+                                int business_name_index = profile_cursor.getColumnIndex("business_name");
+                                businessName = "Business Name";
+                                if (!profile_cursor.isNull(business_name_index)) {
+                                    if (!profile_cursor.getString(business_name_index).trim().equals(""))
+                                        businessName = profile_cursor.getString(business_name_index);
+                                }
+                                int about_index = profile_cursor.getColumnIndex("profile_about_desc");
+                                String about = "About Description Not Provided!";
+                                if (!profile_cursor.isNull(about_index)) {
+                                    if (!profile_cursor.getString(about_index).trim().equals(""))
+                                        about = "ABOUT\n\n" + profile_cursor.getString(about_index);
+                                }
+                                fragment_info.putString("name", businessName);
+                                fragment_info.putString("info", about);
+                                fragment_info.putInt("owner_id", owner_Id);
                                 edit_view_flag = false;
                                 fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
-                                break;
-                            case R.id.edit_supporter_view:
+                                profile_cursor.close();
+                            }
+                        }
+                        break;
+                    case R.id.edit_supporter_view:
+                        // setup for database queries
+                        bottom_nav_menu.setSelectedItemId(R.id.about_button);
+                        profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id, null);
+                        if (profile_cursor != null){
+                            if (profile_cursor.moveToFirst()) {
+                                int business_name_index = profile_cursor.getColumnIndex("business_name");
+                                businessName = "Business Name";
+                                if (!profile_cursor.isNull(business_name_index)) {
+                                    if (!profile_cursor.getString(business_name_index).trim().equals(""))
+                                        businessName = profile_cursor.getString(business_name_index);
+                                }
+                                int about_index = profile_cursor.getColumnIndex("profile_about_desc");
+                                String about = "About Description Not Provided!";
+                                if (!profile_cursor.isNull(about_index)) {
+                                    if (!profile_cursor.getString(about_index).trim().equals(""))
+                                        about = "ABOUT\n\n" + profile_cursor.getString(about_index);
+                                }
+                                fragment_info.putString("name", businessName);
+                                fragment_info.putString("info", about);
+                                fragment_info.putInt("owner_id", owner_Id);
                                 edit_view_flag = true;
                                 fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_textEditor.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
-                                break;
-                            case R.id.account_management:
-                                break;
-                            case R.id.drawer_direct_messages:
-                                Intent to_dm = new Intent(Business_Profile_Activity.this, All_Chats_Activity.class);
-                                Bundle dm_bundle = new Bundle();
-                                dm_bundle.putInt("owner_id", owner_Id);
-                                dm_bundle.putString("owner_username", owner_username);
-                                to_dm.putExtra("dm_bundle", dm_bundle);
-                                startActivity(to_dm);
-                                break;
-                            case R.id.drawer_logout:
-                                Intent logout = new Intent(Business_Profile_Activity.this, MainActivity.class);
-                                logout.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(logout);
-                                break;
+                                profile_cursor.close();
+                            }
                         }
-                        drawer.close();
-                        return false;
-                    }
-                });
+                        break;
+                    case R.id.account_management:
+                        break;
+                    case R.id.drawer_direct_messages:
+                        Intent to_dm = new Intent(Business_Profile_Activity.this, All_Chats_Activity.class);
+                        Bundle dm_bundle = new Bundle();
+                        dm_bundle.putInt("owner_id", owner_Id);
+                        dm_bundle.putString("owner_username", owner_username);
+                        to_dm.putExtra("dm_bundle", dm_bundle);
+                        startActivity(to_dm);
+                        break;
+                    case R.id.drawer_logout:
+                        profile_cursor.close();
+                        db.close();
+                        Intent logout = new Intent(Business_Profile_Activity.this, MainActivity.class);
+                        logout.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(logout);
+                        break;
+                }
+                drawer.close();
+                return false;
             }
-        }
+        });
     }
 
 
@@ -342,20 +367,20 @@ public class Business_Profile_Activity extends AppCompatActivity {
         // setup for bottom navigation menu
         bottom_nav_menu.setSelectedItemId(R.id.about_button);
         bottom_nav_menu.setOnItemSelectedListener(item -> {
+            Bundle fragment_info = new Bundle();
 
-            // setup for database queries
-            if (profile_cursor != null){
-                if(profile_cursor.moveToFirst()){
-                    Bundle fragment_info = new Bundle();
-                    int business_name_index = profile_cursor.getColumnIndex("business_name");
-                    businessName = "Business Name";
-                    if (!profile_cursor.isNull(business_name_index)) {
-                        if (!profile_cursor.getString(business_name_index).trim().equals("")) businessName = profile_cursor.getString(business_name_index);
-                    }
-
-                    // switch statement to control the selection of the navigation menu
-                    switch (item.getItemId()){
-                        case R.id.about_button: // logic control for about button and switching to about screen
+            // switch statement to control the selection of the navigation menu
+            switch (item.getItemId()){
+                case R.id.about_button: // logic control for about button and switching to about screen
+                    // setup for database queries
+                    profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id, null);
+                    if (profile_cursor != null){
+                        if(profile_cursor.moveToFirst()){
+                            int business_name_index = profile_cursor.getColumnIndex("business_name");
+                            businessName = "Business Name";
+                            if (!profile_cursor.isNull(business_name_index)) {
+                                if (!profile_cursor.getString(business_name_index).trim().equals("")) businessName = profile_cursor.getString(business_name_index);
+                            }
                             int about_index = profile_cursor.getColumnIndex("profile_about_desc");
                             String about = "About Description Not Provided!";
                             if (!profile_cursor.isNull(about_index)) {
@@ -368,8 +393,20 @@ public class Business_Profile_Activity extends AppCompatActivity {
                                 fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_textEditor.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             }
                             else fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
-                            break;
-                        case R.id.inventory_button: // logic control for inventory button and switching to inventory screen
+                            profile_cursor.close();
+                        }
+                    }
+                    break;
+                case R.id.inventory_button: // logic control for inventory button and switching to inventory screen
+                    // setup for database queries
+                    profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id, null);
+                    if (profile_cursor != null){
+                        if(profile_cursor.moveToFirst()){
+                            int business_name_index = profile_cursor.getColumnIndex("business_name");
+                            businessName = "Business Name";
+                            if (!profile_cursor.isNull(business_name_index)) {
+                                if (!profile_cursor.getString(business_name_index).trim().equals("")) businessName = profile_cursor.getString(business_name_index);
+                            }
                             fragment_info.putString("name", businessName);
                             fragment_info.putString("info", "This page is coming soon!");
                             if (edit_view_flag) {
@@ -377,8 +414,21 @@ public class Business_Profile_Activity extends AppCompatActivity {
                                 fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             }
                             else fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
-                            break;
-                        case R.id.hours_button:  // logic hours for about button and switching to hours screen
+                            profile_cursor.close();
+                        }
+                    }
+                    break;
+
+                case R.id.hours_button:  // logic hours for about button and switching to hours screen
+                    // setup for database queries
+                    profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id, null);
+                    if (profile_cursor != null){
+                        if(profile_cursor.moveToFirst()){
+                            int business_name_index = profile_cursor.getColumnIndex("business_name");
+                            businessName = "Business Name";
+                            if (!profile_cursor.isNull(business_name_index)) {
+                                if (!profile_cursor.getString(business_name_index).trim().equals("")) businessName = profile_cursor.getString(business_name_index);
+                            }
                             int hours_index = profile_cursor.getColumnIndex("profile_hours_desc");
                             String hours = "Hours of Operation Not Provided!";
                             if (!profile_cursor.isNull(hours_index)) {
@@ -392,8 +442,21 @@ public class Business_Profile_Activity extends AppCompatActivity {
                                 fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             }
                             else fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
-                            break;
-                        case R.id.layout_button:  // logic layout for about button and switching to layout screen
+                            profile_cursor.close();
+                        }
+                    }
+                    break;
+
+                case R.id.layout_button:  // logic layout for about button and switching to layout screen
+                    // setup for database queries
+                    profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id, null);
+                    if (profile_cursor != null){
+                        if(profile_cursor.moveToFirst()){
+                            int business_name_index = profile_cursor.getColumnIndex("business_name");
+                            businessName = "Business Name";
+                            if (!profile_cursor.isNull(business_name_index)) {
+                                if (!profile_cursor.getString(business_name_index).trim().equals("")) businessName = profile_cursor.getString(business_name_index);
+                            }
                             int layout_index = profile_cursor.getColumnIndex("profile_map_image");
                             String layout = "NULL";
                             if (!profile_cursor.isNull(layout_index)) {
@@ -407,9 +470,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
                                 fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             }
                             else fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_image.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
-                            break;
+                            profile_cursor.close();
+                        }
                     }
-                }
+                    break;
             }
             return true;
         });

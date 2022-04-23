@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Locale;
+
 public class business_profile_textEditor extends Fragment {
     private TextView name;
     private EditText info;
@@ -56,16 +58,9 @@ public class business_profile_textEditor extends Fragment {
             owner_Id = main_fragment_bundle.getInt("owner_id");
         }
 
-        // setup database
-        databaseHelper = new DatabaseHelper(getContext());
-        db = databaseHelper.getReadableDatabase();
-        // database query setup on profile table for profile
-        profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id,null);
-
         name.setText(business_name);
         info.setText(information);
         saveButtonSetup();
-
         return view;
     }
 
@@ -81,12 +76,24 @@ public class business_profile_textEditor extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String newInfo = info.getText().toString();
+                // setup database
+                databaseHelper = new DatabaseHelper(getContext());
+                db = databaseHelper.getReadableDatabase();
+                // database query setup on profile table for profile
+                profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id,null);
                 profile_cursor.getColumnIndex("profile_about_desc");
+
+                String newInfo = info.getText().toString();
+                if(newInfo.substring(0,5).toLowerCase(Locale.ROOT).equals("about")){
+                    newInfo = newInfo.substring(5);
+                }
+                newInfo = newInfo.trim();
 
                 ContentValues update_about = new ContentValues();
                 update_about.put("profile_about_desc", newInfo);
-                db.update("profile", update_about,"owner_id=", new String[]{String.valueOf(owner_Id)});
+                db.update("profile", update_about,"owner_id=?", new String[]{String.valueOf(owner_Id)});
+                profile_cursor.close();
+                db.close();
             }
         });
     }
