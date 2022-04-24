@@ -55,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "profile_avatar_image TEXT, " +
                 "profile_about_image TEXT, " +
                 "profile_about_desc TEXT, " +
-                "profile_hours_desc TEXT, " +
+                "profile_hours_desc TEXT DEFAULT 'Monday Closed\nTuesday Closed\nWednesday Closed\nThursday Closed\nFriday Closed\nSaturday Closed\nSunday Closed', " +
                 "profile_map_image TEXT, " +
                 "business_name VARCHAR, " +
                 "latitude DOUBLE NOT NULL," +
@@ -198,7 +198,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile2.put("profile_avatar_image", "https://library.kissclipart.com/20190911/kw/kissclipart-clip-art-lollipop-confectionery-candy-5e6bed0693fcc508.png");
         insert_profile2.put("profile_about_image", "https://media.architecturaldigest.com/photos/55e7658d302ba71f3016531d/4:3/w_800,h_600,c_limit/dam-images-architecture-2015-02-candy-shops-beautiful-candy-shops-01-dylans-candy-bar.jpg");
         insert_profile2.put("profile_about_desc", "This is a candy shop");
-        insert_profile2.put("profile_hours_desc", "Monday Closed\nTuesday Closed\nWednesday Closed\nThursday Closed\nFriday Closed\nSaturday Closed\nSunday Closed");
         insert_profile2.put("profile_map_image", "https://durfeehardware.com/wp-content/uploads/2016/10/Map_First_Floor.png");
         insert_profile2.put("business_name", "Sweetings");
         insert_profile2.put("latitude", "33.5735781");
