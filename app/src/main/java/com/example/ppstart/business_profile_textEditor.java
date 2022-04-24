@@ -26,7 +26,6 @@ public class business_profile_textEditor extends Fragment {
     // database tools
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase db;
-    private Cursor profile_cursor;
 
     private int owner_Id;
     private String business_name;
@@ -79,9 +78,6 @@ public class business_profile_textEditor extends Fragment {
                 // setup database
                 databaseHelper = new DatabaseHelper(getContext());
                 db = databaseHelper.getReadableDatabase();
-                // database query setup on profile table for profile
-                profile_cursor = db.rawQuery("SELECT * FROM profile WHERE owner_id=" + owner_Id,null);
-                profile_cursor.getColumnIndex("profile_about_desc");
 
                 String newInfo = info.getText().toString();
                 if(newInfo.substring(0,5).toLowerCase(Locale.ROOT).equals("about")){
@@ -92,7 +88,6 @@ public class business_profile_textEditor extends Fragment {
                 ContentValues update_about = new ContentValues();
                 update_about.put("profile_about_desc", newInfo);
                 db.update("profile", update_about,"owner_id=?", new String[]{String.valueOf(owner_Id)});
-                profile_cursor.close();
                 db.close();
             }
         });

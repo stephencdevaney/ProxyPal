@@ -184,7 +184,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile1.put("profile_avatar_image", "https://cdn-icons-png.flaticon.com/512/2083/2083417.png");
         insert_profile1.put("profile_about_image", "https://static.thenounproject.com/png/161182-200.png");
         insert_profile1.put("profile_about_desc", "This is a cool business");
-        insert_profile1.put("profile_hours_desc", "Open 24/7/365");
+        insert_profile1.put("profile_hours_desc", "Monday 12:00AM - 11:59PM\nTuesday 12:00AM - 11:59PM\nWednesday 12:00AM - 11:59PM\nThursday 12:00AM - 11:59PM\nFriday 12:00AM - 11:59PM\nSaturday 12:00AM - 11:59PM\nSunday 12:00AM - 11:59PM");
         insert_profile1.put("profile_map_image", "https://i.pinimg.com/originals/78/a1/65/78a165f3db1121f23fe4524f40da2608.png");
         insert_profile1.put("business_name", "Bob's Antiques");
         insert_profile1.put("latitude", "33.570000");
@@ -198,7 +198,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile2.put("profile_avatar_image", "https://library.kissclipart.com/20190911/kw/kissclipart-clip-art-lollipop-confectionery-candy-5e6bed0693fcc508.png");
         insert_profile2.put("profile_about_image", "https://media.architecturaldigest.com/photos/55e7658d302ba71f3016531d/4:3/w_800,h_600,c_limit/dam-images-architecture-2015-02-candy-shops-beautiful-candy-shops-01-dylans-candy-bar.jpg");
         insert_profile2.put("profile_about_desc", "This is a candy shop");
-        insert_profile2.put("profile_hours_desc", "Closed forever");
+        insert_profile2.put("profile_hours_desc", "Monday Closed\nTuesday Closed\nWednesday Closed\nThursday Closed\nFriday Closed\nSaturday Closed\nSunday Closed");
         insert_profile2.put("profile_map_image", "https://durfeehardware.com/wp-content/uploads/2016/10/Map_First_Floor.png");
         insert_profile2.put("business_name", "Sweetings");
         insert_profile2.put("latitude", "33.5735781");
@@ -212,7 +212,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_profile3.put("profile_avatar_image", "https://media.istockphoto.com/photos/transistor-radio-receiver-on-wood-table-in-home-interior-3d-picture-id1139509180?k=20&m=1139509180&s=612x612&w=0&h=cmU7t-4-gL5Zd7NRj7rFLg6d8OjnecYclqj5fU_8dAk=");
         insert_profile3.put("profile_about_image", "https://cbradiomagazine.com/wp-content/uploads/2020/04/Pb150001.jpg");
         insert_profile3.put("profile_about_desc", "Cool radios");
-        insert_profile3.put("profile_hours_desc", "Open only on Mondays at 1:00pm - 1:05pm");
+        insert_profile3.put("profile_hours_desc", "Monday 1:00pm - 1:05pm\nTuesday Closed\nWednesday Closed\nThursday Closed\nFriday Closed\nSaturday Closed\nSunday Closed");
         insert_profile3.put("profile_map_image", "https://www.littletraveler.com/wp-content/uploads/2014/05/storemap.png");
         insert_profile3.put("business_name", "Ramee's Radio Shop");
         insert_profile3.put("latitude", "34.5735781");

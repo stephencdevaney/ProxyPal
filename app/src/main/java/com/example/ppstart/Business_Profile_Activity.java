@@ -432,16 +432,19 @@ public class Business_Profile_Activity extends AppCompatActivity {
                             int hours_index = profile_cursor.getColumnIndex("profile_hours_desc");
                             String hours = "Hours of Operation Not Provided!";
                             if (!profile_cursor.isNull(hours_index)) {
-                                if (!profile_cursor.getString(hours_index).trim().equals("")) hours = "HOURS OF OPERATION\n\n" + profile_cursor.getString(hours_index);
+                                if (!profile_cursor.getString(hours_index).trim().equals("")) hours = profile_cursor.getString(hours_index);
                             }
                             fragment_info.putString("name", businessName);
-                            fragment_info.putString("info", hours);
                             if (edit_view_flag){
                                 fragment_info.putInt("owner_id", owner_Id);
-                                fragment_info.putString("info", "This page is coming soon!");
+                                fragment_info.putString("info", hours);
+                                fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_hours_editor.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            }
+                            else {
+                                hours = "HOURS OF OPERATION\n\n" + hours;
+                                fragment_info.putString("info", hours);
                                 fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             }
-                            else fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             profile_cursor.close();
                         }
                     }
