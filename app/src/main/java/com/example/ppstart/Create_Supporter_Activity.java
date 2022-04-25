@@ -23,6 +23,9 @@ public class Create_Supporter_Activity extends AppCompatActivity {
 
     //For testing strings entered into edit text elements -Blake
     private TextView supporter_test_txt;
+
+
+    //For storing strings that the user enters into the EditText boxes
     private String supporter_username_input = "";
     private String supporter_password_input = "";
     private String supporter_password_confirm_input = "";
@@ -55,6 +58,13 @@ public class Create_Supporter_Activity extends AppCompatActivity {
         finalize_create_supporter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                supporter_username_input = supporter_username_txt.getText().toString();
+                supporter_password_input = supporter_password_txt.getText().toString();
+                supporter_password_confirm_input = supporter_password_confirm_txt.getText().toString();
+
+
+
 
                 //These booleans are used to ensure login entries are valid
                 //All booleans must be evaluated to true for the owner account to be created -Blake
@@ -98,6 +108,8 @@ public class Create_Supporter_Activity extends AppCompatActivity {
                     passwords_match = true;
                 }
 
+
+
                 //If the user has entered a username and two matching passwords, then the account info is entered into the database -Blake
                 if(valid_username && valid_password && valid_password_confirm && passwords_match){
 
@@ -138,6 +150,7 @@ public class Create_Supporter_Activity extends AppCompatActivity {
         });
 
     }
+
 
 
 }

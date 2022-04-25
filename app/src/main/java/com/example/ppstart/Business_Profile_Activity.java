@@ -1,6 +1,9 @@
 package com.example.ppstart;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +34,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -664,6 +670,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
 
 
 
+
         //set on-click listener for messages button  - by Blake
         direct_message_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -731,6 +738,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
                     chats_bundle.putString("viewed_username", owner_username_msg);
                     to_individual_chat.putExtra("chats_bundle", chats_bundle);
                     startActivity(to_individual_chat);
+                    finish();
 
 
 
@@ -882,4 +890,8 @@ public class Business_Profile_Activity extends AppCompatActivity {
             }
         });
     }
+
+
+
 }
+

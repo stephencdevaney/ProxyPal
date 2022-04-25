@@ -2,6 +2,7 @@
 
 package com.example.ppstart;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,8 +36,12 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     private Spinner search_spinner;
     private BottomNavigationView supporter_bottom_nav_menu;
 
+    //String for storing what is entered into search box
+    private String search_box_entry;
+    private String search_type;
+
     //for database useage -Blake
-    private DatabaseHelper databaseHelper;
+    //private DatabaseHelper databaseHelper;
 
 
     //The usual variables for storing the supporter id and username -Blake
@@ -49,8 +54,10 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     //This is the same adapter as the one used for the explore page recycler view -Blake
     private BrowseProfilesAdapter searchAdapter;
 
-    //this is used for partial searches -Blake
-    boolean exists = false;
+    private boolean exists;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +97,12 @@ public class Supporter_Search_Activity extends AppCompatActivity {
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //This method defines the UI elements for the search and executes it -Blake
                 Search();
             }
         });
 
         //this listens for changes in the text entered into the search box -Blake
+
         search_box.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -131,6 +138,8 @@ public class Supporter_Search_Activity extends AppCompatActivity {
 
             }
         });
+
+
 
 
 
@@ -215,19 +224,21 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     //this method allows the user to search for businesses or items (with rudimentary partial search allowed) -Blake
     private void Search() {
         //empty Profile ArrayList used for clearing the screen -Blake
+        exists = false;
         ArrayList<Profile> empty_list = new ArrayList<>();
 
         //for querying the database
-        databaseHelper = new DatabaseHelper(this);
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
         //The search does not execute if the search box has no text entered into it -Blake
-        if (!search_box.getText().toString().equals("")) {
+        if (!search_box.getText().toString().isEmpty()) {
             //store what is entered in the search box into this String variable -Blake
-            String search_box_entry = search_box.getText().toString();
+             search_box_entry = search_box.getText().toString();
 
             //if the user selects the business option in the spinner (meaning the search will be for businesses) -Blake
             if (search_spinner.getSelectedItem().toString().equals("Business")) {
+                search_type = "Business";
                 //if the user selected the items option for searching and then switches to the business option for searching,
                 //the recycler view adapter is set using the empty array list so that the screen clears -Blake
                 searchAdapter.setBrowsable_profiles(empty_list);
@@ -258,47 +269,10 @@ public class Supporter_Search_Activity extends AppCompatActivity {
                             cursor.close();
                             db.close();
 
-                            //create a new ArrayList to store profiles that are searched -Blake
+
                             if (all_browsable_profiles != null) {
-                                ArrayList<Profile> browsable_profiles_search = new ArrayList<>();
-                                for (Profile profile : all_browsable_profiles) {
-                                    //.equalsIgnoreCase ensures the search is case-insensitive -Blake
-                                    if (profile.getBusiness_name().equalsIgnoreCase(search_box_entry)) {
-                                        //if the name of a business queried from the database exactly matches what is entered into the
-                                        //search box, then it is stored into the array list of items successfully searched -Blake
-                                        browsable_profiles_search.add(profile);
-                                    }
-
-                                    //split the profile being iterated through by the for-each loop by spaces and
-                                    //store the result in a string array -Blake
-                                    String[] partial_search = profile.getBusiness_name().split(" ");
-                                    for (int i = 0; i < partial_search.length; i++) {
-
-                                        //if the user enters a partial search and it matches a string stored
-                                        //in the partial search array, then check if the profile was already added to the
-                                        //array list of successful searches -Blake
-                                        if (search_box_entry.equalsIgnoreCase(partial_search[i])) {
-                                            for (Profile profile_search : browsable_profiles_search) {
-                                                //if the profile being iterated through by the first for-each loop
-                                                //was already added to the list of successful searches, then indicate
-                                                //this by setting the exists boolean value to true -Blake
-                                                if (profile_search.getProfile_id() == profile.getProfile_id()) {
-                                                    exists = true;
-                                                }
-                                            }
-
-                                            //if the profile was not already added to the list of successful searches,
-                                            //then add it to this list, meaning that it was found by partial search and not
-                                            //exact match -Blake
-                                            if (!exists) {
-                                                browsable_profiles_search.add(profile);
-                                            }
-                                        }
-                                    }
-
-
-                                }
-
+                                //create a new ArrayList to store profiles that are searched and set it using the SetSearchedArrList method -Blake
+                              ArrayList<Profile> browsable_profiles_search = SetSearchedArrList(all_browsable_profiles);
                                 //set the adapter for the recycler view using the array list containing all of the profiles
                                 //that were successfully searched for -Blake
                                 if (browsable_profiles_search != null) {
@@ -326,7 +300,8 @@ public class Supporter_Search_Activity extends AppCompatActivity {
 
             //if the user selected the item option in the spinner -Blake
             if (search_spinner.getSelectedItem().toString().equals("Item")) {
-                if (!search_box.getText().toString().equals("")) {
+                search_type = "Item";
+                if (!search_box.getText().toString().isEmpty()) {
                     searchAdapter.setBrowsable_profiles(empty_list);
                     Toast.makeText(this, "No Items", Toast.LENGTH_SHORT).show();
                     //once the inventory system has been progressed, this code will be used to do a general search for items
@@ -338,6 +313,66 @@ public class Supporter_Search_Activity extends AppCompatActivity {
 
 
     }
+
+
+
+
+
+
+    private  ArrayList<Profile> SetSearchedArrList(ArrayList<Profile> all_browsable_profiles){
+
+        ArrayList<Profile> searched_array_list = new ArrayList<>();
+
+        if(search_type.equals("Business")){
+            for (Profile profile : all_browsable_profiles) {
+                //.equalsIgnoreCase ensures the search is case-insensitive -Blake
+                if (profile.getBusiness_name().equalsIgnoreCase(search_box_entry)) {
+                    //if the name of a business queried from the database exactly matches what is entered into the
+                    //search box, then it is stored into the array list of items successfully searched -Blake
+                    searched_array_list.add(profile);
+                }
+
+                //split the profile being iterated through by the for-each loop by spaces and
+                //store the result in a string array -Blake
+                String[] partial_search = profile.getBusiness_name().split(" ");
+                for (int i = 0; i < partial_search.length; i++) {
+                    //if the user enters a partial search and it matches a string stored
+                    //in the partial search array, then check if the profile was already added to the
+                    //array list of successful searches -Blake
+                    if (search_box_entry.equalsIgnoreCase(partial_search[i])) {
+                        for (Profile profile_search : searched_array_list) {
+                            //if the profile being iterated through by the first for-each loop
+                            //was already added to the list of successful searches, then indicate
+                            //this by setting the exists boolean value to true -Blake
+                            if (profile_search.getProfile_id() == profile.getProfile_id()) {
+                                exists = true;
+                            }
+                        }
+
+                        //if the profile was not already added to the list of successful searches,
+                        //then add it to this list, meaning that it was found by partial search and not
+                        //exact match -Blake
+                        if (!exists) {
+                            searched_array_list.add(profile);
+                        }
+                    }
+                }
+
+
+            }
+
+
+        }else if(search_type.equals("Item")){
+
+        }
+
+
+        return searched_array_list;
+
+
+    }
+
+
 
 
     @Override

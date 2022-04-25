@@ -5,15 +5,18 @@ package com.example.ppstart;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,8 +24,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class All_Chats_Fragment extends Fragment {
 
@@ -129,6 +137,79 @@ public class All_Chats_Fragment extends Fragment {
 
                     }
                 });
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        /*
+                        CollectionReference DeleteBusinessFavorite = firebaseFirestore.collection("Favorited_Profiles");
+                    Query query = DeleteBusinessFavorite.whereEqualTo("owner_id", String.valueOf(owner_Id));
+                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    //DelRecModel drm = new DelRecModel();
+                                    //drm.setId(document.get("id").toString());
+                                    //String test = document.get("id").toString();
+                                    //System.out.println("AAWEDRAWODNAOWIDN" + test);
+                                    profile_favorites.removeIf(del -> String.valueOf(del.getProf_fav_owner_id()).equals(document.get("owner_id")));
+                                    firebaseFirestore.collection("Favorited_Profiles").document(document.getId()).delete();
+
+                                    //this refreshes the recyclerview after deletion; probably a weak workaround, callback interface might be better
+                                    //recreate();
+
+                                }
+                            }
+                        }
+
+                    });
+                    Toast.makeText(Business_Profile_Activity.this, "Business removed from favorites", Toast.LENGTH_SHORT).show();
+                         */
+                        //CollectionReference DeleteChatMessages = firebaseFirestore.collection("Messages");
+                        CollectionReference DeleteChat = firebaseFirestore.collection("Chats");
+
+                        if(viewer_username.equals(supporter_username)){
+                            Query chats_query = DeleteChat.whereEqualTo("owner_id", model.getOwner_id()).whereEqualTo("supporter_id", supporter_id);
+                            chats_query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        for(QueryDocumentSnapshot document : task.getResult()){
+                                            firebaseFirestore.collection("Chats").document(document.getId()).delete();
+                                            //NOTE: MIGHT NEED TO REMOVE THE DOCUMENT DELETE HERE FROM THE all_chats ARRAY_LIST!
+                                        }
+                                    }
+                                }
+                            });
+                           // chats_bundle.putInt("supporter_id", supporter_id);
+                            //chats_bundle.putInt("owner_id", model.getOwner_id());
+                            //chats_bundle.putString("owner_username", model.getOwner_username());
+                            //chats_bundle.putString("supporter_username", supporter_username);
+                            //chats_bundle.putString("viewer_username", supporter_username);
+                            //chats_bundle.putString("viewed_username", owner_username);
+                            //to_individual_chat.putExtra("chats_bundle", chats_bundle);
+                            //startActivity(to_individual_chat);
+
+
+
+                        }else if (viewer_username.equals(owner_username)){
+                            //chats_bundle.putInt("supporter_id", owner_id);
+                            //chats_bundle.putInt("owner_id", model.getSupporter_id());
+                            //chats_bundle.putString("supporter_username", model.getSupporter_username());
+                            //chats_bundle.putString("owner_username", owner_username);
+                            //chats_bundle.putString("viewer_username", owner_username);
+                            //chats_bundle.putString("viewed_username", supporter_username);
+                            //to_individual_chat.putExtra("chats_bundle", chats_bundle);
+                            //startActivity(to_individual_chat);
+                        }
+
+
+                        //Toast.makeText(getContext(), "Long pressed", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+
 
 
 
@@ -144,6 +225,13 @@ public class All_Chats_Fragment extends Fragment {
         };
 
 
+
+        if(query == null){
+            Toast.makeText(getContext(), "NO MESSAGES!", Toast.LENGTH_SHORT).show();
+
+        }else{
+            Toast.makeText(getContext(), "MESSAGES!", Toast.LENGTH_SHORT).show();
+        }
 
         all_chats_rec_view.setHasFixedSize(true);
         // all_chats_rec_view.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
@@ -186,4 +274,5 @@ public class All_Chats_Fragment extends Fragment {
             all_chats_adapter.stopListening();
         }
     }
+
 }
