@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginTop="0dp"
-        android:background="#075e54"
+        android:background="#894FC3"
         android:id="@+id/individual_chat_toolbar">
 
         <RelativeLayout
@@ -74,7 +74,7 @@
         android:layout_toRightOf="@id/msg_edt_txt"
         android:layout_marginLeft="-50dp"
         android:layout_marginBottom="5dp"
-        android:backgroundTint="#0D8F80"
+        android:backgroundTint="#894FC3"
         android:layout_alignParentBottom="true"
         app:cardCornerRadius="45dp">
 

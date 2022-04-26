@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class All_Chats_Activity extends AppCompatActivity {
 
-    private String supporter_username, owner_username;
+    private String supporter_username, owner_username, business_name;
     private int supporter_id, owner_id;
     private boolean is_supporter;
 
@@ -33,6 +33,7 @@ public class All_Chats_Activity extends AppCompatActivity {
                 supporter_id = bundle.getInt("supporter_id");
                 owner_username = bundle.getString("owner_username");
                 owner_id = bundle.getInt("owner_id");
+
             }
         }
 
@@ -73,6 +74,7 @@ public class All_Chats_Activity extends AppCompatActivity {
             bundle.putString("supporter_username", supporter_username);
             bundle.putInt("owner_id", owner_id);
             bundle.putString("owner_username", owner_username);
+            bundle.putString("business_name", business_name);
             intent.putExtra("supporter_bundle", bundle);
             startActivity(intent);
         }else{

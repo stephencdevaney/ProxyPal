@@ -15,14 +15,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All Chats"
+            android:textColor="#FDFBFB"
+            android:textColorLink="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.071"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:id="@+id/all_chats_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="75dp"
-        ></FrameLayout>
+        android:layout_width="413dp"
+        android:layout_height="671dp"
+        android:layout_marginTop="1dp"
+        android:background="#3C9C27B0"
+        app:layout_constraintTop_toBottomOf="@+id/top_layout"
+        tools:layout_editor_absoluteX="0dp"></FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,7 +38,7 @@ import java.util.Map;
 
 public class Individual_Chats_Activity extends AppCompatActivity {
 
-    private String supporter_username, owner_username;
+    private String supporter_username, owner_username, business_name;
     private int supporter_id, owner_id;
     private int viewer_id, viewed_id;
     private String message;
@@ -87,12 +87,10 @@ public class Individual_Chats_Activity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        msg_edt_txt=findViewById(R.id.msg_edt_txt);
-        //individual_user_img_cv=findViewById(R.id.individual_user_img_cv);
-        send_message_img_btn=findViewById(R.id.send_message_img_btn);
-        individual_chat_toolbar=findViewById(R.id.individual_chat_toolbar);
-        individual_username=findViewById(R.id.individual_username);
-        //individual_prof_pic=findViewById(R.id.individual_prof_pic);
+        msg_edt_txt = findViewById(R.id.msg_edt_txt);
+        send_message_img_btn = findViewById(R.id.send_message_img_btn);
+        individual_chat_toolbar = findViewById(R.id.individual_chat_toolbar);
+        individual_username = findViewById(R.id.individual_username);
 
         messages_array_list=new ArrayList<>();
         individual_chats_rec_view = findViewById(R.id.individual_chats_rec_view);
@@ -119,15 +117,18 @@ public class Individual_Chats_Activity extends AppCompatActivity {
                 owner_username = bundle.getString("owner_username");
                 viewer_username = bundle.getString("viewer_username");
                 viewed_username = bundle.getString("viewed_username");
+                business_name = bundle.getString("business_name");
             }
         }
 
 
 
         if(viewer_username.equals(supporter_username)){
+            individual_username.setText(business_name);
             viewer_room = supporter_username + owner_username;
             viewed_room = owner_username + supporter_username;
         }else if(viewer_username.equals(owner_username)){
+            individual_username.setText(supporter_username);
             viewer_room = owner_username + supporter_username;
             viewed_room = supporter_username + owner_username;
         }
@@ -226,7 +227,6 @@ public class Individual_Chats_Activity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if(task.isSuccessful()){
-                                Toast.makeText(Individual_Chats_Activity.this, "Message 2 Sent", Toast.LENGTH_SHORT).show();
                                 //Collections.sort(messages_array_list);
                                 messagesAdapter.notifyDataSetChanged();
                                 recreate();

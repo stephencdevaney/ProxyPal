@@ -99,15 +99,10 @@ public class All_Chats_Fragment extends Fragment {
                     holder.username_txt.setText(model.getSupporter_username());
                    }
 
-                //String uri = model.getBusiness_pic();
-                //Glide.with(getContext()).asBitmap().load(uri).into(holder.profile_pic);
-
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-
 
                         Intent to_individual_chat = new Intent(getActivity(), Individual_Chats_Activity.class);
                         Bundle chats_bundle = new Bundle();
@@ -119,18 +114,20 @@ public class All_Chats_Fragment extends Fragment {
                             chats_bundle.putString("supporter_username", supporter_username);
                             chats_bundle.putString("viewer_username", supporter_username);
                             chats_bundle.putString("viewed_username", owner_username);
+                            chats_bundle.putString("business_name", model.getBusiness_name());
                             to_individual_chat.putExtra("chats_bundle", chats_bundle);
                             startActivity(to_individual_chat);
 
 
 
                         }else if (viewer_username.equals(owner_username)){
-                            chats_bundle.putInt("supporter_id", owner_id);
-                            chats_bundle.putInt("owner_id", model.getSupporter_id());
+                            chats_bundle.putInt("supporter_id", model.getSupporter_id());
+                            chats_bundle.putInt("owner_id", owner_id);
                             chats_bundle.putString("supporter_username", model.getSupporter_username());
                             chats_bundle.putString("owner_username", owner_username);
                             chats_bundle.putString("viewer_username", owner_username);
                             chats_bundle.putString("viewed_username", supporter_username);
+                            chats_bundle.putString("business_name", model.getBusiness_name());
                             to_individual_chat.putExtra("chats_bundle", chats_bundle);
                             startActivity(to_individual_chat);
                         }
@@ -140,34 +137,9 @@ public class All_Chats_Fragment extends Fragment {
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
-                        /*
-                        CollectionReference DeleteBusinessFavorite = firebaseFirestore.collection("Favorited_Profiles");
-                    Query query = DeleteBusinessFavorite.whereEqualTo("owner_id", String.valueOf(owner_Id));
-                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @RequiresApi(api = Build.VERSION_CODES.N)
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    //DelRecModel drm = new DelRecModel();
-                                    //drm.setId(document.get("id").toString());
-                                    //String test = document.get("id").toString();
-                                    //System.out.println("AAWEDRAWODNAOWIDN" + test);
-                                    profile_favorites.removeIf(del -> String.valueOf(del.getProf_fav_owner_id()).equals(document.get("owner_id")));
-                                    firebaseFirestore.collection("Favorited_Profiles").document(document.getId()).delete();
 
-                                    //this refreshes the recyclerview after deletion; probably a weak workaround, callback interface might be better
-                                    //recreate();
-
-                                }
-                            }
-                        }
-
-                    });
-                    Toast.makeText(Business_Profile_Activity.this, "Business removed from favorites", Toast.LENGTH_SHORT).show();
-                         */
-                        //CollectionReference DeleteChatMessages = firebaseFirestore.collection("Messages");
                         CollectionReference DeleteChat = firebaseFirestore.collection("Chats");
+                        CollectionReference DeleteMessages = firebaseFirestore.collection("Messages");
 
                         if(viewer_username.equals(supporter_username)){
                             Query chats_query = DeleteChat.whereEqualTo("owner_id", model.getOwner_id()).whereEqualTo("supporter_id", supporter_id);
@@ -179,33 +151,32 @@ public class All_Chats_Fragment extends Fragment {
                                             firebaseFirestore.collection("Chats").document(document.getId()).delete();
                                             //NOTE: MIGHT NEED TO REMOVE THE DOCUMENT DELETE HERE FROM THE all_chats ARRAY_LIST!
                                         }
+                                        //Delete all messages associated with a certain chat
+                                        Query messages_query = DeleteMessages.whereEqualTo("owner_id", model.getOwner_id()).whereEqualTo("supporter_id", supporter_id);
+                                        messages_query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if(task.isSuccessful()){
+                                                    for(QueryDocumentSnapshot document : task.getResult()){
+                                                        firebaseFirestore.collection("Messages").document(document.getId()).delete();
+
+                                                    }
+                                                }
+                                            }
+                                        });
+
+
                                     }
+                                    Toast.makeText(getContext(), "Chat Deleted.", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                           // chats_bundle.putInt("supporter_id", supporter_id);
-                            //chats_bundle.putInt("owner_id", model.getOwner_id());
-                            //chats_bundle.putString("owner_username", model.getOwner_username());
-                            //chats_bundle.putString("supporter_username", supporter_username);
-                            //chats_bundle.putString("viewer_username", supporter_username);
-                            //chats_bundle.putString("viewed_username", owner_username);
-                            //to_individual_chat.putExtra("chats_bundle", chats_bundle);
-                            //startActivity(to_individual_chat);
 
 
 
                         }else if (viewer_username.equals(owner_username)){
-                            //chats_bundle.putInt("supporter_id", owner_id);
-                            //chats_bundle.putInt("owner_id", model.getSupporter_id());
-                            //chats_bundle.putString("supporter_username", model.getSupporter_username());
-                            //chats_bundle.putString("owner_username", owner_username);
-                            //chats_bundle.putString("viewer_username", owner_username);
-                            //chats_bundle.putString("viewed_username", supporter_username);
-                            //to_individual_chat.putExtra("chats_bundle", chats_bundle);
-                            //startActivity(to_individual_chat);
+
                         }
 
-
-                        //Toast.makeText(getContext(), "Long pressed", Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
@@ -225,13 +196,6 @@ public class All_Chats_Fragment extends Fragment {
         };
 
 
-
-        if(query == null){
-            Toast.makeText(getContext(), "NO MESSAGES!", Toast.LENGTH_SHORT).show();
-
-        }else{
-            Toast.makeText(getContext(), "MESSAGES!", Toast.LENGTH_SHORT).show();
-        }
 
         all_chats_rec_view.setHasFixedSize(true);
         // all_chats_rec_view.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
