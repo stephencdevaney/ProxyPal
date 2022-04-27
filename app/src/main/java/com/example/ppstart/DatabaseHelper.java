@@ -80,14 +80,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "item_picture TEXT)";
         db.execSQL(create_item);
 
-        //create inventory for stores
-        String create_store_inventory = "CREATE TABLE " +
-                "store_inventory(item_number VARCHAR, " +
+        //create inventory for stores foreign
+        String create_store_inventory = "CREATE TABLE store_inventory" +
+                "(item_number VARCHAR, " +
                 "profile_id INTEGER, " +
-                "owner_id INTEGER, " +
+                "owner_id INTEGER PRIMARY KEY, " +
                 "price DECIMAL NOT NULL, " +
-                "additional_information TEXT, " +
-                "PRIMARY KEY(item_number, owner_id, profile_id))";
+                "additional_information TEXT)";
         db.execSQL(create_store_inventory);
 
         //Create the table for discounts and promotions
@@ -176,6 +175,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.insert("promos", null, insert_test_promo3);
 
+
+        //insert 3 item tables
+        ContentValues insert_item1 = new ContentValues();
+        insert_item1.put("item_number", 1);
+        insert_item1.put("item_name", "apple");
+        insert_item1.put("item_description", "Red Apple");
+
+        db.insert("item", null, insert_item1);
+
+        ContentValues insert_item2 = new ContentValues();
+        insert_item2.put("item_number", 2);
+        insert_item2.put("item_name", "orange");
+        insert_item2.put("item_description", "Organic Orange");
+
+        db.insert("item", null, insert_item2);
+
+        ContentValues insert_item3 = new ContentValues();
+        insert_item3.put("item_number", 3);
+        insert_item3.put("item_name", "grapes");
+        insert_item3.put("item_description", "Fresh Grapes");
+
+        db.insert("item", null, insert_item3);
+
+        //insert mock company inventory
+        ContentValues insert_store_inv1 = new ContentValues();
+        insert_store_inv1.put("item_number", 1);
+        insert_store_inv1.put("price", 1.00);
+        insert_store_inv1.put("owner_id", 1);
+
+        db.insert("store_inventory", null, insert_store_inv1);
+
+
+        ContentValues insert_store_inv2 = new ContentValues();
+        insert_store_inv2.put("item_number", 2);
+        insert_store_inv2.put("price", 2.00);
+        insert_store_inv2.put("owner_id", 1);
+
+        db.insert("store_inventory", null, insert_store_inv2);
+
+        ContentValues insert_store_inv3 = new ContentValues();
+        insert_store_inv3.put("item_number", 3);
+        insert_store_inv3.put("price", 3.00);
+        insert_store_inv3.put("owner_id", 1);
+
+        db.insert("store_inventory", null, insert_store_inv3);
 
         //insert 3 example profiles into the profile database
         //example profile 1

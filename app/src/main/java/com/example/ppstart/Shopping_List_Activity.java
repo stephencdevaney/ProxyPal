@@ -65,11 +65,14 @@ public class Shopping_List_Activity extends AppCompatActivity {
         supporter_bottom_nav_menu = findViewById(R.id.supporter_bottom_nav_menu);
         initBottomNavigationView();
 
+        //Chandler
+        //initiallize xml format items
         listView = findViewById(R.id.listview);
         input = findViewById(R.id.itemInput);
         enter = findViewById(R.id.add);
         items = new ArrayList<>();
 
+        //load content of list.txt for any stored shopping list data
         loadContent();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -77,8 +80,6 @@ public class Shopping_List_Activity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String clickedItem = (String) listView.getItemAtPosition(position);
                 Toast.makeText(Shopping_List_Activity.this, clickedItem, Toast.LENGTH_SHORT).show();
-                //String itemName = items.get(i);
-                //makeToast(itemName);
             }
         });
 
@@ -87,22 +88,26 @@ public class Shopping_List_Activity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 makeToast(items.get(i) + " Removed!");
-
                 removeItem(i);
                 return false;
             }
         });
 
+        //use custom adapter to generate format for list
         adapter = new ListViewAdapter(getApplicationContext(), items);
         listView.setAdapter(adapter);
 
+        //click listener for when enter button is pressed and item added into the list
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 text = input.getText().toString();
+                //check if entered text is empty or not
                 if (text == null || text.length() == 0) {
+                    //error message printed when empty
                     makeToast("LOL, nice try");
                 } else {
+                    //if text box is not empty, add item and clear field
                     addItem(text);
                     input.setText("");
                     makeToast(text + " Added to List!");
@@ -157,6 +162,20 @@ public class Shopping_List_Activity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //save when back button is pressed and activity stops
+    @Override
+    protected void onStop() {
+        File path = getApplicationContext().getFilesDir();
+        try{
+            FileOutputStream writer = new FileOutputStream(new File(path, "list.txt"));
+            writer.write(items.toString().getBytes());
+            writer.close();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        super.onStop();
+    }
+
     //Save data when backing out of app as well
     @Override
     public void onBackPressed() {
@@ -172,10 +191,12 @@ public class Shopping_List_Activity extends AppCompatActivity {
         this.finish();
     }
 
+    //adds item to the items array list and updates adapter
     public static void addItem(String item){
         items.add(item);
         listView.setAdapter(adapter);
     }
+    //remove item from item array list based on item index and update adapter
     public static void removeItem(int removalIndex){
         items.remove(removalIndex);
         listView.setAdapter(adapter);
@@ -190,6 +211,8 @@ public class Shopping_List_Activity extends AppCompatActivity {
         t.show();
     }
 
+
+    //Blake
     private void initBottomNavigationView() {
         //sets the shopping page as the default page
         supporter_bottom_nav_menu.setSelectedItemId(R.id.shopping);

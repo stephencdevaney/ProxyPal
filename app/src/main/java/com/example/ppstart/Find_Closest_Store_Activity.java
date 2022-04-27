@@ -36,7 +36,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Find_Closest_Store_Activity extends AppCompatActivity {
     FusedLocationProviderClient mFusedLocationClient;
@@ -44,12 +47,17 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
 
     static ListView listview;
     static ArrayList<String> companyList;
-    static ArrayList<Float> distanceList;
+    static ArrayList<Float> percentMatchList;
+    static ArrayList<String> custList;
+    static ArrayList<String> tempList;
+
+    static ArrayList<String> tempItemNumber;
+    static ArrayList<String> storeItemList;
+
     static ListViewAdapter_closest_business adapter;
 
     // database tools
-    private DatabaseHelper databaseHelper;
-    private SQLiteDatabase db;
+    //private DatabaseHelper databaseHelper;
     private Cursor profile_cursor;
 
     int distanceRange;
@@ -60,22 +68,31 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_closest_store);
 
+
+        listview = findViewById(R.id.listview_business);
         //System.out.println(profile_cursor);
         //Log.d("Debug tag", profile_cursor);
 
 
-        listview = findViewById(R.id.listview_business);
-        companyList = new ArrayList<>();
-        distanceList = new ArrayList<>();
 
+        /*
+        companyList = new ArrayList<>();
+        percentMatchList = new ArrayList<>();
+        tempItemNumber = new ArrayList<>();
+        storeItemList = new ArrayList<>();
+        */
+
+
+        //*****UNDER CONTRUCTION*****//
+        //load businesses into listview, and display % match to supporters shopping list
         loadBusinesses();
 
-        //adapter = new ListViewAdapter_closest_business(getApplicationContext(), companyList, distanceList);
+        //adapter = new ListViewAdapter_closest_business(getApplicationContext(), companyList, percentMatchList);
         //listview.setAdapter(adapter);
 
         //read data from bundle concerning distange range to find stores
 
-
+        //load data from bundle sent to it, and unpack the distance value
         Intent intent = getIntent();
         if (intent != null) {
             Bundle bundle = intent.getBundleExtra("closestBundle");
@@ -121,7 +138,7 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
                             String lon = Double.toString(location.getLongitude());
                             String lat = Double.toString(location.getLatitude());
 
-                            Toast.makeText(Find_Closest_Store_Activity.this, "Lat: " + lat + "Lon: " + lon, Toast.LENGTH_LONG).show();                            //Toast.makeText(this, "adf", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(Find_Closest_Store_Activity.this, "Lat: " + lat + "Lon: " + lon, Toast.LENGTH_LONG).show();                            //Toast.makeText(this, "adf", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -186,63 +203,115 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
         }
     }
 
+    //load business data to adapter
+    private void loadBusinesses() {
 
-    //databaseHelper = new DatabaseHelper(Find_Closest_Store_Activity.this);
-    //db = databaseHelper.getReadableDatabase();
 
-    //profile_cursor = db.rawQuery("SELECT business_name FROM profile", null);
+        storeItemList = new ArrayList<>();
+        percentMatchList = new ArrayList<>();
+        companyList = new ArrayList<>();
+        tempList = new ArrayList<>();
 
-    private void loadBusinesses(){
-        databaseHelper = new DatabaseHelper(Find_Closest_Store_Activity.this);
-        db = databaseHelper.getWritableDatabase();
 
-        try{
-            Cursor cursor = db.rawQuery("SELECT * FROM profile", null);
-            if(cursor != null){
-                if(cursor.moveToFirst()){
-                    //companyList = new ArrayList<>();
-                    //distanceList = new ArrayList<>();
+        //initialize database
+        DatabaseHelper databaseHelper = new DatabaseHelper(Find_Closest_Store_Activity.this);
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-                    int nameIndex = cursor.getColumnIndex("business_name");
-                    for (int i = 0; i<cursor.getCount();i++){
-                        companyList.add(cursor.getString(nameIndex));
-                        distanceList.add(0.0F);
+        Cursor business_cursor = db.rawQuery("SELECT owner_id, business_name FROM profile", null);
+
+        if(business_cursor != null){
+            if(business_cursor.moveToFirst()){
+                int business_id_index =     business_cursor.getColumnIndex("owner_id");
+                int business_name_index =   business_cursor.getColumnIndex("business_name");
+
+
+
+                for(int i = 0; i < business_cursor.getCount(); i++) {
+                    int business_id = business_cursor.getInt(business_id_index);
+                    String business_name =  business_cursor.getString(business_name_index);
+
+
+
+                    //pull item data from database to build list
+                    //WHERE owner_id =  " + business_id
+                    SQLiteDatabase db1 = databaseHelper.getReadableDatabase();
+                    Cursor item_number_cursor = db1.rawQuery("SELECT item_number FROM store_inventory WHERE item_number='" + business_id + "'" , null);
+                    if (item_number_cursor!=null){
+                        if(item_number_cursor.moveToFirst()){
+                            int item_number_index = item_number_cursor.getColumnIndex("item_number");
+
+                            for (int j = 0; j < item_number_cursor.getCount(); j++){
+                                String item_number = item_number_cursor.getString(item_number_index);
+
+                                Cursor item_name_cursor = db.rawQuery("SELECT item_name FROM item WHERE item_number='" + item_number + "'", null);
+                                if(item_name_cursor != null){
+                                    if(item_name_cursor.moveToFirst()){
+                                        int item_name_index = item_name_cursor.getColumnIndex("item_name");
+                                        String item_name = item_name_cursor.getString(item_name_index);
+                                        storeItemList.add(item_name);
+                                        //jump back to
+                                        item_name_cursor.close();
+                                    }
+                                }
+
+
+                                item_number_cursor.moveToNext();
+                            }
+                            item_number_cursor.close();
+                            db1.close();
+                        }
                     }
 
-                    /*
-                    ArrayList<Profile> browsable_profiles = new ArrayList<>();
 
-                    int profile_id_index = cursor.getColumnIndex("profile_id");
-                    int owner_id_index = cursor.getColumnIndex("owner_id");
-                    int business_name_index = cursor.getColumnIndex("business_name");
-                    int profile_avatar_image_index = cursor.getColumnIndex("profile_avatar_image");
+                    //pull up customers shopping list
+                    File path = getApplicationContext().getFilesDir();
+                    File readFrom = new File(path, "list.txt");
+                    byte[] content = new byte[(int) readFrom.length()];
 
-                    for(int i = 0; i < cursor.getCount(); i++){
-                        Profile p  = new Profile();
-                        p.setProfile_id(cursor.getInt(profile_id_index));
-                        p.setOwner_id(cursor.getInt(owner_id_index));
-                        p.setBusiness_name(cursor.getString(business_name_index));
-                        p.setProfile_avatar_image(cursor.getString(profile_avatar_image_index));
+                    FileInputStream stream = null;
+                    try{
+                        stream = new FileInputStream(readFrom);
+                        stream.read(content);
 
-                        browsable_profiles.add(p);
-                        cursor.moveToNext();
+                        String s = new String(content);
+                        //formatted as [item1, item2, item3]
+                        //cut off brackets in list
+                        s = s.substring(1, s.length()-1);
+                        //split on ", "
+                        String split[] = s.split(", ");
+
+                        //if file empty
+                        if(split.length == 1 && split[0].isEmpty()){
+                            float match = 0;
+                            percentMatchList.add(match);
+                        }
+                        else{
+                            custList = new ArrayList<>(Arrays.asList(split));
+                            int custListLen = custList.size();
+                            custList.retainAll(storeItemList);
+                            int matchCount = custList.size();
+                            float match = 100 * matchCount/custListLen;
+                            custList.clear();
+                            storeItemList.clear();
+                            percentMatchList.add(match);
+                        }
+                    } catch(Exception e){
+                        e.printStackTrace();
                     }
 
-                     */
-                    cursor.close();
-                    db.close();
-                    adapter = new ListViewAdapter_closest_business(getApplicationContext(), companyList, distanceList);
-                    listview.setAdapter(adapter);
 
-                }else{
-                    cursor.close();
-                    db.close();
+
+                    percentMatchList.add((float) 0);
+                    companyList.add(business_name);
+                    business_cursor.moveToNext();
                 }
-            }else{
-                db.close();
+                business_cursor.close();
             }
-        }catch(SQLiteException e){
-            e.printStackTrace();
+            db.close();
         }
+
+        //build adapter off resulting business information
+        adapter = new ListViewAdapter_closest_business(getApplicationContext(), companyList, percentMatchList);
+        listview.setAdapter(adapter);
     }
 }

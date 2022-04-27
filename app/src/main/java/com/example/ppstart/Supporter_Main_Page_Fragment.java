@@ -52,25 +52,29 @@ public class Supporter_Main_Page_Fragment<location_Spinner> extends Fragment {
         //This inflates the supporter_main_page_fragment.xml layout file for this fragment -Blake
         View view = inflater.inflate(R.layout.supporter_main_page_fragment, container, false);
 
+
+        //Chandler
         //Initialize the location spinner - the location_spinner is populated using the supporter_spinner2 string array
         //found in the strings.xml file -Blake
         location_Spinner = view.findViewById(R.id.location_spinner);
-
-
-
         location_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 //hack to fix activity opening with 1st index sellected
+                //activity automatically opens to first index of spinner
+                //1st sellect is ignored and j toggle indicates on the next sellect to launch
+                    //find_closest_store_activity
                 if(j ==0){
                     j++;
                 }
                 else{
+                    //debug to show current long/lat for map traversal later on
                     Toast.makeText(getContext(),adapterView.getItemAtPosition(i).toString() , Toast.LENGTH_SHORT).show();
-
+                    //initiate intent to new activity, but not launch yet
                     Intent to_Closest = new Intent(getActivity(), Find_Closest_Store_Activity.class);
 
                     Bundle closestBundle = new Bundle();
+                    //bundle includes what distance value is sellected based on spinner sellection
                     if(adapterView.getItemAtPosition(i).toString()=="5 miles"){
                         closestBundle.putInt("distReq", 5);
                     }
@@ -87,13 +91,13 @@ public class Supporter_Main_Page_Fragment<location_Spinner> extends Fragment {
                         closestBundle.putInt("distReq", 50);
                     }
 
-
+                    //add bundle to intent, and launch intent
                     to_Closest.putExtra("closestBundle", closestBundle);
                     startActivity(to_Closest);
 
                 }
             }
-
+            //<\Chandler
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -251,20 +255,13 @@ public class Supporter_Main_Page_Fragment<location_Spinner> extends Fragment {
                     }
                     cursor.close();
                     db.close();
-
-
-
                     //for testing that the array list was populated correctly
                     for (int i = 0; i < browsable_profiles.size();i++)
                     {
                         System.out.println(browsable_profiles.get(i));
                     }
-
                     //set the adapter associated with the recycler view using the array list of Profile objects
                     profilesAdapter.setBrowsable_profiles(browsable_profiles);
-
-
-
                 }else{
                     //Don't forget to close the cursors and database instance!
                     cursor.close();
@@ -273,18 +270,9 @@ public class Supporter_Main_Page_Fragment<location_Spinner> extends Fragment {
             }else{
                 db.close();
             }
-
-
-
-
         }catch(SQLiteException e){
             //Since the database is being queried, we have to catch SQLite exeptions
             e.printStackTrace();
-
         }
-
-
     }
-
-
 }

@@ -18,6 +18,7 @@ public class ListViewAdapter extends ArrayAdapter {
     ArrayList<String> list;
     Context context;
 
+    //set context for adapter
     public ListViewAdapter(Context context, ArrayList<String> items){
         super(context, R.layout.list_row, items);
         this.context =context;
@@ -26,20 +27,21 @@ public class ListViewAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
+    //overides when view used
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if(convertView ==null){
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            //used in xml formatting, and sets data types
             convertView = layoutInflater.inflate(R.layout.list_row, null);
             TextView name = convertView.findViewById(R.id.name);
             ImageView remove = convertView.findViewById(R.id.remove);
             TextView number = convertView.findViewById(R.id.number);
 
-
-            number.setText(position +".");
+            //inumerate the item list starting a index 1
+            number.setText(position+1 +".");
             name.setText(list.get(position));
 
-
-
+            //call removeItem function when pressed to remove item from list
             remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
