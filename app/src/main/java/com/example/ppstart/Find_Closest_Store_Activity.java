@@ -299,9 +299,6 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-
-
-                    percentMatchList.add((float) 0);
                     companyList.add(business_name);
                     business_cursor.moveToNext();
                 }
