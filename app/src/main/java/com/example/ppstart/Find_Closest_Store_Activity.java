@@ -57,8 +57,6 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
 
     static ListViewAdapter_closest_business adapter;
 
-    // database tools
-    //private DatabaseHelper databaseHelper;
     private Cursor profile_cursor;
 
     int distanceRange;
@@ -70,10 +68,6 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_find_closest_store);
 
         listview = findViewById(R.id.listview_business);
-
-        //loadBusinesses();
-
-
         Intent intent = getIntent();
         if (intent != null) {
             Bundle bundle = intent.getBundleExtra("closestBundle");
@@ -85,7 +79,7 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         location = new double[2];
-
+        //debugDB();
         // method to get User long/lat
         getLastLocation();
     }
@@ -120,111 +114,9 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
                         } else {
                             double lon = location.getLongitude();
                             double lat = location.getLatitude();
-                            //Toast.makeText(Find_Closest_Store_Activity.this, "Lat: " + lat + "Lon: " + lon, Toast.LENGTH_LONG).show();                            //Toast.makeText(this, "adf", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(Find_Closest_Store_Activity.this, "Lat: " + lat + "Lon: " + lon, Toast.LENGTH_LONG).show();
+                            loadBusiness();
 
-                            storeItemList = new ArrayList<>();
-                            percentMatchList = new ArrayList<>();
-                            companyList = new ArrayList<>();
-                            tempList = new ArrayList<>();
-
-
-                            //initialize database
-                            DatabaseHelper databaseHelper = new DatabaseHelper(Find_Closest_Store_Activity.this);
-                            SQLiteDatabase db = databaseHelper.getReadableDatabase();
-
-                            Cursor business_cursor = db.rawQuery("SELECT owner_id, business_name FROM profile", null);
-
-                            if(business_cursor != null){
-                                if(business_cursor.moveToFirst()){
-                                    int business_id_index =     business_cursor.getColumnIndex("owner_id");
-                                    int business_name_index =   business_cursor.getColumnIndex("business_name");
-
-
-
-                                    for(int i = 0; i < business_cursor.getCount(); i++) {
-                                        int business_id = business_cursor.getInt(business_id_index);
-                                        String business_name =  business_cursor.getString(business_name_index);
-
-
-
-                                        //pull item data from database to build list
-                                        //WHERE owner_id =  " + business_id
-                                        SQLiteDatabase db1 = databaseHelper.getReadableDatabase();
-                                        Cursor item_number_cursor = db1.rawQuery("SELECT item_number FROM store_inventory WHERE item_number='" + business_id + "'" , null);
-                                        if (item_number_cursor!=null){
-                                            if(item_number_cursor.moveToFirst()){
-                                                int item_number_index = item_number_cursor.getColumnIndex("item_number");
-
-                                                for (int j = 0; j < item_number_cursor.getCount(); j++){
-                                                    String item_number = item_number_cursor.getString(item_number_index);
-
-                                                    Cursor item_name_cursor = db.rawQuery("SELECT item_name FROM item WHERE item_number='" + item_number + "'", null);
-                                                    if(item_name_cursor != null){
-                                                        if(item_name_cursor.moveToFirst()){
-                                                            int item_name_index = item_name_cursor.getColumnIndex("item_name");
-                                                            String item_name = item_name_cursor.getString(item_name_index);
-                                                            storeItemList.add(item_name);
-                                                            //jump back to
-                                                            item_name_cursor.close();
-                                                        }
-                                                    }
-
-
-                                                    item_number_cursor.moveToNext();
-                                                }
-                                                item_number_cursor.close();
-                                                db1.close();
-                                            }
-                                        }
-
-
-                                        //pull up customers shopping list
-                                        File path = getApplicationContext().getFilesDir();
-                                        File readFrom = new File(path, "list.txt");
-                                        byte[] content = new byte[(int) readFrom.length()];
-
-                                        FileInputStream stream = null;
-                                        try{
-                                            stream = new FileInputStream(readFrom);
-                                            stream.read(content);
-
-                                            String s = new String(content);
-                                            //formatted as [item1, item2, item3]
-                                            //cut off brackets in list
-                                            s = s.substring(1, s.length()-1);
-                                            //split on ", "
-                                            String split[] = s.split(", ");
-
-                                            //if file empty
-                                            if(split.length == 1 && split[0].isEmpty()){
-                                                float match = 0;
-                                                percentMatchList.add(match);
-                                            }
-                                            else{
-                                                custList = new ArrayList<>(Arrays.asList(split));
-                                                int custListLen = custList.size();
-                                                custList.retainAll(storeItemList);
-                                                int matchCount = custList.size();
-                                                float match = 100 * matchCount/custListLen;
-                                                custList.clear();
-                                                storeItemList.clear();
-                                                percentMatchList.add(match);
-                                            }
-                                        } catch(Exception e){
-                                            e.printStackTrace();
-                                        }
-
-                                        companyList.add(business_name);
-                                        business_cursor.moveToNext();
-                                    }
-                                    business_cursor.close();
-                                }
-                                db.close();
-                            }
-
-                            //build adapter off resulting business information
-                            adapter = new ListViewAdapter_closest_business(getApplicationContext(), companyList, percentMatchList);
-                            listview.setAdapter(adapter);
                         }
                     }
                 });
@@ -289,8 +181,133 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
         }
     }
 
-    private double distance(double lonDist, double latDist) {
-        Math.sqrt(lonDist*lonDist + latDist*latDist);
-        return 0;
+    private void loadBusiness(){
+        storeItemList = new ArrayList<>();
+        percentMatchList = new ArrayList<>();
+        companyList = new ArrayList<>();
+        tempList = new ArrayList<>();
+
+        System.out.println("This is a test\n");
+
+        //initialize database
+        DatabaseHelper databaseHelper = new DatabaseHelper(Find_Closest_Store_Activity.this);
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        Cursor business_cursor = db.rawQuery("SELECT owner_id, business_name FROM profile", null);
+
+        if(business_cursor != null){
+            if(business_cursor.moveToFirst()){
+                int business_id_index =     business_cursor.getColumnIndex("owner_id");
+                int business_name_index =   business_cursor.getColumnIndex("business_name");
+
+                for(int i = 0; i < business_cursor.getCount(); i++) {
+                    String business_id = business_cursor.getString(business_id_index);
+                    String business_name =  business_cursor.getString(business_name_index);
+                    System.out.println(business_name + " -> " + business_id);
+
+                    //pull item data from database to build list
+                    //WHERE owner_id =  " + business_id
+                    //SQLiteDatabase db1 = databaseHelper.getReadableDatabase();
+                    Cursor item_number_cursor = db.rawQuery("SELECT item_number FROM store_inventory WHERE owner_id = '"+business_id+"'", null);
+                    if (item_number_cursor!=null){
+                        if(item_number_cursor.moveToFirst()){
+                            int item_number_index = item_number_cursor.getColumnIndex("item_number");
+
+                            for (int k = 0; k < item_number_cursor.getCount(); k++){
+                            //while(item_number_cursor.moveToNext()){
+                                System.out.print(k+"->"+ item_number_cursor.getCount()+ ": ");
+                                String item_number = item_number_cursor.getString(item_number_index);
+                                System.out.println("\t"+ item_number);
+                                Cursor item_name_cursor = db.rawQuery("SELECT item_name FROM item WHERE item_number = '"+item_number+"'", null);
+                                if(item_name_cursor != null){
+                                    if(item_name_cursor.moveToFirst()){
+                                        System.out.println("Entering Item name loop");
+                                        int item_name_index = item_name_cursor.getColumnIndex("item_name");
+                                        String item_name = item_name_cursor.getString(item_name_index);
+                                        System.out.println("\t\t"+item_name);
+                                        storeItemList.add(item_name);
+                                        //jump back to
+                                        item_name_cursor.close();
+                                    }
+                                }
+                                item_number_cursor.moveToNext();
+                            }
+                            item_number_cursor.close();
+                        }
+                    }
+
+
+                    //pull up customers shopping list
+                    File path = getApplicationContext().getFilesDir();
+                    File readFrom = new File(path, "list.txt");
+                    byte[] content = new byte[(int) readFrom.length()];
+
+                    FileInputStream stream = null;
+                    try{
+                        stream = new FileInputStream(readFrom);
+                        stream.read(content);
+
+                        String s = new String(content);
+                        //formatted as [item1, item2, item3]
+                        //cut off brackets in list
+                        s = s.substring(1, s.length()-1);
+                        //split on ", "
+                        String split[] = s.split(", ");
+
+                        //if file empty
+                        if(split.length == 1 && split[0].isEmpty()){
+                            float match = 0;
+                            percentMatchList.add(match);
+                        }
+                        else{
+                            custList = new ArrayList<>(Arrays.asList(split));
+                            int custListLen = custList.size();
+                            custList.retainAll(storeItemList);
+                            int matchCount = custList.size();
+                            float match = 100 * matchCount/custListLen;
+                            custList.clear();
+                            storeItemList.clear();
+                            percentMatchList.add(match);
+                        }
+                    } catch(Exception e){
+                        e.printStackTrace();
+                    }
+
+                    companyList.add(business_name);
+                    business_cursor.moveToNext();
+                }
+                business_cursor.close();
+            }
+            db.close();
+        }
+
+        //build adapter off resulting business information
+        adapter = new ListViewAdapter_closest_business(getApplicationContext(), companyList, percentMatchList);
+        listview.setAdapter(adapter);
+
+    }
+
+    private void debugDB() {
+        DatabaseHelper databaseHelper = new DatabaseHelper(Find_Closest_Store_Activity.this);
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        Cursor business_cursor = db.rawQuery("SELECT item_number, item_name FROM item", null);
+
+        if(business_cursor != null){
+            if(business_cursor.moveToFirst()) {
+                int business_id_index = business_cursor.getColumnIndex("owner_id");
+                int business_name_index = business_cursor.getColumnIndex("business_name");
+
+                while(business_cursor.moveToNext()){
+                    String num = business_cursor.getString(business_id_index);
+                    String name = business_cursor.getString(business_name_index);
+
+                    System.out.println(num +"  |  "+name);
+
+                }
+            }
+        }
+        business_cursor.close();
+        db.close();
     }
 }
