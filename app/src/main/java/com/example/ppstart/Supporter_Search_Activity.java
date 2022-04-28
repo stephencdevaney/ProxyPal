@@ -2,7 +2,6 @@
 
 package com.example.ppstart;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -224,7 +223,7 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     //this method allows the user to search for businesses or items (with rudimentary partial search allowed) -Blake
     private void Search() {
         //empty Profile ArrayList used for clearing the screen -Blake
-        exists = false;
+        //exists = false;
         ArrayList<Profile> empty_list = new ArrayList<>();
 
         //for querying the database
@@ -238,7 +237,6 @@ public class Supporter_Search_Activity extends AppCompatActivity {
 
             //if the user selects the business option in the spinner (meaning the search will be for businesses) -Blake
             if (search_spinner.getSelectedItem().toString().equals("Business")) {
-                search_type = "Business";
                 //if the user selected the items option for searching and then switches to the business option for searching,
                 //the recycler view adapter is set using the empty array list so that the screen clears -Blake
                 searchAdapter.setBrowsable_profiles(empty_list);
@@ -271,8 +269,9 @@ public class Supporter_Search_Activity extends AppCompatActivity {
 
 
                             if (all_browsable_profiles != null) {
+                                SetSearchedProfilesList set_searched_prof_list = new SetSearchedProfilesList();
                                 //create a new ArrayList to store profiles that are searched and set it using the SetSearchedArrList method -Blake
-                              ArrayList<Profile> browsable_profiles_search = SetSearchedArrList(all_browsable_profiles);
+                                ArrayList<Profile> browsable_profiles_search = set_searched_prof_list.setSearchedArrList(all_browsable_profiles, search_box_entry);
                                 //set the adapter for the recycler view using the array list containing all of the profiles
                                 //that were successfully searched for -Blake
                                 if (browsable_profiles_search != null) {
@@ -315,62 +314,6 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     }
 
 
-
-
-
-
-    private  ArrayList<Profile> SetSearchedArrList(ArrayList<Profile> all_browsable_profiles){
-
-        ArrayList<Profile> searched_array_list = new ArrayList<>();
-
-        if(search_type.equals("Business")){
-            for (Profile profile : all_browsable_profiles) {
-                //.equalsIgnoreCase ensures the search is case-insensitive -Blake
-                if (profile.getBusiness_name().equalsIgnoreCase(search_box_entry)) {
-                    //if the name of a business queried from the database exactly matches what is entered into the
-                    //search box, then it is stored into the array list of items successfully searched -Blake
-                    searched_array_list.add(profile);
-                }
-
-                //split the profile being iterated through by the for-each loop by spaces and
-                //store the result in a string array -Blake
-                String[] partial_search = profile.getBusiness_name().split(" ");
-                for (int i = 0; i < partial_search.length; i++) {
-                    //if the user enters a partial search and it matches a string stored
-                    //in the partial search array, then check if the profile was already added to the
-                    //array list of successful searches -Blake
-                    if (search_box_entry.equalsIgnoreCase(partial_search[i])) {
-                        for (Profile profile_search : searched_array_list) {
-                            //if the profile being iterated through by the first for-each loop
-                            //was already added to the list of successful searches, then indicate
-                            //this by setting the exists boolean value to true -Blake
-                            if (profile_search.getProfile_id() == profile.getProfile_id()) {
-                                exists = true;
-                            }
-                        }
-
-                        //if the profile was not already added to the list of successful searches,
-                        //then add it to this list, meaning that it was found by partial search and not
-                        //exact match -Blake
-                        if (!exists) {
-                            searched_array_list.add(profile);
-                        }
-                    }
-                }
-
-
-            }
-
-
-        }else if(search_type.equals("Item")){
-
-        }
-
-
-        return searched_array_list;
-
-
-    }
 
 
 

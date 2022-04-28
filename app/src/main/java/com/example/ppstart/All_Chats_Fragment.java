@@ -46,6 +46,7 @@ public class All_Chats_Fragment extends Fragment {
 
     private FirestoreRecyclerAdapter<AllChatsClass, FRA_ViewHolder> all_chats_adapter;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -38,8 +38,9 @@
         android:layout_height="671dp"
         android:layout_marginTop="1dp"
         android:background="#3C9C27B0"
-        app:layout_constraintTop_toBottomOf="@+id/top_layout"
-        tools:layout_editor_absoluteX="0dp"></FrameLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_layout"></FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
