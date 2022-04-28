@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "DemoDatabase";
-    private final static int DB_VERSION = 1;
+    private final static int DB_VERSION = 3;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -296,8 +296,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert("item", null, insert_test_item3);
 
     }
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL("DROP TABLE IF EXISTS supporter_account");
+        db.execSQL("DROP TABLE IF EXISTS owner_account");
+        db.execSQL("DROP TABLE IF EXISTS profile");
+        db.execSQL("DROP TABLE IF EXISTS profile_favorites");
+        db.execSQL("DROP TABLE IF EXISTS item");
+        db.execSQL("DROP TABLE IF EXISTS store_inventory");
+        db.execSQL("DROP TABLE IF EXISTS promos");
+        onCreate(db);
     }
 }
