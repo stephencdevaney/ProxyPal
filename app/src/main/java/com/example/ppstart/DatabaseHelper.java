@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "DemoDatabase";
-    private final static int DB_VERSION = 8;
+    private final static int DB_VERSION = 10;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -84,7 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String create_store_inventory = "CREATE TABLE store_inventory" +
                 "(item_number VARCHAR, " +
                 "profile_id INTEGER, " +
-                "owner_id INTEGER PRIMARY KEY, " +
+                "owner_id INTEGER, " +
                 "price DECIMAL NOT NULL, " +
                 "additional_information TEXT)";
         db.execSQL(create_store_inventory);
@@ -177,41 +177,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         //insert item tables
-        ContentValues insert_test_item1 = new ContentValues();
-        insert_test_item1.put("item_number", 1);
-        insert_test_item1.put("item_name", "Gumballs");
-        insert_test_item1.put("item_desc", "A 20 pack of gumballs");
-        db.insert("item", null, insert_test_item1);
-
-        ContentValues insert_test_item2 = new ContentValues();
-        insert_test_item2.put("item_number", 2);
-        insert_test_item2.put("item_name", "Cinnamon Toast Crunch");
-        insert_test_item2.put("item_desc", "1 LB box");
-        db.insert("item", null, insert_test_item2);
-
-        ContentValues insert_test_item3 = new ContentValues();
-        insert_test_item3.put("item_number", 3);
-        insert_test_item3.put("item_name", "Paper");
-        insert_test_item3.put("item_desc", "White: 8.5\" x 11\"");
-        db.insert("item", null, insert_test_item3);
-
         ContentValues insert_item1 = new ContentValues();
-        insert_item1.put("item_number", 4);
-        insert_item1.put("item_name", "apple");
-        insert_item1.put("item_desc", "Red Apple");
+        insert_item1.put("item_number", 1);
+        insert_item1.put("item_name", "Gumballs");
+        insert_item1.put("item_desc", "A 20 pack of gumballs");
         db.insert("item", null, insert_item1);
 
         ContentValues insert_item2 = new ContentValues();
-        insert_item2.put("item_number", 5);
-        insert_item2.put("item_name", "orange");
-        insert_item2.put("item_desc", "Organic Orange");
+        insert_item2.put("item_number", 2);
+        insert_item2.put("item_name", "Cinnamon Toast Crunch");
+        insert_item2.put("item_desc", "1 LB box");
         db.insert("item", null, insert_item2);
 
         ContentValues insert_item3 = new ContentValues();
-        insert_item3.put("item_number", 6);
-        insert_item3.put("item_name", "grapes");
-        insert_item3.put("item_desc", "Fresh Grapes");
+        insert_item3.put("item_number", 3);
+        insert_item3.put("item_name", "Paper");
+        insert_item3.put("item_desc", "White: 8.5\" x 11\"");
         db.insert("item", null, insert_item3);
+
+        ContentValues insert_item4 = new ContentValues();
+        insert_item4.put("item_number", 4);
+        insert_item4.put("item_name", "apple");
+        insert_item4.put("item_desc", "Red Apple");
+        db.insert("item", null, insert_item4);
+
+        ContentValues insert_item5 = new ContentValues();
+        insert_item5.put("item_number", 5);
+        insert_item5.put("item_name", "orange");
+        insert_item5.put("item_desc", "Organic Orange");
+        db.insert("item", null, insert_item5);
+
+        ContentValues insert_item6 = new ContentValues();
+        insert_item6.put("item_number", 6);
+        insert_item6.put("item_name", "grapes");
+        insert_item6.put("item_desc", "Fresh Grapes");
+        db.insert("item", null, insert_item6);
 
         //insert mock company inventory
         ContentValues insert_store_inv1 = new ContentValues();

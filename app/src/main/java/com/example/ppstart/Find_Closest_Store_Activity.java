@@ -49,11 +49,11 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
     static ArrayList<String> companyList;
     static ArrayList<Float> percentMatchList;
     static ArrayList<String> custList;
+    static ArrayList<String> storeItemList;
     static ArrayList<String> tempList;
 
     static double[] location;
-    static ArrayList<String> tempItemNumber;
-    static ArrayList<String> storeItemList;
+
 
     static ListViewAdapter_closest_business adapter;
 
@@ -200,43 +200,49 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
                 int business_id_index =     business_cursor.getColumnIndex("owner_id");
                 int business_name_index =   business_cursor.getColumnIndex("business_name");
 
-                for(int i = 0; i < business_cursor.getCount(); i++) {
-                    String business_id = business_cursor.getString(business_id_index);
+                for(int i = 0; i <  business_cursor.getCount(); i++) {
+                    String business_id = "%"+business_cursor.getString(business_id_index)+"%";
                     String business_name =  business_cursor.getString(business_name_index);
                     System.out.println(business_name + " -> " + business_id);
 
                     //pull item data from database to build list
                     //WHERE owner_id =  " + business_id
                     //SQLiteDatabase db1 = databaseHelper.getReadableDatabase();
-                    Cursor item_number_cursor = db.rawQuery("SELECT item_number FROM store_inventory WHERE owner_id = '"+business_id+"'", null);
+                    Cursor item_number_cursor = db.rawQuery("SELECT * " +
+                                                                "FROM store_inventory " +
+                                                                "WHERE owner_id LIKE ?"
+                                                                , new String[]{business_id});
                     if (item_number_cursor!=null){
-                        if(item_number_cursor.moveToFirst()){
-                            int item_number_index = item_number_cursor.getColumnIndex("item_number");
+                        //if(item_number_cursor.moveToFirst()){
+                            //int item_number_index = item_number_cursor.getColumnIndex("item_number");
 
-                            for (int k = 0; k < item_number_cursor.getCount(); k++){
-                            //while(item_number_cursor.moveToNext()){
-                                System.out.print(k+"->"+ item_number_cursor.getCount()+ ": ");
-                                String item_number = item_number_cursor.getString(item_number_index);
+                            //for (int k = 0; k < item_number_cursor.getCount(); k++){
+                            while(item_number_cursor.moveToNext()){
+                                //System.out.print("->"+ item_number_cursor.getCount()+ ": ");
+                                String item_number = item_number_cursor.getString(0);
                                 System.out.println("\t"+ item_number);
-                                Cursor item_name_cursor = db.rawQuery("SELECT item_name FROM item WHERE item_number = '"+item_number+"'", null);
+                                Cursor item_name_cursor = db.rawQuery("SELECT * " +
+                                                                        "FROM item " +
+                                                                        "WHERE item_number " +
+                                                                        "LIKE ?", new String[]{item_number});
                                 if(item_name_cursor != null){
-                                    if(item_name_cursor.moveToFirst()){
-                                        System.out.println("Entering Item name loop");
-                                        int item_name_index = item_name_cursor.getColumnIndex("item_name");
-                                        String item_name = item_name_cursor.getString(item_name_index);
-                                        System.out.println("\t\t"+item_name);
+                                    while(item_name_cursor.moveToNext()){
+                                        //int item_name_index = item_name_cursor.getColumnIndex("item_name");
+                                        //item_name_cursor.moveToNext();
+                                        String item_name = item_name_cursor.getString(1);
+                                        //System.out.println("\t\t"+item_name);
                                         storeItemList.add(item_name);
                                         //jump back to
                                         item_name_cursor.close();
+                                        System.out.println("inside loop0: "+storeItemList);
                                     }
+
                                 }
-                                item_number_cursor.moveToNext();
                             }
                             item_number_cursor.close();
-                        }
                     }
 
-
+                    System.out.println("inside loop1: "+storeItemList);
                     //pull up customers shopping list
                     File path = getApplicationContext().getFilesDir();
                     File readFrom = new File(path, "list.txt");
@@ -261,10 +267,13 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
                         }
                         else{
                             custList = new ArrayList<>(Arrays.asList(split));
+                            System.out.println("inside ITEM.txt: "+storeItemList);
+                            System.out.println(custList);
                             int custListLen = custList.size();
                             custList.retainAll(storeItemList);
                             int matchCount = custList.size();
                             float match = 100 * matchCount/custListLen;
+
                             custList.clear();
                             storeItemList.clear();
                             percentMatchList.add(match);
@@ -272,6 +281,7 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
                     } catch(Exception e){
                         e.printStackTrace();
                     }
+
 
                     companyList.add(business_name);
                     business_cursor.moveToNext();
@@ -294,20 +304,39 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
         Cursor business_cursor = db.rawQuery("SELECT item_number, item_name FROM item", null);
 
         if(business_cursor != null){
-            if(business_cursor.moveToFirst()) {
-                int business_id_index = business_cursor.getColumnIndex("owner_id");
-                int business_name_index = business_cursor.getColumnIndex("business_name");
+            //if(business_cursor.moveToFirst()) {
+                //int business_id_index = business_cursor.getColumnIndex("owner_id");
+                //int business_name_index = business_cursor.getColumnIndex("business_name");
 
                 while(business_cursor.moveToNext()){
-                    String num = business_cursor.getString(business_id_index);
-                    String name = business_cursor.getString(business_name_index);
+                    String num = business_cursor.getString(0);
+                    String name = business_cursor.getString(1);
 
-                    System.out.println(num +"  |  "+name);
+                    System.out.println("|"+num+"|"+name+"|");
 
                 }
-            }
+            //}
         }
         business_cursor.close();
+
+        Cursor test_cursor = db.rawQuery("SELECT item_number, owner_id FROM store_inventory", null);
+
+        if(test_cursor != null){
+            //if(business_cursor.moveToFirst()) {
+            //int business_id_index = business_cursor.getColumnIndex("owner_id");
+            //int business_name_index = business_cursor.getColumnIndex("business_name");
+
+            while(test_cursor.moveToNext()){
+                String num = test_cursor.getString(0);
+                String name = test_cursor.getString(1);
+
+                System.out.println("|"+num+"|"+name+"|");
+
+            }
+            //}
+        }
+        test_cursor.close();
+
         db.close();
     }
 }
