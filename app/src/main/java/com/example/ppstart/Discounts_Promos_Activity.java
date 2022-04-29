@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -44,6 +45,7 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
                 supporter_id = bundle.getInt("supporter_id");
             }
         }
+
         if(intent != null) {
             Bundle bundle = intent.getBundleExtra("owner_bundle");
             if(bundle != null){
@@ -57,10 +59,15 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
         promosList = new ArrayList<>();
         rvPromos = findViewById(R.id.dp_rv);
 
+        //bottom nav bar fix
+        supporter_bottom_nav_menu = findViewById(R.id.supporter_bottom_nav_menu);
         if(supporter_id > 0) {
-            supporter_bottom_nav_menu = findViewById(R.id.supporter_bottom_nav_menu);
             initBottomNavigationView();
+            supporter_bottom_nav_menu.setVisibility(View.VISIBLE);
+        }else{
+            supporter_bottom_nav_menu.setVisibility(View.GONE);
         }
+
         setPromos();
         setPromosAdapter();
 
@@ -131,6 +138,7 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
     }
 
 
+
     private void initBottomNavigationView() {
         //sets the discounts/promos page as the default page
         supporter_bottom_nav_menu.setSelectedItemId(R.id.discounts_and_promos);
@@ -177,6 +185,8 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
         });
 
     }
+
+
 
 
 }
