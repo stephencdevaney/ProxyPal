@@ -7,11 +7,11 @@ public class Promo {
     private int store_id;
     private int item_id;
     private String store_name;
-    private byte[] item_image;
+    private String item_image;
     private String dp_desc;
     private String item_name;
 
-    public Promo(int dp_id, int store_id, int item_id, String store_name, byte[] item_image, String dp_desc, String item_name) {
+    public Promo(int dp_id, int store_id, int item_id, String store_name, String item_image, String dp_desc, String item_name) {
         this.dp_id = dp_id;
         this.store_id = store_id;
         this.item_id = item_id;
@@ -57,11 +57,11 @@ public class Promo {
         this.store_name = store_name;
     }
 
-    public byte[] getItem_image() {
+    public String getItem_image() {
         return item_image;
     }
 
-    public void setItem_image(byte[] item_image) {
+    public void setItem_image(String item_image) {
         this.item_image = item_image;
     }
 

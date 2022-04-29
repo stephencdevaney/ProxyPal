@@ -25,8 +25,11 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
 
     private String supporter_username;
     private int supporter_id;
+    private String owner_username;
+    private int owner_id;
 
     private Bundle supporter_bundle;
+    private Bundle owner_bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +37,18 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_discounts_promos);
 
         Intent intent = getIntent();
-        if(intent != null) {
+        if (intent != null) {
             Bundle bundle = intent.getBundleExtra("supporter_bundle");
-            if(bundle != null){
+            if (bundle != null) {
                 supporter_username = bundle.getString("supporter_username");
                 supporter_id = bundle.getInt("supporter_id");
+            }
+        }
+        if(intent != null) {
+            Bundle bundle = intent.getBundleExtra("owner_bundle");
+            if(bundle != null){
+                owner_username = bundle.getString("owner_username");
+                owner_id = bundle.getInt("owner_id");
             }
         }
 
@@ -47,8 +57,10 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
         promosList = new ArrayList<>();
         rvPromos = findViewById(R.id.dp_rv);
 
-        supporter_bottom_nav_menu = findViewById(R.id.supporter_bottom_nav_menu);
-        initBottomNavigationView();
+        if(supporter_id > 0) {
+            supporter_bottom_nav_menu = findViewById(R.id.supporter_bottom_nav_menu);
+            initBottomNavigationView();
+        }
         setPromos();
         setPromosAdapter();
 
@@ -60,6 +72,8 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
         rvPromos.setLayoutManager(dpLayout);
         rvPromos.setItemAnimator(new DefaultItemAnimator());
         rvPromos.setAdapter(dpAdapter);
+        dpAdapter.passUserInfo(supporter_id, supporter_username);
+        dpAdapter.passOwnerInfo(owner_id, owner_username);
     }
 
     private void setPromos() {
@@ -94,7 +108,7 @@ public class Discounts_Promos_Activity extends AppCompatActivity {
                             int item_name_index = iCursor.getColumnIndex("item_name");
                             int item_picture_index = iCursor.getColumnIndex("item_picture");
                             p.setItem_name(iCursor.getString(item_name_index));
-                            p.setItem_image(iCursor.getBlob(item_picture_index));
+                            p.setItem_image(iCursor.getString(item_picture_index));
                         }
 
                         promosList.add(p);

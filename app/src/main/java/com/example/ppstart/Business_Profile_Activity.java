@@ -354,6 +354,14 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         to_dm.putExtra("dm_bundle", dm_bundle);
                         startActivity(to_dm);
                         break;
+                    case R.id.owner_promotions:
+                        Intent to_promo = new Intent(getApplicationContext(), Discounts_Promos_Activity.class);
+                        Bundle dp_bundle = new Bundle();
+                        dp_bundle.putInt("owner_id", owner_Id);
+                        dp_bundle.putString("owner_username", owner_username);
+                        to_promo.putExtra("dp_bundle", dp_bundle);
+                        startActivity(to_promo);
+                        break;
                     case R.id.drawer_logout:
                         profile_cursor.close();
                         db.close();
@@ -814,6 +822,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
         menu.removeItem(R.id.supporter_view);
         menu.removeItem(R.id.edit_supporter_view);
         menu.removeItem(R.id.account_management);
+        menu.removeItem(R.id.owner_promotions);
 
 
 

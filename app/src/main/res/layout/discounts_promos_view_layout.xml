@@ -5,12 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <view
+        android:id="@+id/dp_fullCard_mc"
+        class="com.google.android.material.card.MaterialCardView"
+        android:layout_width="412dp"
+        android:layout_height="96dp"
+        android:visibility="visible"
+        app:cardBackgroundColor="#00FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
     <ImageView
         android:id="@+id/dp_itemImage_iv"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_discount" />
@@ -53,4 +67,5 @@
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toEndOf="@+id/dp_itemImage_iv"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
