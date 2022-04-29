@@ -1,5 +1,8 @@
 package com.example.ppstart;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +12,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
+
 import java.util.ArrayList;
 
 public class DiscountsPromosAdapter extends RecyclerView.Adapter<DiscountsPromosAdapter.PromosViewHolder> {
 
     private ArrayList<Promo> promosList = new ArrayList<>();
+    private int supporter_id;
+    private String supporter_username;
+    private int owner_id;
+    private String owner_username;
 
     public DiscountsPromosAdapter(ArrayList<Promo> promosList){
         this.promosList = promosList;
@@ -24,6 +34,7 @@ public class DiscountsPromosAdapter extends RecyclerView.Adapter<DiscountsPromos
         private TextView itemName;
         private TextView itemDesc;
         private ImageView itemImage;
+        private MaterialCardView promoCard;
 
 
         public PromosViewHolder(@NonNull View itemView) { //Get the information needed for the display
@@ -33,6 +44,7 @@ public class DiscountsPromosAdapter extends RecyclerView.Adapter<DiscountsPromos
             itemName = itemView.findViewById(R.id.dp_itemName_tv);
             itemDesc = itemView.findViewById(R.id.dp_itemDesc_tv);
             itemImage = itemView.findViewById(R.id.dp_itemImage_iv);
+            promoCard = itemView.findViewById(R.id.dp_fullCard_mc);
         }
     }
 
@@ -48,11 +60,22 @@ public class DiscountsPromosAdapter extends RecyclerView.Adapter<DiscountsPromos
         holder.storeName.setText(promosList.get(position).getStore_name());
         holder.itemName.setText(promosList.get(position).getItem_name());
         holder.itemDesc.setText(promosList.get(position).getDp_desc());
-        if(promosList.get(position).getItem_image() != null)
-            holder.itemImage.setImageBitmap(DbBitmapUtility.getImage(promosList.get(position).getItem_image()));
-        else
-            holder.itemImage.setImageBitmap(null);
+        Glide.with(holder.itemView.getContext()).load(promosList.get(position).getItem_image()).placeholder(R.drawable.ic_action_name).into(holder.itemImage);
 
+        if(supporter_id > 0) {
+            holder.promoCard.setOnClickListener(new View.OnClickListener() {
+                public void onClick(@NonNull View view) {
+                    Intent intent = new Intent(view.getContext(), Business_Profile_Activity.class);
+                    Bundle profile_bundle = new Bundle();
+                    //profile_bundle.putInt("owner_id", promosList.get(position).getStore_id());
+                    profile_bundle.putInt("owner_id", promosList.get(holder.getAbsoluteAdapterPosition()).getStore_id());
+                    profile_bundle.putInt("supporter_id", supporter_id);
+                    profile_bundle.putString("supporter_username", supporter_username);
+                    intent.putExtra("profile_bundle", profile_bundle);
+                    view.getContext().startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
@@ -60,4 +83,12 @@ public class DiscountsPromosAdapter extends RecyclerView.Adapter<DiscountsPromos
         return promosList.size();
     }
 
+    public void passUserInfo(int id, String username){
+        this.supporter_id = id;
+        this.supporter_username = username;
+    }
+    public void passOwnerInfo(int id, String username){
+        this.owner_id = id;
+        this.owner_username = username;
+    }
 }

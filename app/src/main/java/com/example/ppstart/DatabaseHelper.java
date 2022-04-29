@@ -154,7 +154,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_test_promo1.put("store_id", 2);
         insert_test_promo1.put("item_id", 1);
         insert_test_promo1.put("dp_desc", "20% Off.");
-
         db.insert("promos", null, insert_test_promo1);
 
         //Inserting in a fake promo
@@ -163,7 +162,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_test_promo2.put("store_id", 1);
         insert_test_promo2.put("item_id", 2);
         insert_test_promo2.put("dp_desc", "Buy 1 get 1 half off.");
-
         db.insert("promos", null, insert_test_promo2);
 
         //Inserting in a fake promo
@@ -172,8 +170,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_test_promo3.put("store_id", 1);
         insert_test_promo3.put("item_id", 3);
         insert_test_promo3.put("dp_desc", "10% Off.");
-
         db.insert("promos", null, insert_test_promo3);
+
+        //Inserting in a fake promo
+        ContentValues insert_test_promo4 = new ContentValues();
+        insert_test_promo4.put("dp_id", 4);
+        insert_test_promo4.put("store_id", 1);
+        insert_test_promo4.put("item_id", 4);
+        insert_test_promo4.put("dp_desc", "99% Off.");
+        db.insert("promos", null, insert_test_promo4);
 
 
         //insert item tables

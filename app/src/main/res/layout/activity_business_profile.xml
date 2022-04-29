@@ -81,14 +81,6 @@
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="0dp" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/profile_bottem_nav"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            app:menu="@menu/bussiness_profile_menu"></com.google.android.material.bottomnavigation.BottomNavigationView>
-
 
     </RelativeLayout>
 
@@ -99,6 +91,12 @@
         app:headerLayout="@layout/supporter_main_page_drawer_header"
         app:menu="@menu/owner_menu_drawer"
         android:layout_gravity="start">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/profile_bottem_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bussiness_profile_menu"></com.google.android.material.bottomnavigation.BottomNavigationView>
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
