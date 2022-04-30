@@ -4,15 +4,18 @@ package com.example.ppstart;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,12 +28,18 @@ import java.util.ArrayList;
 
 public class Favorites_Activity extends AppCompatActivity {
 
+
+    //initialize loading screen
+    ProgressDialog progress_dialog;
+
     //Initialize the elements used in the recycler view -Blake
     private RecyclerView business_favorites_rec_view, item_favorites_rec_view;
     private BrowseProfilesAdapter profilesAdapter;
 
     //These text views are displayed when the user has no favorited businesses/items -Blake
     private TextView no_business_favorites_txt, no_item_favorites_txt;
+
+    private TextView item_fav_text;
 
     //include the items recycler view adapter when the inventory system is created -Blake
 
@@ -58,10 +67,17 @@ public class Favorites_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_favorites);
 
 
+        //initialize loading screen
+        progress_dialog = new ProgressDialog(this);
+
 
         //initialize texts that will be displayed if the user hasn't favorited any businesses or items -Blake
         no_business_favorites_txt = findViewById(R.id.no_business_favorites_txt);
         no_item_favorites_txt = findViewById(R.id.no_item_favorites_txt);
+
+        item_fav_text = findViewById(R.id.item_favorites_txt);
+        item_fav_text.setVisibility(View.GONE);
+        no_item_favorites_txt.setVisibility(View.GONE);
 
         //initialize firestore database
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -81,7 +97,7 @@ public class Favorites_Activity extends AppCompatActivity {
         business_favorites_rec_view = findViewById(R.id.business_favorites_rec_view);
         profilesAdapter = new BrowseProfilesAdapter(this);
         business_favorites_rec_view.setAdapter(profilesAdapter);
-        business_favorites_rec_view.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        business_favorites_rec_view.setLayoutManager(new GridLayoutManager(this, 2));
         //pass the supporter id/username to the adapter -Blake
         profilesAdapter.passUserInfo(supporter_id, supporter_username);
 
@@ -92,7 +108,7 @@ public class Favorites_Activity extends AppCompatActivity {
         //These two methods contain the functionality for retrieving favorites from the database
         //and setting the resulting array list to the recycler views -Blake
         GetProfileFavorites(supporter_username, supporter_id);
-        GetItemFavorites(supporter_username, supporter_id);
+       // GetItemFavorites(supporter_username, supporter_id);
 
 
     }
@@ -104,6 +120,10 @@ public class Favorites_Activity extends AppCompatActivity {
         //Get an instance of the SQLite database -Blake
         databaseHelper = new DatabaseHelper(this);
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        //set loading screen
+        progress_dialog.setMessage("Please Wait");
+        progress_dialog.show();
 
        //This queries the Firestore cloud database -Blake
         firebaseFirestore.collection("Favorited_Profiles").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -251,15 +271,17 @@ public class Favorites_Activity extends AppCompatActivity {
 
 
 
+
                     } catch (SQLiteException e) {
                         e.printStackTrace();
 
                     }
 
 
-                    //retrieve the favorited items and add them to the item favorites recycler view (when the inventory is created)
-                    no_item_favorites_txt.setVisibility(View.VISIBLE); //for now, just display that there are no items favorited -Blake
+                    //no_item_favorites_txt.setVisibility(View.VISIBLE); //for now, just display that there are no items favorited -Blake
 
+                    //dismiss loading screen
+                    progress_dialog.dismiss();
                     return;
 
 
@@ -280,7 +302,6 @@ public class Favorites_Activity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        //SUCCESSFUL QUERY TO SET A REC VIEW ADAPTER
         firebaseFirestore.collection("Favorited_Items").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

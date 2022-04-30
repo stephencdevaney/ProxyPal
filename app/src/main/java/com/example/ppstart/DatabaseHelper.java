@@ -90,7 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(create_store_inventory);
 
         //Create the table for discounts and promotions
-        String create_discounts_and_promos_table = "CREATE TABLE promos(dp_id INTEGER PRIMARY KEY, store_id INTEGER, item_id INTEGER, dp_desc VARCHAR, FOREIGN KEY (store_id) REFERENCES profile (profile_id), FOREIGN KEY (item_id) REFERENCES item(item_number))";
+        String create_discounts_and_promos_table = "CREATE TABLE promos(dp_id INTEGER PRIMARY KEY AUTOINCREMENT, store_id INTEGER, item_id INTEGER, dp_desc VARCHAR, FOREIGN KEY (store_id) REFERENCES profile (profile_id), FOREIGN KEY (item_id) REFERENCES item(item_number))";
         db.execSQL(create_discounts_and_promos_table);
 
 

@@ -10,7 +10,7 @@
         android:id="@+id/top_layout"
         android:layout_width="409dp"
         android:layout_height="61dp"
-        android:background="#9C27B0"
+        android:background="#673AB7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
         android:layout_width="413dp"
         android:layout_height="671dp"
         android:layout_marginTop="1dp"
-        android:background="#3C9C27B0"
+        android:background="#36673AB7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_layout"></FrameLayout>

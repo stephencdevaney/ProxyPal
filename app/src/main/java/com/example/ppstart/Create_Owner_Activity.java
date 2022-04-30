@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Create_Owner_Activity extends AppCompatActivity {
 
@@ -101,32 +103,59 @@ public class Create_Owner_Activity extends AppCompatActivity {
                 //If the user has entered a username, two matching passwords, and valid payment info, then the owner account info is entered into the database -Blake
                 if(valid_username && valid_password && valid_password_confirm && passwords_match && valid_payment){
 
+                    boolean username_exists = false;
+
                     try{
                         //Initialize the databaseHelper variable -Blake
                         databaseHelper = new DatabaseHelper(Create_Owner_Activity.this);
                         //Get a writeable instance of the database (since data is about to be inserted into it) -Blake
                         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-                        //Insert the information in the to "owner_account" table of the database -Blake
-                        ContentValues owner_account = new ContentValues();
-                        owner_account.put("owner_username", owner_username_txt.getText().toString());
-                        owner_account.put("owner_password", owner_password_txt.getText().toString());
-                        owner_account.put("card_number", payment_card_num_txt.getText().toString());
-                        owner_account.put("first_name", payment_fname_txt.getText().toString());
-                        owner_account.put("last_name", payment_lname_txt.getText().toString());
-                        owner_account.put("address", payment_address_txt.getText().toString());
-                        owner_account.put("city", payment_city_txt.getText().toString());
-                        owner_account.put("state", payment_state_txt.getText().toString());
-                        owner_account.put("postal", payment_postal_txt.getText().toString());
-                        owner_account.put("country", payment_country_txt.getText().toString());
+                        Cursor cursor = db.rawQuery("SELECT * FROM owner_account", null);
+                        if(cursor != null){
+                            if(cursor.moveToFirst()){
 
-                        db.insert("owner_account", null, owner_account);
-                        db.close();
+                                int owner_username_index = cursor.getColumnIndex("owner_username");
+
+                                for(int i = 0; i < cursor.getCount(); i++){
+                                    if(cursor.getString(owner_username_index).equals(owner_username_txt.getText().toString())){
+                                        Toast.makeText(Create_Owner_Activity.this, "Username already exists, please enter another username.", Toast.LENGTH_SHORT).show();
+                                        username_exists = true;
+                                    }
+
+                                    cursor.moveToNext();
+                                }
+                                cursor.close();
+                            }else{
+                                //Don't forget to close the cursors and database instance!
+                                cursor.close();
+                            }
+                        }
 
 
-                        //switch to the Business_Profile_Activity activity after the owner account is added to the database -Blake
-                        Intent to_business_profile = new Intent(Create_Owner_Activity.this, Business_Profile_Activity.class);
-                        startActivity(to_business_profile);
+                        if(!username_exists){
+                            //Insert the information in the to "owner_account" table of the database -Blake
+                            ContentValues owner_account = new ContentValues();
+                            owner_account.put("owner_username", owner_username_txt.getText().toString());
+                            owner_account.put("owner_password", owner_password_txt.getText().toString());
+                            owner_account.put("card_number", payment_card_num_txt.getText().toString());
+                            owner_account.put("first_name", payment_fname_txt.getText().toString());
+                            owner_account.put("last_name", payment_lname_txt.getText().toString());
+                            owner_account.put("address", payment_address_txt.getText().toString());
+                            owner_account.put("city", payment_city_txt.getText().toString());
+                            owner_account.put("state", payment_state_txt.getText().toString());
+                            owner_account.put("postal", payment_postal_txt.getText().toString());
+                            owner_account.put("country", payment_country_txt.getText().toString());
+
+                            db.insert("owner_account", null, owner_account);
+                            db.close();
+
+                            Toast.makeText(Create_Owner_Activity.this, "Account created, you can now login.", Toast.LENGTH_SHORT).show();
+                            Intent to_main= new Intent(Create_Owner_Activity.this, MainActivity.class);
+                            startActivity(to_main);
+
+                        }
+
 
                     }catch(SQLException e){
                         e.printStackTrace();
