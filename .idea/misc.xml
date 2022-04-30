@@ -3,42 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/drawable-anydpi/ic_action_name.xml" value="0.332" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/drawable-anydpi/ic_messages.xml" value="0.332" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/drawable/no_image.xml" value="0.208" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_all_chats.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_business_profile.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_create_owner.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_create_supporter.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_discounts_promos.xml" value="0.2234375" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_favorites.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_promo_edit.xml" value="0.22735507246376813" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_shopping_list.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_supporter_acc_options.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_supporter_main_page.xml" value="0.33" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/activity_supporter_search.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/all_chats_fragment_layout.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/all_chats_rec_view_layout.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/browse_profiles_rec_view_layout.xml" value="0.5" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/discounts_promos_view_layout.xml" value="0.33" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_hours_editor.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_image.xml" value="0.25" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_promos.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_text.xml" value="0.33" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_text_editor.xml" value="0.33" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_first.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_second.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/list_row.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/receiver_ind_chat_rec_layout.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/sender_ind_chat_rec_layout.xml" value="0.24230072463768115" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/store_list.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/supporter_main_page_drawer_header.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/supporter_main_page_fragment.xml" value="0.33" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/menu/bussiness_profile_menu.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/menu/owner_menu_drawer.xml" value="0.33" />
-        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/menu/supporter_main_page_bottom_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Johnathan/StudioProjects/ProxyPal/app/src/main/res/layout/discounts_promos_view_layout.xml" value="0.22" />
         <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_all_chats.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_browsing.xml" value="0.35462962962962963" />
         <entry key="..\:/Users/blake/ProxyPalGit/app/src/main/res/layout/activity_business_profile.xml" value="0.35462962962962963" />
@@ -83,10 +49,16 @@
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/activity_supporter_main_page.xml" value="0.25" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/activity_supporter_search.xml" value="0.1762917933130699" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/browse_profiles_rec_view_layout.xml" value="0.1762917933130699" />
+        <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_hours_editor.xml" value="0.21693840579710144" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_image.xml" value="0.16945288753799392" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_text.xml" value="0.33" />
-        <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_text_editor.xml" value="0.25" />
+        <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_text_editor.xml" value="0.1" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_business_profile_view.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_inventory.xml" value="0.67" />
+        <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_inventory_list.xml" value="0.2115036231884058" />
+        <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_item.xml" value="0.75" />
+        <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_item_list.xml" value="0.2115036231884058" />
+        <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/fragment_item_list2.xml" value="0.1524822695035461" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/list_row.xml" value="0.1762917933130699" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/supporter_main_page_drawer_header.xml" value="0.3625" />
         <entry key="..\:/Users/steph/StudioProjects/ProxyPal/app/src/main/res/layout/supporter_main_page_fragment.xml" value="0.3625" />
