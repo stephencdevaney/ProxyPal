@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -79,6 +80,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
     private boolean edit_view_flag;
     private String businessName;
 
+
+    //for loading screen
+    ProgressDialog progressDialog;
+
     //ArrayList to store favorited businesses
     private ArrayList<ProfileFavorites> profile_favorites;
 
@@ -100,6 +105,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //set loading screen for supporter view
+        progressDialog = new ProgressDialog(this);
+
 
         //flag setup
         edit_view_flag = false;
@@ -164,9 +173,6 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         supporter_username = bundle.getString("supporter_username");
                         owner_username_view.setVisibility(View.GONE);
                         //owner_username_view.setText("Hello, " + supporter_username + "!");
-
-                        add_to_fav_btn.setVisibility(View.VISIBLE);
-                        direct_message_btn.setVisibility(View.VISIBLE);
 
                         guest_btn.setVisibility(View.GONE);
 
@@ -524,6 +530,11 @@ public class Business_Profile_Activity extends AppCompatActivity {
     //Method for handling the favorites button (to keep the code neat) -Blake
     private void HandleFavoritesButton(){
 
+        add_to_fav_btn.setVisibility(View.VISIBLE);
+
+        progressDialog.setMessage("Please Wait");
+        progressDialog.show();
+
         //Query the Favorited_Profiles collection in Firestore to see if this business is already
         //favorited by this supporter account  -Blake
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -560,6 +571,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
                     }else{
                         add_to_fav_btn.setText("Favorite");
                     }
+                    progressDialog.dismiss();
 
 
                 }
@@ -572,6 +584,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
         add_to_fav_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                progressDialog.setMessage("Please Wait");
+                progressDialog.show();
+
                 if(business_favorited){
                     CollectionReference DeleteBusinessFavorite = firebaseFirestore.collection("Favorited_Profiles");
                     Query query = DeleteBusinessFavorite.whereEqualTo("owner_id", String.valueOf(owner_Id));
@@ -596,9 +612,11 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         }
 
                     });
-                    Toast.makeText(Business_Profile_Activity.this, "Business removed from favorites", Toast.LENGTH_SHORT).show();
                     add_to_fav_btn.setText("Favorite");
                     business_favorited = false;
+                    progressDialog.dismiss();
+                    Toast.makeText(Business_Profile_Activity.this, "Business removed from favorites", Toast.LENGTH_SHORT).show();
+
                 }else{
                     //add business to the Favorited_Profiles collection of Firestore database  -Blake
                     Map<String, Object> data = new HashMap<>();
@@ -610,13 +628,14 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if(task.isSuccessful()){
-                                Toast.makeText(Business_Profile_Activity.this, "Business Favorited", Toast.LENGTH_SHORT).show();
                                 //ProfileFavorites pf = new ProfileFavorites();
                                 //pf.setProf_fav_profile_id(owner_Id);
                                 //pf.setProf_fav_profile_id(-999);
                                 //pf.setProf_fav_supporter_id(supporter_Id);
                                 add_to_fav_btn.setText("Unfavorite");
                                 business_favorited = true;
+                                progressDialog.dismiss();
+                                Toast.makeText(Business_Profile_Activity.this, "Business Favorited", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -632,7 +651,10 @@ public class Business_Profile_Activity extends AppCompatActivity {
     //Method for handling the messages button (to keep the code neat) - by Blake
     private void HandleMessagesButton(){
 
+        direct_message_btn.setVisibility(View.VISIBLE);
 
+        progressDialog.setMessage("Please Wait");
+        progressDialog.show();
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseFirestore.collection("Chats").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -670,6 +692,8 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         direct_message_btn.setText("Start Chat");
                     }
 
+                    progressDialog.dismiss();
+
 
                 }
             }
@@ -683,6 +707,8 @@ public class Business_Profile_Activity extends AppCompatActivity {
         direct_message_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.setMessage("Please Wait");
+                progressDialog.show();
                 //get business username and name
                 try{
                     Cursor business_name_cursor = db.rawQuery("SELECT business_name FROM profile WHERE owner_id = ?", new String[] {String.valueOf(owner_Id)});
@@ -745,6 +771,9 @@ public class Business_Profile_Activity extends AppCompatActivity {
                     chats_bundle.putString("viewer_username", supporter_username);
                     chats_bundle.putString("viewed_username", owner_username_msg);
                     to_individual_chat.putExtra("chats_bundle", chats_bundle);
+
+                    progressDialog.dismiss();
+
                     startActivity(to_individual_chat);
                     finish();
 
@@ -765,6 +794,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
                                 Toast.makeText(Business_Profile_Activity.this, "Chat Started!", Toast.LENGTH_SHORT).show();
                                 direct_message_btn.setText("Message");
                                 chat_exists = true;
+                                progressDialog.dismiss();
                             }
                         }
                     });

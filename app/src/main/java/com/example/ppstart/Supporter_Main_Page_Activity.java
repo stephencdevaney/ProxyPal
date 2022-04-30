@@ -92,7 +92,7 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
 
         //set the TextView inside the drawer header for this activity to the supporter account's username
         if(supporter_id != -1){
-            //supporter_account_username.setText(supporter_username);
+            supporter_account_username.setText(supporter_username);
         }else{
             supporter_account_username.setText("Guest");
         }
