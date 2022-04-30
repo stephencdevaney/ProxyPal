@@ -34,6 +34,9 @@
             android:name=".Discounts_Promos_Activity"
             android:exported="false" />
         <activity
+            android:name=".Promo_Edit_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Favorites_Activity"
             android:exported="false" />
         <activity

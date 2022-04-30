@@ -1,6 +1,5 @@
 package com.example.ppstart;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -67,12 +67,26 @@ public class DiscountsPromosAdapter extends RecyclerView.Adapter<DiscountsPromos
                 public void onClick(@NonNull View view) {
                     Intent intent = new Intent(view.getContext(), Business_Profile_Activity.class);
                     Bundle profile_bundle = new Bundle();
-                    //profile_bundle.putInt("owner_id", promosList.get(position).getStore_id());
                     profile_bundle.putInt("owner_id", promosList.get(holder.getAbsoluteAdapterPosition()).getStore_id());
                     profile_bundle.putInt("supporter_id", supporter_id);
                     profile_bundle.putString("supporter_username", supporter_username);
                     intent.putExtra("profile_bundle", profile_bundle);
                     view.getContext().startActivity(intent);
+                }
+            });
+        }
+        if(owner_id > 0){
+            holder.promoCard.setOnClickListener(new View.OnClickListener() {
+                public void onClick(@NonNull View view) {
+                    Intent intent = new Intent(view.getContext(), Promo_Edit_Activity.class);
+                    Bundle promo_edit_bundle = new Bundle();
+                    promo_edit_bundle.putString("item_name", promosList.get(holder.getAbsoluteAdapterPosition()).getItem_name());
+                    promo_edit_bundle.putString("promo_desc", promosList.get(holder.getAbsoluteAdapterPosition()).getDp_desc());
+                    promo_edit_bundle.putInt("promo_id", promosList.get(holder.getAbsoluteAdapterPosition()).getDp_id());
+                    promo_edit_bundle.putInt("owner_id", owner_id);
+                    intent.putExtra("promo_edit_bundle", promo_edit_bundle);
+                    view.getContext().startActivity(intent);
+
                 }
             });
         }

@@ -171,7 +171,7 @@ public class Supporter_Search_Activity extends AppCompatActivity {
                         Intent to_dp = new Intent(this, Discounts_Promos_Activity.class);
                         //pass the supporter account id and supporter account username to the Favorites_Activity activity -Blake
                         Bundle supporter_bundle_dp = createNavMenuBundle();
-                        to_dp.putExtra("supporter_bundle", supporter_bundle_dp);
+                        to_dp.putExtra("promo_bundle", supporter_bundle_dp);
                         //switch to the Favorites_Activity activity -Blake
                         startActivity(to_dp);
                     }else{

@@ -245,7 +245,7 @@ public class Shopping_List_Activity extends AppCompatActivity {
                     supporter_bundle = new Bundle();
                     supporter_bundle.putInt("supporter_id", supporter_id);
                     supporter_bundle.putString("supporter_username", supporter_username);
-                    to_promos.putExtra("supporter_bundle", supporter_bundle);
+                    to_promos.putExtra("promo_bundle", supporter_bundle);
                     startActivity(to_promos);
                     break;
                 //switch to the Shopping_List_Activity activity when the "Shopping List" button at the bottom is tapped

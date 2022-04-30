@@ -359,7 +359,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
                         Bundle dp_bundle = new Bundle();
                         dp_bundle.putInt("owner_id", owner_Id);
                         dp_bundle.putString("owner_username", owner_username);
-                        to_promo.putExtra("dp_bundle", dp_bundle);
+                        to_promo.putExtra("promo_bundle", dp_bundle);
                         startActivity(to_promo);
                         break;
                     case R.id.drawer_logout:

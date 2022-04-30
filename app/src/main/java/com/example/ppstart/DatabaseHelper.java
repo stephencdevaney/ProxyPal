@@ -186,18 +186,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_item1.put("item_number", 1);
         insert_item1.put("item_name", "Gumballs");
         insert_item1.put("item_desc", "A 20 pack of gumballs");
+        insert_item1.put("item_picture", "https://m.media-amazon.com/images/I/71kUzYvy7UL._SX522_.jpg");
         db.insert("item", null, insert_item1);
 
         ContentValues insert_item2 = new ContentValues();
         insert_item2.put("item_number", 2);
         insert_item2.put("item_name", "Cinnamon Toast Crunch");
         insert_item2.put("item_desc", "1 LB box");
+        insert_item2.put("item_picture", "https://images.heb.com/is/image/HEBGrocery/000032012");
         db.insert("item", null, insert_item2);
 
         ContentValues insert_item3 = new ContentValues();
         insert_item3.put("item_number", 3);
         insert_item3.put("item_name", "Paper");
         insert_item3.put("item_desc", "White: 8.5\" x 11\"");
+        insert_item3.put("item_picture", "https://www.collinsdictionary.com/images/full/paper_111691001.jpg");
         db.insert("item", null, insert_item3);
 
         ContentValues insert_item4 = new ContentValues();

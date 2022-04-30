@@ -159,7 +159,7 @@ public class Supporter_Main_Page_Fragment<location_Spinner> extends Fragment {
                         Intent to_dp = new Intent(getActivity(), Discounts_Promos_Activity.class);
                         //pass the supporter account id and supporter account username to the Discounts_Promos_Activity activity -Blake
                         Bundle supporter_bundle_dp = createNavMenuBundle();
-                        to_dp.putExtra("supporter_bundle", supporter_bundle_dp);
+                        to_dp.putExtra("promo_bundle", supporter_bundle_dp);
                         //switch to the Discounts_Promos_Activity activity -Blake
                         startActivity(to_dp);
                     }else{
