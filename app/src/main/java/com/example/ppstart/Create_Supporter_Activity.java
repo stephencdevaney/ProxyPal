@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Create_Supporter_Activity extends AppCompatActivity {
 
@@ -113,30 +115,56 @@ public class Create_Supporter_Activity extends AppCompatActivity {
                 //If the user has entered a username and two matching passwords, then the account info is entered into the database -Blake
                 if(valid_username && valid_password && valid_password_confirm && passwords_match){
 
+                    boolean username_exists = false;
+
                     try{
+
                         //Initialize the databaseHelper variable
                         databaseHelper = new DatabaseHelper(Create_Supporter_Activity.this);
                         //Get a writeable instance of the database since data is about to be inserted into it -Blake
                         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-                        //Insert the username and password of the created supporter account into the "supporter_account" table of the db -Blake
-                        ContentValues supporter_account = new ContentValues();
-                        supporter_account.put("supporter_username", supporter_username_txt.getText().toString());
-                        supporter_account.put("supporter_password", supporter_password_txt.getText().toString());
 
-                        db.insert("supporter_account", null, supporter_account);
-                        db.close();
 
-                        supporter_username = supporter_username_txt.getText().toString(); //save the username -Blake
+                         Cursor cursor = db.rawQuery("SELECT * FROM supporter_account", null);
+                            if(cursor != null){
+                                if(cursor.moveToFirst()){
 
-                        //switch to supporter account main activity, passing the supporter_username/id using a bundle -Blake
-                        Intent to_browse = new Intent(Create_Supporter_Activity.this, Supporter_Main_Page_Activity.class);
-                        Bundle supporter_bundle = new Bundle();
-                        supporter_bundle.putInt("supporter_id", supporter_id);
-                        supporter_bundle.putString("supporter_username", supporter_username);
-                        to_browse.putExtra("supporter_bundle", supporter_bundle);
+                                    int supporter_username_index = cursor.getColumnIndex("supporter_username");
 
-                        startActivity(to_browse);
+                                    for(int i = 0; i < cursor.getCount(); i++){
+                                        if(cursor.getString(supporter_username_index).equals(supporter_username_txt.getText().toString())){
+                                            Toast.makeText(Create_Supporter_Activity.this, "Username already exists, please enter another username.", Toast.LENGTH_SHORT).show();
+                                            username_exists = true;
+                                        }
+
+                                        cursor.moveToNext();
+                                    }
+                                    cursor.close();
+                                }else{
+                                    //Don't forget to close the cursors and database instance!
+                                    cursor.close();
+                                }
+                            }
+
+
+
+                        if(!username_exists){
+                            //Insert the username and password of the created supporter account into the "supporter_account" table of the db -Blake
+                            ContentValues supporter_account = new ContentValues();
+                            supporter_account.put("supporter_username", supporter_username_txt.getText().toString());
+                            supporter_account.put("supporter_password", supporter_password_txt.getText().toString());
+
+                            db.insert("supporter_account", null, supporter_account);
+                            db.close();
+
+                            Intent to_main = new Intent(Create_Supporter_Activity.this, MainActivity.class);
+
+                            Toast.makeText(Create_Supporter_Activity.this, "Account created, you can now login.", Toast.LENGTH_SHORT).show();
+                            startActivity(to_main);
+                        }
+
+
 
 
                     }catch(SQLException e){
