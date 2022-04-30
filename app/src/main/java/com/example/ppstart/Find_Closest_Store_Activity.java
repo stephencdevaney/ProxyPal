@@ -70,8 +70,10 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
     }
 
     @SuppressLint("Missing Permission")
-    private void getLastLocation(double destRange) {
-
+    double[] getLastLocation(double destRange) {
+        double[] var = new double[2];
+        var[0] = 0;
+        var[1] = 0;
 
         //validate location permissions
         if (checkPermissions()) {
@@ -101,6 +103,8 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
                             double lat = location.getLatitude();
                             //Toast.makeText(Find_Closest_Store_Activity.this, "Lat: " + lat + "Lon: " + lon, Toast.LENGTH_LONG).show();
                             loadBusiness(lon, lat, destRange);
+                            var[0] = lon;
+                            var[1] = lat;
 
                         }
                     }
@@ -114,6 +118,8 @@ public class Find_Closest_Store_Activity extends AppCompatActivity {
         } else {
             requestPermissions();
         }
+
+        return var;
     }
     @SuppressLint("MissingPermission")
     private void requestNewLocationData(){
