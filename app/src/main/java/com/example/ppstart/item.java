@@ -8,7 +8,7 @@ public class item {
 
 
     public void setName(String itemName){
-        this.name = itemName
+        this.name = itemName;
     }
     public void setPrice(String itemPrice) {this.price = itemPrice;}
     public void setImage(String itemImage) {this.image = itemImage;}
