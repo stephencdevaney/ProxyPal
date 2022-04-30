@@ -32,7 +32,7 @@ public class Supporter_Search_Activity extends AppCompatActivity {
     private MaterialToolbar search_toolbar;
     private EditText search_box;
     private ImageView search_btn;
-    private Spinner search_spinner;
+    //private Spinner search_spinner;
     private BottomNavigationView supporter_bottom_nav_menu;
 
     //String for storing what is entered into search box
@@ -120,6 +120,7 @@ public class Supporter_Search_Activity extends AppCompatActivity {
             }
         });
 
+        /*
         //allows the user to select whether they want to search for items or businesses -Blake
         search_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -137,6 +138,8 @@ public class Supporter_Search_Activity extends AppCompatActivity {
 
             }
         });
+
+         */
 
 
 
@@ -217,7 +220,7 @@ public class Supporter_Search_Activity extends AppCompatActivity {
         search_box = findViewById(R.id.search_box);
         search_btn = findViewById(R.id.search_btn);
         supporter_bottom_nav_menu = findViewById(R.id.supporter_bottom_nav_menu);
-        search_spinner = findViewById(R.id.search_spinner);
+       // search_spinner = findViewById(R.id.search_spinner);
     }
 
     //this method allows the user to search for businesses or items (with rudimentary partial search allowed) -Blake
@@ -236,7 +239,7 @@ public class Supporter_Search_Activity extends AppCompatActivity {
              search_box_entry = search_box.getText().toString();
 
             //if the user selects the business option in the spinner (meaning the search will be for businesses) -Blake
-            if (search_spinner.getSelectedItem().toString().equals("Business")) {
+           // if (search_spinner.getSelectedItem().toString().equals("Business")) {
                 //if the user selected the items option for searching and then switches to the business option for searching,
                 //the recycler view adapter is set using the empty array list so that the screen clears -Blake
                 searchAdapter.setBrowsable_profiles(empty_list);
@@ -295,8 +298,9 @@ public class Supporter_Search_Activity extends AppCompatActivity {
                 }
 
 
-            }
+            //}
 
+            /*
             //if the user selected the item option in the spinner -Blake
             if (search_spinner.getSelectedItem().toString().equals("Item")) {
                 search_type = "Item";
@@ -308,6 +312,10 @@ public class Supporter_Search_Activity extends AppCompatActivity {
                 }
 
             }
+
+             */
+
+
         }
 
 

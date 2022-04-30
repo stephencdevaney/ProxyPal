@@ -120,6 +120,7 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
 
+                    /*
                    case R.id.drawer_account:
                        if(supporter_id != -1){
                            Intent to_options = new Intent(Supporter_Main_Page_Activity.this, Supporter_Acc_Options_Activity.class);
@@ -134,6 +135,8 @@ public class Supporter_Main_Page_Activity extends AppCompatActivity {
                            Toast.makeText(Supporter_Main_Page_Activity.this, "Sign in or create an account to access this!", Toast.LENGTH_SHORT).show();
                        }
                         break;
+
+                     */
                    case  R.id.drawer_favorites:
                        if(supporter_id != -1){
                            Intent to_favorites = new Intent(Supporter_Main_Page_Activity.this, Favorites_Activity.class);

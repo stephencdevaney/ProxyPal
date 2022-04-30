@@ -283,7 +283,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
 
         // remove guest menu items
         Menu menu = main_nav_menu.getMenu();
-        menu.removeItem(R.id.drawer_account);
+       // menu.removeItem(R.id.drawer_account);
         menu.removeItem(R.id.drawer_favorites);
 
 
@@ -876,6 +876,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
 
+                    /*
                     case R.id.drawer_account:
                         if(supporter_Id != -1){
                             Intent to_options = new Intent(Business_Profile_Activity.this, Supporter_Acc_Options_Activity.class);
@@ -890,6 +891,8 @@ public class Business_Profile_Activity extends AppCompatActivity {
                             Toast.makeText(Business_Profile_Activity.this, "Sign in or create an account to access this!", Toast.LENGTH_SHORT).show();
                         }
                         break;
+
+                     */
                     case  R.id.drawer_favorites:
                         if(supporter_Id != -1){
                             Intent to_favorites = new Intent(Business_Profile_Activity.this, Favorites_Activity.class);

@@ -4,6 +4,7 @@ package com.example.ppstart;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +38,8 @@ public class Favorites_Activity extends AppCompatActivity {
 
     //These text views are displayed when the user has no favorited businesses/items -Blake
     private TextView no_business_favorites_txt, no_item_favorites_txt;
+
+    private TextView item_fav_text;
 
     //include the items recycler view adapter when the inventory system is created -Blake
 
@@ -72,6 +75,10 @@ public class Favorites_Activity extends AppCompatActivity {
         no_business_favorites_txt = findViewById(R.id.no_business_favorites_txt);
         no_item_favorites_txt = findViewById(R.id.no_item_favorites_txt);
 
+        item_fav_text = findViewById(R.id.item_favorites_txt);
+        item_fav_text.setVisibility(View.GONE);
+        no_item_favorites_txt.setVisibility(View.GONE);
+
         //initialize firestore database
         firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -90,7 +97,7 @@ public class Favorites_Activity extends AppCompatActivity {
         business_favorites_rec_view = findViewById(R.id.business_favorites_rec_view);
         profilesAdapter = new BrowseProfilesAdapter(this);
         business_favorites_rec_view.setAdapter(profilesAdapter);
-        business_favorites_rec_view.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        business_favorites_rec_view.setLayoutManager(new GridLayoutManager(this, 2));
         //pass the supporter id/username to the adapter -Blake
         profilesAdapter.passUserInfo(supporter_id, supporter_username);
 
@@ -101,7 +108,7 @@ public class Favorites_Activity extends AppCompatActivity {
         //These two methods contain the functionality for retrieving favorites from the database
         //and setting the resulting array list to the recycler views -Blake
         GetProfileFavorites(supporter_username, supporter_id);
-        GetItemFavorites(supporter_username, supporter_id);
+       // GetItemFavorites(supporter_username, supporter_id);
 
 
     }
@@ -271,8 +278,7 @@ public class Favorites_Activity extends AppCompatActivity {
                     }
 
 
-                    //retrieve the favorited items and add them to the item favorites recycler view (when the inventory is created)
-                    no_item_favorites_txt.setVisibility(View.VISIBLE); //for now, just display that there are no items favorited -Blake
+                    //no_item_favorites_txt.setVisibility(View.VISIBLE); //for now, just display that there are no items favorited -Blake
 
                     //dismiss loading screen
                     progress_dialog.dismiss();

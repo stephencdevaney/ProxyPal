@@ -15,10 +15,7 @@
         android:id="@+id/account_management"
         android:icon="@drawable/ic_account"
         android:title="Account Management"></item>
-    <item
-        android:id="@+id/drawer_account"
-        android:icon="@drawable/ic_account"
-        android:title="Options"></item>
+
     <item
         android:title="Favorites"
         android:id="@+id/drawer_favorites"
