@@ -86,7 +86,7 @@ public class DiscountsPromosAdapter extends RecyclerView.Adapter<DiscountsPromos
                     promo_edit_bundle.putInt("store_id", promosList.get(holder.getAbsoluteAdapterPosition()).getStore_id());
                     promo_edit_bundle.putInt("item_id", promosList.get(holder.getAbsoluteAdapterPosition()).getItem_id());
                     promo_edit_bundle.putInt("owner_id", owner_id);
-                    promo_edit_bundle.putString("mode", "add");
+                    promo_edit_bundle.putString("mode", "edit");
                     intent.putExtra("promo_edit_bundle", promo_edit_bundle);
                     view.getContext().startActivity(intent);
 

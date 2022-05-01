@@ -74,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //create the table for item
         String create_item = "CREATE TABLE item" +
-                "(item_number VARCHAR PRIMARY KEY, " +
+                "(item_number INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "item_name VARCHAR NOT NULL, " +
                 "item_desc TEXT NOT NULL, " +
                 "item_picture TEXT)";
@@ -82,7 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //create inventory for stores foreign
         String create_store_inventory = "CREATE TABLE store_inventory" +
-                "(item_number VARCHAR, " +
+                "(item_number INTEGER, " +
                 "profile_id INTEGER, " +
                 "owner_id INTEGER, " +
                 "price DECIMAL NOT NULL, " +

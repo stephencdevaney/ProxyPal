@@ -92,7 +92,7 @@ public class Promo_Edit_Activity extends AppCompatActivity {
                     } else {
                         try {
                             Cursor pCursor = db.rawQuery("SELECT dp_id FROM promos WHERE store_id = ? and item_id = ?", new String[]{String.valueOf(store_id), String.valueOf((item_id))});
-                            if (pCursor == null) {
+                            if (pCursor.getCount() <= 0) {
                                 ContentValues add_promo = new ContentValues();
                                 add_promo.put("store_id", store_id);
                                 add_promo.put("item_id", item_id);
@@ -110,12 +110,14 @@ public class Promo_Edit_Activity extends AppCompatActivity {
                         }
                     }
                     if (successful == true) {
-                        Intent intent = new Intent(view.getContext(), Business_Profile_Activity.class);
-                        Bundle profile_bundle = new Bundle();
-                        profile_bundle.putInt("owner_id", owner_id);
-                        intent.putExtra("profile_bundle", profile_bundle);
-                        view.getContext().startActivity(intent);
-                        Toast.makeText(getApplicationContext(), "Promotion Updated.", Toast.LENGTH_SHORT).show();
+                        //if (mode.equals("edit")) {
+                            Intent intent = new Intent(view.getContext(), Business_Profile_Activity.class);
+                            Bundle profile_bundle = new Bundle();
+                            profile_bundle.putInt("owner_id", owner_id);
+                            intent.putExtra("profile_bundle", profile_bundle);
+                            view.getContext().startActivity(intent);
+                            Toast.makeText(getApplicationContext(), "Promotion Updated.", Toast.LENGTH_SHORT).show();
+                        //}
                     }
                 }
             }

@@ -435,6 +435,7 @@ public class Business_Profile_Activity extends AppCompatActivity {
                             }
                             else {
                                 fragment_info.putBoolean("edit_flag", false);
+                                fragment_info.putInt("owner_id", owner_Id);
                                 fragment_manager.beginTransaction().replace(R.id.business_fragment_view, inventory_list.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             }
                             profile_cursor.close();

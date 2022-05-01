@@ -4,20 +4,49 @@ public class item {
     //basic data structure, formatted in xml format file
     private String name;
     private int ownerID;
-    private float price;
-    private String itemNumber;
+    private String price;
+    private int itemNumber;
 
-
-    public void setOwnerId(int ownerID) {this.ownerID = ownerID;}
-    public void setName(String itemName){
-        this.name = itemName;
+    public item() {
+        //empty constructor
     }
-    public void setPrice(float itemPrice) {this.price = itemPrice;}
-    public void setItemNumber(String itemImage) {this.itemNumber = itemImage;}
 
+    public item(String name, int ownerID, String price, int itemNumber) {
+        this.name = name;
+        this.ownerID = ownerID;
+        this.price = price;
+        this.itemNumber = itemNumber;
+    }
 
-    public int getOwnerId() {return ownerID;}
-    public String getName() { return name;}
-    public float getPrice() {return price;}
-    public String getItemNumber() {return itemNumber;}
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public int getItemNumber() {
+        return itemNumber;
+    }
+
+    public void setItemNumber(int itemNumber) {
+        this.itemNumber = itemNumber;
+    }
 }
