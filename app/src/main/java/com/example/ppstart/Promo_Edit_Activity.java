@@ -78,41 +78,45 @@ public class Promo_Edit_Activity extends AppCompatActivity {
                 String newDesc = desc.getText().toString();
                 newDesc = newDesc.trim();
 
-                if(mode.equals("edit")) {
-                    ContentValues update_desc = new ContentValues();
-                    update_desc.put("dp_desc", newDesc);
-                    db.update("promos", update_desc, "dp_id = ?", new String[]{String.valueOf(promo_id)});
-                    db.close();
+                if (newDesc.isEmpty()){
+                    error.setText("Promotion description cannot be left blank.");
+                    error.setVisibility(View.VISIBLE);
                 }
-                else{
-                    try {
-                        Cursor pCursor = db.rawQuery("SELECT dp_id FROM promos WHERE store_id = ? and item_id = ?", new String[]{String.valueOf(store_id),String.valueOf((item_id))});
-                        if (pCursor == null) {
-                            ContentValues add_promo = new ContentValues();
-                            add_promo.put("store_id", store_id);
-                            add_promo.put("item_id", item_id);
-                            add_promo.put("dp_desc", newDesc);
-                            db.insert("promos", null, add_promo);
-                            error.setVisibility(View.GONE);
-                            successful = true;
-                        }
-                        else {
-                            error.setVisibility(View.VISIBLE);
-                            successful = false;
-                        }
+                else {
+                    if (mode.equals("edit")) {
+                        ContentValues update_desc = new ContentValues();
+                        update_desc.put("dp_desc", newDesc);
+                        db.update("promos", update_desc, "dp_id = ?", new String[]{String.valueOf(promo_id)});
+                        successful = true;
                         db.close();
+                    } else {
+                        try {
+                            Cursor pCursor = db.rawQuery("SELECT dp_id FROM promos WHERE store_id = ? and item_id = ?", new String[]{String.valueOf(store_id), String.valueOf((item_id))});
+                            if (pCursor == null) {
+                                ContentValues add_promo = new ContentValues();
+                                add_promo.put("store_id", store_id);
+                                add_promo.put("item_id", item_id);
+                                add_promo.put("dp_desc", newDesc);
+                                db.insert("promos", null, add_promo);
+                                successful = true;
+                            } else {
+                                error.setText("A promotion for this item already exists. Please delete it before trying to create another.");
+                                error.setVisibility(View.VISIBLE);
+                                successful = false;
+                            }
+                            db.close();
+                        } catch (SQLiteException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    catch (SQLiteException e) {
-                        e.printStackTrace();
+                    if (successful == true) {
+                        Intent intent = new Intent(view.getContext(), Business_Profile_Activity.class);
+                        Bundle profile_bundle = new Bundle();
+                        profile_bundle.putInt("owner_id", owner_id);
+                        intent.putExtra("profile_bundle", profile_bundle);
+                        view.getContext().startActivity(intent);
+                        Toast.makeText(getApplicationContext(), "Promotion Updated.", Toast.LENGTH_SHORT).show();
                     }
-                }
-                if (successful == true) {
-                    Intent intent = new Intent(view.getContext(), Business_Profile_Activity.class);
-                    Bundle profile_bundle = new Bundle();
-                    profile_bundle.putInt("owner_id", owner_id);
-                    intent.putExtra("profile_bundle", profile_bundle);
-                    view.getContext().startActivity(intent);
-                    Toast.makeText(getApplicationContext(), "Promotion Updated.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
