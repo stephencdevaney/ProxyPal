@@ -81,7 +81,7 @@ public class inventoryAdapter extends RecyclerView.Adapter<inventoryAdapter.View
 
         //holder.inventory_business_name.setText(business_name);
         holder.itemName.setText(items.get(position).getName());
-        holder.itemPrice.setText(items.get(position).getPrice());
+        holder.itemPrice.setText("$" + items.get(position).getPrice());
 
             //for opening business profile when the profile avatar is tapped on
             holder.invCard.setOnClickListener(new View.OnClickListener() {
