@@ -226,6 +226,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_store_inv1.put("item_number", 4);
         insert_store_inv1.put("price", 1.00);
         insert_store_inv1.put("owner_id", 1);
+        insert_store_inv1.put("profile_id", 1);
         db.insert("store_inventory", null, insert_store_inv1);
 
 
@@ -233,30 +234,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insert_store_inv2.put("item_number", 5);
         insert_store_inv2.put("price", 2.00);
         insert_store_inv2.put("owner_id", 1);
+        insert_store_inv2.put("profile_id", 1);
         db.insert("store_inventory", null, insert_store_inv2);
 
         ContentValues insert_store_inv3 = new ContentValues();
         insert_store_inv3.put("item_number", 6);
         insert_store_inv3.put("price", 3.00);
         insert_store_inv3.put("owner_id", 1);
+        insert_store_inv3.put("profile_id", 1);
         db.insert("store_inventory", null, insert_store_inv3);
 
         ContentValues insert_store_inv4 = new ContentValues();
         insert_store_inv4.put("item_number", 1);
         insert_store_inv4.put("price", 3.00);
         insert_store_inv4.put("owner_id", 2);
+        insert_store_inv4.put("profile_id", 2);
         db.insert("store_inventory", null, insert_store_inv4);
 
         ContentValues insert_store_inv5 = new ContentValues();
         insert_store_inv5.put("item_number", 2);
         insert_store_inv5.put("price", 3.00);
         insert_store_inv5.put("owner_id", 2);
+        insert_store_inv5.put("profile_id", 2);
         db.insert("store_inventory", null, insert_store_inv5);
 
         ContentValues insert_store_inv6 = new ContentValues();
         insert_store_inv6.put("item_number", 3);
         insert_store_inv6.put("price", 3.00);
         insert_store_inv6.put("owner_id", 2);
+        insert_store_inv6.put("profile_id", 2);
         db.insert("store_inventory", null, insert_store_inv6);
 
 

@@ -428,12 +428,15 @@ public class Business_Profile_Activity extends AppCompatActivity {
                                 if (!profile_cursor.getString(business_name_index).trim().equals("")) businessName = profile_cursor.getString(business_name_index);
                             }
                             fragment_info.putString("name", businessName);
-                            fragment_info.putString("info", "This page is coming soon!");
                             if (edit_view_flag) {
                                 fragment_info.putInt("owner_id", owner_Id);
-                                fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                                fragment_info.putBoolean("edit_flag", true);
+                                fragment_manager.beginTransaction().replace(R.id.business_fragment_view, inventory_list.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
                             }
-                            else fragment_manager.beginTransaction().replace(R.id.business_fragment_view, business_profile_text.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            else {
+                                fragment_info.putBoolean("edit_flag", false);
+                                fragment_manager.beginTransaction().replace(R.id.business_fragment_view, inventory_list.class, fragment_info).setReorderingAllowed(true).addToBackStack("name").commit();
+                            }
                             profile_cursor.close();
                         }
                     }
