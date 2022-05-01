@@ -79,17 +79,23 @@ public class business_profile_textEditor extends Fragment {
                 databaseHelper = new DatabaseHelper(getContext());
                 db = databaseHelper.getReadableDatabase();
 
-                String newInfo = info.getText().toString();
-                if(newInfo.substring(0,5).toLowerCase(Locale.ROOT).equals("about")){
-                    newInfo = newInfo.substring(5);
-                }
-                newInfo = newInfo.trim();
+                String Info = removeHeader(info.getText().toString());
 
                 ContentValues update_about = new ContentValues();
-                update_about.put("profile_about_desc", newInfo);
+                update_about.put("profile_about_desc", Info);
                 db.update("profile", update_about,"owner_id=?", new String[]{String.valueOf(owner_Id)});
                 db.close();
             }
         });
+    }
+
+    // Remove about header from string
+    public String removeHeader(String info){
+        String newInfo = info;
+        if(newInfo.substring(0,5).toLowerCase(Locale.ROOT).equals("about")){
+            newInfo = newInfo.substring(5);
+        }
+        newInfo = newInfo.trim();
+        return newInfo;
     }
 }
